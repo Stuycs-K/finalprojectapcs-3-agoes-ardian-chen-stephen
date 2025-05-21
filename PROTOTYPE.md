@@ -35,9 +35,9 @@ How you are breaking down the project and who is responsible for which parts.
 
 MVP TIMELINE:
 
-Create our own board (Ardian - 5/23)
-Code Dice class and test (Ardian - 5/26)
-Code Button class and test (Stephen - 5/23)
-Code Board class and test (Ardian - 5/27)
-Code Player class and test (Stephen - 5/26)
-Compile everthing into GameManager class and make sure game logic works (Stephen - 5/28)
+Create our own board (Ardian - 5/23) <br>
+Code Dice class and test (Ardian - 5/26)<br>
+Code Button class and test (Stephen - 5/23)<br>
+Code Board class and test (Ardian - 5/27)<br>
+Code Player class and test (Stephen - 5/26)<br>
+Compile everthing into GameManager class and make sure game logic works (Stephen - 5/28)<br>
