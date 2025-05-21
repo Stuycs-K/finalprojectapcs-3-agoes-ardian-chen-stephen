@@ -14,10 +14,18 @@ UML Diagrams and descriptions of key algorithms, classes, and how things fit tog
 
 ![UML DIAGRAM](MonopolyUML.png)
 
+We have five classes: Monopoly, GameManager, Player, BoardSpace, Dice, and Button
+
+Our Monopoly class will be our main sketch and will just be initializing our GameManager and setting up the game, handling settings, the main game loop, and user input.
+Our GameManager class will be managing the flow of the game, player turns, and interactions between the player and the board (late between the players themselves).
+    * work
+
 
 # Intended pacing:
 
 How you are breaking down the project and who is responsible for which parts.
+
+MVP TIMELINE:
 
 Create our own board (Ardian - 5/23)
 Code Dice class and test (Ardian - 5/26)
