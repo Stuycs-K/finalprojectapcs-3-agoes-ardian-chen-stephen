@@ -13,5 +13,21 @@ class Player{
     ownedProperties = new ArrayList<BoardSpace>();
   }
   
+  public int getMoney(){
+    return this.money; 
+  }
+  
+  public void addMoney(int amount){
+    this.money += amount;
+  }
+  
+  public boolean canAfford(int amount){
+    return money > amount;
+  }
+  
+  public void addProperty(BoardSpace property){
+    ownedProperties.add(property);
+  }
+  
   
 }
