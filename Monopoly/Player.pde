@@ -30,6 +30,23 @@ class Player{
     ownedProperties.add(property);
   }
  
+  public color getColor(){
+    return c;
+  }
+  
+  public String getName(){
+    return name;
+  }
+  
+  public int getIndex(){
+    return currentBoardIndex;
+  }
+  
+  public int[] getPos(){
+    return new int[]{x,y};
+  }
+    
+  
   public void move (int boardIndex, int newX, int newY){
     this.currentBoardIndex = boardIndex;
     this.x = newX;
