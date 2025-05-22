@@ -35,7 +35,8 @@ How you are breaking down the project and who is responsible for which parts.
 
 MVP TIMELINE:
 
-Create our own board (Ardian - 5/23) <br>
+~~Create our own board (Ardian - 5/23)~~ <br>
+>It would be better to use the BoardSpace class and draw it instead of making an image
 Code Dice class and test (Ardian - 5/26)<br>
 Code Button class and test (Stephen - 5/23)<br>
 Code Board class and test (Ardian - 5/27)<br>
