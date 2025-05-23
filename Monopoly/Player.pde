@@ -45,6 +45,10 @@ class Player{
   public int[] getPos(){
     return new int[]{x,y};
   }
+  
+  public ArrayList<Board> getProperties(){
+    return ownedProperties;
+  }
     
   
   public void move (int boardIndex, int newX, int newY){
