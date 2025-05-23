@@ -9,3 +9,6 @@ Spent the entire class period brainstorming the features we want for our MVP and
 
 ### 2024-05-20 - Prototyping
 Spent the entire class period working together on our MVP UML using Lucidchart. Later spent a bit of time on the timeline of our MVP. 
+
+### 2024-05-22 - Prototyping & Started Coding
+Made edits to our UML (arrows to show aggregation instead and fixing the accessibility of attributes), started the BoardSpace class.
