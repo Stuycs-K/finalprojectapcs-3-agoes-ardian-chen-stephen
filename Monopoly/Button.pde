@@ -28,4 +28,13 @@ public void displayButton(){
   text(message, xPos, yPos);
 }
 
+public boolean isClicked(){
+  if (type.equals("purchase")){
+    return mouseX == 100 && mouseY == 100; //figure out actual spacing 
+  }
+  else{
+    return mouseX == 100 && mouseY == 100; //figure out actual spacing 
+  }
+}
+
 }
