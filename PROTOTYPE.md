@@ -44,8 +44,10 @@ MVP TIMELINE:
 
 * ~~Create our own board (Ardian - 5/23)~~ <br>
     >It would be better to use the BoardSpace class and draw it instead of making an image <br>
-* Code Dice class and test (Ardian - 5/26)<br>
-* Code Button class and test (Stephen - 5/23)<br>
-* Code Board class and test (Ardian - 5/27)<br>
-* Code Player class and test (Stephen - 5/26)<br>
-* Compile everthing into GameManager class and make sure game logic works (Stephen - 5/28)<br>
+* Code Dice class and test (Ardian - 5/29)<br>
+* Code Button class and test (Stephen - 5/27)<br>
+* Code BoardSpace class and test (Ardian - 5/27)<br>
+* Code PropertySpace class and test (Ardian - 5/29)<br>
+* Code EventSpace class and test (Ardian - 5/29)<br>
+* Code Player class and test (Stephen - 5/27)<br>
+* Compile everthing into GameManager class and make sure game logic works (Stephen - 5/30)<br>
