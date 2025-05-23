@@ -12,8 +12,10 @@ We are making a replica of the Monopoly board game. For our MVP, we plan on havi
 
 UML Diagrams and descriptions of key algorithms, classes, and how things fit together.
 
+## UML DIAGRAM VERSION #1 : <br>
 ![UML DIAGRAM](MonopolyUML.png)
 
+## UML DIAGRAM VERSION #2 : <br>
 We have five classes: Monopoly, GameManager, Player, BoardSpace, Dice, and Button
 
 * Our Monopoly class will be our main sketch and will just be initializing our GameManager and setting up the game, handling settings, the main game loop, and user input. <br>
@@ -21,8 +23,9 @@ We have five classes: Monopoly, GameManager, Player, BoardSpace, Dice, and Butto
     >It will create the player objects, initialize the boardspaces, and create the dice. The methods within it are responsible for the main game loop (update()), displaying UI, dice rolling, property management, rent payments, and checking if a player has gone bankrupt. It will be interacting with the Player objects to update their state, with BoardSpace to get property details, Dice for rolls, and Button for user input.
 * Our Player class will represent a player in the game and contain information about the player's status, assets, and current position.
     >The class will be used to initialize the player, managing money (add, deduct, canAfford), managing properties(addProperty, getOwnedProperties), and player movement across the board. It holds references to the BoardSpace objects it owns and will be interacting with the GameManasger for the different game events and for turn management.
-* Our BoardSpace class will be used to represent the different spaces on the Monopoly board and different properties.
-    >It will initialize the boardspaces and will contain many getters to for the GameManager to get access to the name, price, rent, and current owner of the property. It can also update the owner of the property. It will be interacting with the GameManager as the GameManager will be using BoardSpace to get details of the different properties
+* ~~Our BoardSpace class will be used to represent the different spaces on the Monopoly board and different properties.~~
+    >~~It will initialize the boardspaces and will contain many getters to for the GameManager to get access to the name, price, rent, and current owner of the property. It can also update the owner of the property. It will be interacting with the GameManager as the GameManager will be using BoardSpace to get details of the different properties~~
+* Our 
 * Our Dice class will be used to simulate the rolling of two six-sided dice.
     >It will generate two random numbers between one and six and store them. It will also be used to get the total rolled. GameManager will be using Dice to get roll results.
 * Our Button class will be a UI element for clickable buttons like "Buy" or "Pass".
@@ -36,7 +39,7 @@ How you are breaking down the project and who is responsible for which parts.
 MVP TIMELINE:
 
 ~~Create our own board (Ardian - 5/23)~~ <br>
->It would be better to use the BoardSpace class and draw it instead of making an image
+>It would be better to use the BoardSpace class and draw it instead of making an image <br>
 Code Dice class and test (Ardian - 5/26)<br>
 Code Button class and test (Stephen - 5/23)<br>
 Code Board class and test (Ardian - 5/27)<br>
