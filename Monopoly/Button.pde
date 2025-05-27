@@ -2,30 +2,35 @@ class Button{
 String type;
 float xPos;
 float yPos;
-float w;
-float h;
+
   
-Button(String type, float xPos, float yPos, float w, float h){
+Button(String type, float xPos, float yPos){
   this.type = type;
   this.xPos = xPos;
   this.yPos = yPos;
-  this.w = w;
-  this.h = h;
 }
 
 public void displayButton(){
-  String message;
+  int w = 0;
+  int h = 0;
   
   if (type.equals("purchase")){
-    message = "Would you like to purchase this property?";
+    w = 210; 
+    h = 200;
+    fill(100, 0 , 0);
+    rect(xPos, yPos, w, h);
+  
+    fill(0);
+    textSize(20);
+    text("Would you like to", xPos + 5, yPos + 30);
+    text("purchase this property?", xPos + 5, yPos + 50);
   }
   else {
-    message = "Would you like to roll the dice?";
+    w = 200; 
+    h = 400;
   }
   
-  rect(xPos, yPos, w, h);
-  fill(100);
-  text(message, xPos, yPos);
+  
 }
 
 public boolean isClicked(){
@@ -36,5 +41,6 @@ public boolean isClicked(){
     return mouseX == 100 && mouseY == 100; //figure out actual spacing 
   }
 }
+
 
 }
