@@ -7,14 +7,18 @@ float button2X;
 float buttonY;
 float buttonW;
 float buttonH;
+boolean visible;
   
 Button(String type, float xPos, float yPos){
   this.type = type;
   this.xPos = xPos;
   this.yPos = yPos;
+  visible = true;
 }
 
 public void displayButton(){
+  if (!visible) return; 
+
   int w = 0;
   int h = 0;
   
@@ -41,22 +45,41 @@ public void displayButton(){
     text("Yes", button1X + 5, buttonY + 20);
     text("No", button2X + 5, buttonY + 20);
   }
-  else {
-    
+  else if (type.equals("roll")) {
+    button1X = xPos;
+    buttonY = yPos;
+    buttonW = 100;
+    buttonH = 50;
+
+    fill(0, 150, 255);
+    rect(button1X, buttonY, buttonW, buttonH);
+    fill(255);
+    textAlign(CENTER, CENTER);
+    textSize(16);
+    text("Roll Dice", button1X + buttonW/2, buttonY + buttonH/2);
   }
   
-  
 }
 
-public boolean isClicked(){
-     if (mouseX > button1X && mouseX < button1X + buttonW && mouseY > buttonY && mouseY < buttonY + buttonH){
-       return true;
-     }
-     else if (mouseX > button2X && mouseX < button2X + buttonW && mouseY > buttonY && mouseY < buttonY + buttonH){
-       return false;
-     }
-     
-}
-
-
+public int isClicked() {
+  if (type.equals("purchase")){
+    if (mouseX > button1X && mouseX < button1X + buttonW && mouseY > buttonY && mouseY < buttonY + buttonH) {
+      visible = false;
+      return 1;
+    } 
+    else if (mouseX > button2X && mouseX < button2X + buttonW && mouseY > buttonY && mouseY < buttonY + buttonH) {
+      visible = false;
+      return 0;
+    }
+    return -1;
+  }
+  else if (type.equals("roll")) {
+      if (mouseX > button1X && mouseX < button1X + buttonW &&
+          mouseY > buttonY && mouseY < buttonY + buttonH) {
+        visible = false;
+        return 1; 
+      }
+    }
+    return -1; 
+  }
 }
