@@ -2,7 +2,6 @@ class PropertySpace extends BoardSpace {
   private int price;
   private int rent;
   //private Player owner;
-  private boolean isOwned;
   private String propertyType;
   
   public Property(String name, int index, String propertyType, float x, float y, float w, float h, int price, int rent) {
@@ -10,40 +9,53 @@ class PropertySpace extends BoardSpace {
     this.propertyType = propertyType;
     this.price = price;
     this.rent = rent;
-    this.isOwned = false;
     //this.Player = null;
   }
   
   public int getPrice(){
-     return price;
+     return this.price;
   }
   
   public int getRent(){
-     return rent;
+     return this.rent;
   }
   
   /*public Player getOwner() {
     return owner;
   }*/
   
-  public boolean getOwned(){
-    return isOwned;
-  }
+ /* public boolean getOwned(){
+    return (this.owner !- null);
+  }*/
   
-  /*public void setOwner(Player owner){
-    this.owner = owner;
-    this.isOwned = true;
+  /*public void setOwner(Player newOwner){
+    this.owner = newOwner;
   }*/
   
   public String getType(){
-    return propertyType;
+    return this.propertyType;
   }
   
   /*public void onLand(Player player, GameManager GM){
       GM.displayMessage(player.getName() + " landed on " + getName());
-      if (!isOwned){
-        
+      if (!getOwned()){
+        if (player.canAfford(this.price)) {
+          gameManager.offerProperty(this, player);
+        }
+        else {
+          GM.displayMessage(player.getName() + " can't afford this property..."
+          GM.endPlayerTurn();
+        }
+      }
+      else if (getOwner() != player) {
+          GM.displayMessage(getName() + " is owned by " + getOwner().getName();
+          GM.payRent(this, player, getOwner());
+      }
+      else {
+        GM.displayMessage(player.getName() + " landed on their own property";
+        GM.endPlayerTurn();
       }
   }*/
-  
 }
+        
+        
