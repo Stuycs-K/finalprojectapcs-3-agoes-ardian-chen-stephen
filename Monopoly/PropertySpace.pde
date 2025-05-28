@@ -1,7 +1,7 @@
 class PropertySpace extends BoardSpace {
   private int price;
   private int rent;
-  //private Player owner;
+  private Player owner;
   private String propertyType;
   
   public Property(String name, int index, String propertyType, float x, float y, float w, float h, int price, int rent) {
@@ -9,7 +9,7 @@ class PropertySpace extends BoardSpace {
     this.propertyType = propertyType;
     this.price = price;
     this.rent = rent;
-    //this.Player = null;
+    this.owner = null;
   }
   
   public int getPrice(){
@@ -20,22 +20,23 @@ class PropertySpace extends BoardSpace {
      return this.rent;
   }
   
-  /*public Player getOwner() {
+  public Player getOwner() {
     return owner;
-  }*/
+  }
   
- /* public boolean getOwned(){
-    return (this.owner !- null);
-  }*/
+  public boolean getOwned(){
+    return (this.owner != null);
+  }
   
-  /*public void setOwner(Player newOwner){
+  public void setOwner(Player newOwner){
     this.owner = newOwner;
-  }*/
+  }
   
   public String getType(){
     return this.propertyType;
   }
   
+  //@Override
   /*public void onLand(Player player, GameManager GM){
       GM.displayMessage(player.getName() + " landed on " + getName());
       if (!getOwned()){
