@@ -13,7 +13,7 @@ class EventSpace extends BoardSpace {
   //@Override
   /*
   public onLand(Player player, GameManager GM) {
-    if (this.eventType.equals("GO"){
+    if (this.eventType.equals("GO")){
       GM.displayMessage(player.getName() + " passed GO! Collect $200!");
       GM.endPlayerTurn;
     }
