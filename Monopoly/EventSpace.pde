@@ -10,6 +10,19 @@ class EventSpace extends BoardSpace {
     return this.eventType;
   }
   
+  @Override
+  
+  public void draw(){
+    super.draw();
+    fill(255);
+    noStroke();
+    rect(getX() + 1, getY() + 1, getWidth() - 2, getHeight() - 2);
+    stroke(0);
+    fill(0);
+    textAlign(CENTER, CENTER);
+    text(getName(), getX() + getWidth() / 2, getY() + getHeight() * 0.35f);
+    
+  }
   //@Override
   /*
   public onLand(Player player, GameManager GM) {

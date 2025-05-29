@@ -41,5 +41,9 @@ abstract class BoardSpace {
   
   //public abstract void onLand(Player player, GameManager gameManager);
   
-  
+  public void draw(){
+    stroke(0);
+    fill(245, 245, 245);
+    rect(this.x, this.y, this.widthSize, this.heightSize);
+  }
 }
