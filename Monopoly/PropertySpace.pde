@@ -36,6 +36,31 @@
     return this.propertyType;
   }
   
+  @Override
+  public void draw(){
+    super.draw();
+    fill(255);
+    noStroke();
+    rect(getX() + 1, getY() + 1, getWidth() - 2, getHeight() - 2);
+    stroke(0);
+    fill(0);
+    textAlign(CENTER, CENTER);
+    text(getName(), getX() + getWidth() / 2, getY() + getHeight() * 0.35f); 
+    if (!getOwned()) {
+      text("$" + this.price, getX() + getWidth() / 2, getY() + getHeight() * 0.85f);
+    } 
+    else {
+      if (owner != null) { 
+        fill(owner.c);
+        noStroke();
+        float indicatorSize = min(getWidth() * 0.2f, getHeight() * 0.1f);
+        ellipseMode(CENTER);
+        ellipse(getX() + getWidth() / 2, getY() + getHeight() * 0.65f, indicatorSize * 1.5f, indicatorSize * 1.5f);
+        stroke(0);
+      }
+    }
+  }
+  
   //@Override
   /*public void onLand(Player player, GameManager GM){
       GM.displayMessage(player.getName() + " landed on " + getName());
@@ -57,6 +82,5 @@
         GM.endPlayerTurn();
       }
   }*/
-}
-        
+  }  
         

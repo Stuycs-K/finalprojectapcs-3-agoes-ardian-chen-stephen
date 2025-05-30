@@ -24,3 +24,6 @@ Completed the EventSpace class
 
 ### 2024-05-29 - Merging and Coding
 Stephen and I merged all of our classes into main, started working on drawing the actual board spaces.
+
+### 2024-05-30 - Coding
+Continued testing drawing boardspaces, able to show name and price of property, created two spaces, added indicator for owner
