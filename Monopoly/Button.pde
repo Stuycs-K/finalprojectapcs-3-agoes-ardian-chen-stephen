@@ -61,6 +61,14 @@ public void displayButton(){
   
 }
 
+public void visibilityTrue(){
+  visible = true;
+}
+
+public boolean isVisible(){
+  return visible;
+}
+
 public int isClicked() {
   if (type.equals("purchase")){
     if (mouseX > button1X && mouseX < button1X + buttonW && mouseY > buttonY && mouseY < buttonY + buttonH) {

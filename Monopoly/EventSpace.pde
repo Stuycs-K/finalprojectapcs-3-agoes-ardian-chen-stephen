@@ -18,6 +18,6 @@ class EventSpace extends BoardSpace {
       GM.endPlayerTurn;
     }
   }
-  *.
+  */
   
 }

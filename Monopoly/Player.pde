@@ -46,7 +46,7 @@ class Player{
     return new int[]{x,y};
   }
   
-  public ArrayList<Board> getProperties(){
+  public ArrayList<BoardSpace> getProperties(){
     return ownedProperties;
   }
     

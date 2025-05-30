@@ -1,8 +1,8 @@
 class GameManager{
   Player[] players;
   int playerIndex;
-  BoardSpace[] board;
-  BoardSpace[] availableProp;
+  //BoardSpace[] board;
+  //BoardSpace[] availableProp;
   Button purchase;
   Button roll;
   String message;
@@ -19,11 +19,22 @@ class GameManager{
   }
   
   void update(){
-  
+    while (!checkBankruptcy(players[playerIndex])){
+      roll.visibilityTrue();
+      int action = -1;
+      while (roll.isVisible() && roll.isClicked() != -1){
+        action = roll.isClicked();
+      }
+      
+      
+    }
   }
   
   void displayUI(){
-  
+   
+    //message box
+    rect(400, 400, 400, 400);
+    
   }
   
   void drawBoard(){
@@ -31,15 +42,15 @@ class GameManager{
   }
   
   boolean processLandedSpace(EventSpace space){
-  
+    return true;
   }
   
   void buyProperty(BoardSpace space){
   
   }
   
-  boolean checkBankruptcy(){
-  
+  boolean checkBankruptcy(Player player){
+    return true;
   }
 
 }
