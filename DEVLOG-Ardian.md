@@ -17,7 +17,10 @@ Made edits to our UML (arrows to show aggregation instead and fixing the accessi
 Made more edits to our UML --> BoardSpace will now be an abstract class, implemented by propertySpace and eventSpace classes, completed the abstract BoardSpace Class
 
 ### 2024-05-27 - Coding
-Completed the PropertySpace class and made few changes to GameManager in the UML to add useful methods like endPlayerTurn()
+Completed the propertySpace class and made few changes to GameManager in the UML to add useful methods like endPlayerTurn()
 
 ### 2024-05-28 - Coding
 Completed the EventSpace class 
+
+### 2024-05-29 - Merging and Coding
+Stephen and I merged all of our classes into main, started working on drawing the actual board spaces.
