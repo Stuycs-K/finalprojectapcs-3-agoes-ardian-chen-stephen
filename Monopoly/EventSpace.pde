@@ -11,7 +11,6 @@ class EventSpace extends BoardSpace {
   }
   
   @Override
-  
   public void draw(){
     super.draw();
     fill(255);
@@ -20,9 +19,9 @@ class EventSpace extends BoardSpace {
     stroke(0);
     fill(0);
     textAlign(CENTER, CENTER);
-    text(getName(), getX() + getWidth() / 2, getY() + getHeight() * 0.35f);
-    
+    text(getName(), getX() + getWidth() / 2, getY() + getHeight() * 0.35f); 
   }
+  
   //@Override
   /*
   public onLand(Player player, GameManager GM) {
@@ -31,6 +30,5 @@ class EventSpace extends BoardSpace {
       GM.endPlayerTurn;
     }
   }
-  *.
-  
+  */
 }
