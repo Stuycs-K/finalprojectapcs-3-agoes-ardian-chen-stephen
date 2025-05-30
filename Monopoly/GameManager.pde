@@ -8,7 +8,7 @@ class GameManager{
   String message;
   
   public GameManager(int numPlayers){
-    players = new Player[numPlayers];
+    players = new Player[]{new Player("BOB", 1900, color(0))};
     playerIndex = 0;
     
     //todo: figure out position of buttons
@@ -19,14 +19,18 @@ class GameManager{
   }
   
   void update(){
-    while (!checkBankruptcy(players[playerIndex])){
-      roll.visibilityTrue();
-      int action = -1;
-      while (roll.isVisible() && roll.isClicked() != -1){
-        action = roll.isClicked();
+    while (!checkBankruptcy()){
+      Player currentPlayer = players[playerIndex];
+      
+      roll.setVisibility(true);
+      roll.displayButton();
+      int numSpaces = -1;
+      while (roll.isVisible() && numSpaces != -1){
+        
+        numSpaces = roll.isClicked();
       }
-      
-      
+      roll.setVisibility(false);
+      System.out.println(numSpaces);
     }
   }
   
@@ -49,8 +53,8 @@ class GameManager{
   
   }
   
-  boolean checkBankruptcy(Player player){
-    return true;
+  boolean checkBankruptcy(){
+    return false;
   }
 
 }

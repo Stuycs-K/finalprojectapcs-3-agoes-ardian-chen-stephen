@@ -8,12 +8,14 @@ float buttonY;
 float buttonW;
 float buttonH;
 boolean visible;
+Dice dice;
   
 Button(String type, float xPos, float yPos){
   this.type = type;
   this.xPos = xPos;
   this.yPos = yPos;
-  visible = true;
+  visible = false;
+  dice = new Dice();
 }
 
 public void displayButton(){
@@ -61,8 +63,8 @@ public void displayButton(){
   
 }
 
-public void visibilityTrue(){
-  visible = true;
+public void setVisibility(boolean status){
+  visible = status;
 }
 
 public boolean isVisible(){
@@ -85,7 +87,7 @@ public int isClicked() {
       if (mouseX > button1X && mouseX < button1X + buttonW &&
           mouseY > buttonY && mouseY < buttonY + buttonH) {
         visible = false;
-        return 1; 
+        return dice.roll(); 
       }
     }
     return -1; 
