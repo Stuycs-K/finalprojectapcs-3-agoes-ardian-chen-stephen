@@ -80,6 +80,32 @@ public void displayButton(){
       textAlign(CENTER, CENTER);
       text("Okay", button1X + buttonW / 2, buttonY + buttonH / 2);
     }
+    else{
+      String message = "";
+      String type = "";
+      if (type.equals("go")){ 
+        message = "Move to GO and collect $200";
+        type = "Chance Card";
+      }
+      else if (type.equals("bank")){ 
+        message = "The IRS gives you a refund for $50";
+        type = "Chance Card";
+      }
+      else if (type.equals("lawyer")){ 
+        message = "Pay $50 to your divorce lawyer. :(";
+        type = "Community Card";
+      }
+      else if (type.equals("inherit")){ 
+        message = "You inherit $100 from a distant relative";
+        type = "Community Card";
+      }
+      else{ 
+        message = "Pay $150 in income tax to the state";
+        type = "Tax";
+      }
+
+
+    }
 }
 
 public void setVisibility(boolean status){
