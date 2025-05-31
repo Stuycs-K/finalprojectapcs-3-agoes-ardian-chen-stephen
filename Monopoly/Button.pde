@@ -164,7 +164,7 @@ public int isClicked() {
     }
     return -1;
   }
-  else if (type.equals("roll")) {
+  else {
     if (mouseX > button1X && mouseX < button1X + buttonW &&
        mouseY > buttonY && mouseY < buttonY + buttonH) {
         visible = false;
@@ -172,13 +172,6 @@ public int isClicked() {
       }
     return -1; 
   }
-  else if (type.equals("not_enough_money")){
-    if (mouseX > button1X && mouseX < button1X + buttonW &&
-       mouseY > buttonY && mouseY < buttonY + buttonH) {
-        visible = false;
-        return 1;
-      }
-   }
-       return -1; 
+  
   }
 }
