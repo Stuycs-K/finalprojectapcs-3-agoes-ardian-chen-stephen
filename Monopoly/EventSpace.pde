@@ -1,7 +1,7 @@
 class EventSpace extends BoardSpace {
   private String eventType;
   
-  public EventSpace(String name, int boardIndex,String event,  int xPos, int yPos, float w, float h){
+  public EventSpace(String name, int boardIndex, String event,  int xPos, int yPos, float w, float h){
     super(name, boardIndex, xPos, yPos, w, h);
     this.eventType = event;
   }

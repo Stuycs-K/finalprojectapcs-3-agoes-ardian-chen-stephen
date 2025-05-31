@@ -165,7 +165,35 @@ class GameManager{
       }
       return true;
     }
-    return false;
+    else{
+      EventSpace event = (EventSpace) space;
+      
+      int choice = (int) (Math.random() * 2);
+      String type = event.getType();
+      String eventMessage = ""; 
+      if (type.equals("chance")){
+        if (choice == 0){
+          eventMessage = "go";
+        }
+        else {
+          eventMessage = "bank";
+        }
+      }
+      else if (type.equals("event")){
+        if (choice == 0){
+          eventMessage = "lawyer";
+        }
+        else {
+          eventMessage = "inherit";
+        }
+      }
+      else {
+        eventMessage = "tax";
+      }
+     
+      Button eventButton = new Button(eventMessage, 200, 200);
+      return false;
+    }
   }
   
   void buyProperty(PropertySpace space){
