@@ -174,6 +174,7 @@ class GameManager{
       if (type.equals("chance")){
         if (choice == 0){
           eventMessage = "go";
+          currentPlayer.setPos(0);
         }
         else {
           eventMessage = "bank";
