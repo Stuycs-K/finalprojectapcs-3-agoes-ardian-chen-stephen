@@ -67,7 +67,7 @@ public void setVisibility(boolean status){
   visible = status;
 }
 
-public boolean isVisible(){
+public boolean isvisible(){
   return visible;
 }
 
