@@ -56,7 +56,7 @@ class Player{
     
   
   public void move (int moves){
-    this.currentBoardIndex += moves;
+    this.currentBoardIndex = (currentBoardIndex + moves) % board.length;
     this.x = board[currentBoardIndex].getX();
     this.y = board[currentBoardIndex].getY();
   }    

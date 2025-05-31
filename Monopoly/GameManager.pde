@@ -11,6 +11,8 @@ class GameManager{
   int diceRoll;
   
   int gameState;
+  boolean rolledDouble;
+  boolean processedLandedSpace = false;
   
   final int STATE_WAITING_TO_ROLL = 0;
   final int STATE_ROLLING = 1;
@@ -34,6 +36,7 @@ class GameManager{
     dice = new Dice();
     
     message = "";
+    rolledDouble = false;
   }
   
   void update(){
@@ -45,26 +48,37 @@ class GameManager{
     } 
     else if (gameState == STATE_ROLLING) {
       message = currentPlayer.getName() + " rolled a " + diceRoll;
-      //currentPlayer.move(diceRoll);
+      currentPlayer.move(diceRoll);
+      processedLandedSpace = false;
       gameState = STATE_PROCESS_LANDED_SPACE;
     } 
-    else if (gameState == STATE_PROCESS_LANDED_SPACE) {
-      //BoardSpace space = board[currentPlayer.getIndex()];
-      BoardSpace space = board[2];
-
+    else if (gameState == STATE_PROCESS_LANDED_SPACE && !processedLandedSpace) {
+      BoardSpace space = board[currentPlayer.getIndex()];
+      System.out.println(currentPlayer.getName() + " " + currentPlayer.getIndex());
       boolean canPurchase = spaceCanPurchase(space);
       if (canPurchase) {
+        processedLandedSpace = true;
         gameState = STATE_WAITING_PURCHASE_DECISION;
         purchase.setVisibility(true);
-    } 
-    else if (gameState == STATE_END_TURN) {
-      message = currentPlayer.getName() + "'s turn ended.";
-      playerIndex = (playerIndex + 1) % players.length;
-      diceRoll = -1;
-      gameState = STATE_WAITING_TO_ROLL;
+      }
+      else {
+        gameState = STATE_END_TURN;
+      }
     }
-
-   }
+    else if (gameState == STATE_END_TURN) {
+      if (rolledDouble){
+        System.out.println("Double");
+        rolledDouble = false;
+        gameState = STATE_WAITING_TO_ROLL;
+      }
+      else{
+        message = currentPlayer.getName() + "'s turn ended.";
+        playerIndex = (playerIndex + 1) % players.length;
+        System.out.println("end");
+        diceRoll = -1;
+        gameState = STATE_WAITING_TO_ROLL;
+      }
+    }
 
   }
   
@@ -73,13 +87,29 @@ class GameManager{
       new PropertySpace("Prop1",0, "blue", 10, 10, 10, 10, 100, 100),
       new EventSpace("Event1", 1, "blue", 10, 10, 10, 10),
       new PropertySpace("Prop2",2, "blue", 10, 10, 10, 10, 100, 100),
-      new EventSpace("Event2", 1, "blue", 10, 10, 10, 10),
-      new PropertySpace("Prop3",3, "blue", 10, 10, 10, 10, 100, 100)
+      new EventSpace("Event2", 3, "blue", 10, 10, 10, 10),
+      new PropertySpace("Prop3",4, "blue", 10, 10, 10, 10, 100, 100),
+      new PropertySpace("Prop4",5, "blue", 10, 10, 10, 10, 100, 100),
+      new EventSpace("Event3", 6, "blue", 10, 10, 10, 10),
+      new PropertySpace("Prop5",7, "blue", 10, 10, 10, 10, 100, 100),
+      new EventSpace("Event4", 8, "blue", 10, 10, 10, 10),
+      new PropertySpace("Prop6",9, "blue", 10, 10, 10, 10, 100, 100),
+      new PropertySpace("Prop7",10, "blue", 10, 10, 10, 10, 100, 100),
+      new EventSpace("Event5", 11, "blue", 10, 10, 10, 10),
+      new PropertySpace("Prop8",12, "blue", 10, 10, 10, 10, 100, 100),
+      new EventSpace("Event6", 13, "blue", 10, 10, 10, 10),
+      new PropertySpace("Prop9",14, "blue", 10, 10, 10, 10, 100, 100),
+      new PropertySpace("Prop10",15, "blue", 10, 10, 10, 10, 100, 100),
+      new EventSpace("Event7", 16, "blue", 10, 10, 10, 10),
+      new PropertySpace("Prop11",17, "blue", 10, 10, 10, 10, 100, 100),
+      new EventSpace("Event8", 18, "blue", 10, 10, 10, 10),
+      new PropertySpace("Prop12",19, "blue", 10, 10, 10, 10, 100, 100),
   };
   }
   
   void rollButtonClick() {
       diceRoll = dice.roll();
+      rolledDouble = dice.isDouble();
       roll.setVisibility(false);
       gameState = STATE_ROLLING;
     
