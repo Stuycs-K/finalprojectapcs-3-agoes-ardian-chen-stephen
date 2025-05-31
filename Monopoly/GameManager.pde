@@ -39,7 +39,7 @@ class GameManager{
   void update(){
     currentPlayer = players[playerIndex];
     
-     if (gameState == STATE_WAITING_TO_ROLL) {
+    if (gameState == STATE_WAITING_TO_ROLL) {
       roll.setVisibility(true);
       purchase.setVisibility(false);
     } 
@@ -57,6 +57,13 @@ class GameManager{
         gameState = STATE_WAITING_PURCHASE_DECISION;
         purchase.setVisibility(true);
     } 
+    else if (gameState == STATE_END_TURN) {
+      message = currentPlayer.getName() + "'s turn ended.";
+      playerIndex = (playerIndex + 1) % players.length;
+      diceRoll = -1;
+      gameState = STATE_WAITING_TO_ROLL;
+    }
+
    }
 
   }
