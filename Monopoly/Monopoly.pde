@@ -13,7 +13,7 @@ void draw() {
 }
 
 void mousePressed() {
-  if (manager.roll.isvisible() && manager.roll.isClicked() != -1) {
+  if (manager.gameState == 0 && manager.roll.isClicked() != -1) {
     manager.rollButtonClick();
   }
 

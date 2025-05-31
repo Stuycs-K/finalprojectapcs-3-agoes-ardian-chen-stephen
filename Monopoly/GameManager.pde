@@ -22,7 +22,7 @@ class GameManager{
   public GameManager(int numPlayers){
     players = new Player[numPlayers];
     for (int i = 0; i < numPlayers; i++) {
-      players[i] = new Player("Player " + (i+1), 1500, color(255, 0, 0));
+      players[i] = new Player("Player " + (i+1), 1500, color(255, 0, 0), board);
     }
     playerIndex = 0;
     
@@ -39,26 +39,31 @@ class GameManager{
     
      if (gameState == STATE_WAITING_TO_ROLL) {
       roll.setVisibility(true);
-      roll.displayButton();
       purchase.setVisibility(false);
     } 
+    else if (gameState == STATE_ROLLING) {
+      message = currentPlayer.getName() + " rolled a " + diceRoll;
+      currentPlayer.move(diceRoll);
+      gameState = STATE_PROCESS_LANDED_SPACE;
+
+    } 
+
     
   }
-    void rollButtonClick() {
+  
+  void rollButtonClick() {
     if (gameState == STATE_WAITING_TO_ROLL) {
       diceRoll = dice.roll();
       roll.setVisibility(false);
-          println("Roll clicked, hiding button");
-
       gameState = STATE_ROLLING;
     }
   }
 
   
- void display() {
-  if (roll.isvisible()) {
-    roll.displayButton();  
-  }
+  void display() {
+    if (roll.isvisible()) {
+      roll.displayButton();  
+    }
   }
   
   void drawBoard(){

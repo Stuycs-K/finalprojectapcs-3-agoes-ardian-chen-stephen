@@ -5,13 +5,17 @@ class Player{
   int x, y;
   color c;
   ArrayList<BoardSpace> ownedProperties;
+  BoardSpace[] board;
 
-  Player(String name, int money, color c){
+  Player(String name, int money, color c, BoardSpace[] board){
     this.name = name;
     this.money = money;
     this.c = c;
     currentBoardIndex = 0;
     ownedProperties = new ArrayList<BoardSpace>();
+    this.board = board;
+    this.x = board[currentBoardIndex].getX();
+    this.y = board[currentBoardIndex].getY();
   }
   
   public int getMoney(){
@@ -51,10 +55,10 @@ class Player{
   }
     
   
-  public void move (int boardIndex, int newX, int newY){
-    this.currentBoardIndex = boardIndex;
-    this.x = newX;
-    this.y = newY;
+  public void move (int moves){
+    this.currentBoardIndex += moves;
+    this.x = board[currentBoardIndex].getX();
+    this.y = board[currentBoardIndex].getY();
   }    
   
 }
