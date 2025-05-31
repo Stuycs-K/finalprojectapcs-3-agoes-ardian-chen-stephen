@@ -13,8 +13,14 @@ void draw() {
 }
 
 void mousePressed() {
-  if (manager.gameState == 0 && manager.roll.isClicked() != -1) {
+  if (manager.gameState == manager.STATE_WAITING_TO_ROLL && manager.roll.isClicked() != -1) {
     manager.rollButtonClick();
+  }
+  if (manager.gameState == manager.STATE_WAITING_PURCHASE_DECISION && manager.purchase.isClicked() == 1) {
+    manager.purchaseButtonClick(true);
+  }
+  else if (manager.gameState == manager.STATE_WAITING_PURCHASE_DECISION && manager.purchase.isClicked() == 0){
+    manager.purchaseButtonClick(false);
   }
 
 }

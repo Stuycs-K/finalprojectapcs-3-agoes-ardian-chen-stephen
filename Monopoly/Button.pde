@@ -39,6 +39,7 @@ public void displayButton(){
     buttonY = yPos + 80;
     buttonW = 50;
     buttonH = 50;
+    textAlign(LEFT, BASELINE);
     rect(button1X, buttonY, buttonW, buttonH);
     rect(button2X, buttonY, buttonW, buttonH);
     fill(0);
@@ -72,10 +73,12 @@ public boolean isvisible(){
 public int isClicked() {
   if (type.equals("purchase")){
     if (mouseX > button1X && mouseX < button1X + buttonW && mouseY > buttonY && mouseY < buttonY + buttonH) {
+      System.out.println("clicked left");
       visible = false;
       return 1;
     } 
     else if (mouseX > button2X && mouseX < button2X + buttonW && mouseY > buttonY && mouseY < buttonY + buttonH) {
+      System.out.println("clicked right");
       visible = false;
       return 0;
     }

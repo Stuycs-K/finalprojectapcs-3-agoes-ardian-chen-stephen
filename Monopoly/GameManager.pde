@@ -29,8 +29,8 @@ class GameManager{
     playerIndex = 0;
     
     //todo: figure out position of buttons
-    purchase = new Button("purchase", 0, 0);
-    roll = new Button("roll", 0, 0);
+    purchase = new Button("purchase", 100, 100);
+    roll = new Button("roll", 100, 100);
     dice = new Dice();
     
     message = "";
@@ -72,12 +72,23 @@ class GameManager{
   }
   
   void rollButtonClick() {
-    if (gameState == STATE_WAITING_TO_ROLL) {
       diceRoll = dice.roll();
       roll.setVisibility(false);
       gameState = STATE_ROLLING;
+    
+  }
+  
+  void purchaseButtonClick(boolean purchase) {
+    if (gameState == STATE_WAITING_PURCHASE_DECISION) {
+      if (purchase) {
+        System.out.println("purchased");
+      } else {
+        System.out.println("not purchased");
+      }
+      gameState = STATE_END_TURN;
     }
   }
+
 
   
   void display() {
