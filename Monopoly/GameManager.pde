@@ -56,7 +56,7 @@ class GameManager{
     else if (gameState == STATE_PROCESS_LANDED_SPACE) {
       BoardSpace space = board[currentPlayer.getIndex()];
       System.out.println(currentPlayer.getName() + " " + currentPlayer.getIndex());
-      boolean canPurchase = spaceCanPurchase(space);
+      boolean canPurchase = handleLanding(space);
       if (canPurchase) {
         gameState = STATE_WAITING_PURCHASE_DECISION;
         purchase.setVisibility(true);
@@ -152,10 +152,18 @@ class GameManager{
   
   }
   
-  boolean spaceCanPurchase(BoardSpace space){
+  boolean handleLanding(BoardSpace space){
     if (space instanceof PropertySpace) {
       PropertySpace prop = (PropertySpace) space;
-      return prop.getOwner() == null;
+      if (prop.getOwned()){
+         prop.getOwner().changeMoney(prop.getRent());
+         currentPlayer.changeMoney(-prop.getRent());
+         if (currentPlayer.getMoney() < 0){
+           //bankrupt end
+         }
+         return false;
+      }
+      return true;
     }
     return false;
   }
