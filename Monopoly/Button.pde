@@ -17,6 +17,7 @@ Button(String type, float xPos, float yPos){
 }
 
 public void displayButton(){
+  System.out.println("hi");
   if (!visible) return; 
 
   int w = 0;
@@ -81,30 +82,63 @@ public void displayButton(){
       text("Okay", button1X + buttonW / 2, buttonY + buttonH / 2);
     }
     else{
+      System.out.println("hi");
       String message = "";
-      String type = "";
-      if (type.equals("go")){ 
+      String eventType = "";
+      if (type.equals("go")){
         message = "Move to GO and collect $200";
-        type = "Chance Card";
+        eventType = "Chance Card";
       }
       else if (type.equals("bank")){ 
         message = "The IRS gives you a refund for $50";
-        type = "Chance Card";
+        eventType = "Chance Card";
       }
       else if (type.equals("lawyer")){ 
         message = "Pay $50 to your divorce lawyer. :(";
-        type = "Community Card";
+        eventType = "Community Card";
       }
       else if (type.equals("inherit")){ 
         message = "You inherit $100 from a distant relative";
-        type = "Community Card";
+        eventType = "Community Card";
       }
       else{ 
         message = "Pay $150 in income tax to the state";
-        type = "Tax";
+        eventType = "Tax";
       }
+      
+      w = 330;
+      h = 140;
+      
+      if (eventType.equals("Chance Card")){
+        fill(255, 200, 100);
+      }
+      else if (eventType.equals("Community Card")){
+        fill(173, 216, 230);
+      }
+      else{
+        fill(100);
+      }
+      
+      rect(xPos, yPos, w, h);
+      
+      fill(0);
+      textSize(18);
+      textAlign(CENTER, TOP);
+      text(eventType, xPos + w / 2, yPos + 20);
 
+      textSize(16);
+      textAlign(CENTER, BASELINE);
+      text(message, xPos + w / 2, yPos + 70);
 
+      fill(255);
+      button1X = xPos + w / 2 - 40;
+      buttonY = yPos + 90;
+      buttonW = 80;
+      buttonH = 30;
+      rect(button1X, buttonY, buttonW, buttonH);
+      fill(0);
+      textAlign(CENTER, CENTER);
+      text("Okay", button1X + buttonW / 2, buttonY + buttonH / 2);
     }
 }
 
