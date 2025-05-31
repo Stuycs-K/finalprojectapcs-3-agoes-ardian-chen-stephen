@@ -12,7 +12,6 @@ class GameManager{
   
   int gameState;
   boolean rolledDouble;
-  boolean processedLandedSpace = false;
   
   final int STATE_WAITING_TO_ROLL = 0;
   final int STATE_ROLLING = 1;
@@ -49,15 +48,13 @@ class GameManager{
     else if (gameState == STATE_ROLLING) {
       message = currentPlayer.getName() + " rolled a " + diceRoll;
       currentPlayer.move(diceRoll);
-      processedLandedSpace = false;
       gameState = STATE_PROCESS_LANDED_SPACE;
     } 
-    else if (gameState == STATE_PROCESS_LANDED_SPACE && !processedLandedSpace) {
+    else if (gameState == STATE_PROCESS_LANDED_SPACE) {
       BoardSpace space = board[currentPlayer.getIndex()];
       System.out.println(currentPlayer.getName() + " " + currentPlayer.getIndex());
       boolean canPurchase = spaceCanPurchase(space);
       if (canPurchase) {
-        processedLandedSpace = true;
         gameState = STATE_WAITING_PURCHASE_DECISION;
         purchase.setVisibility(true);
       }
