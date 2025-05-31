@@ -6,7 +6,9 @@ class GameManager{
   BoardSpace[] availableProp;
   Button purchase;
   Button roll;
+  Dice dice;
   String message;
+  int diceRoll;
   
   int gameState;
   
@@ -27,7 +29,8 @@ class GameManager{
     //todo: figure out position of buttons
     purchase = new Button("purchase", 0, 0);
     roll = new Button("roll", 0, 0);
-
+    dice = new Dice();
+    
     message = "";
   }
   
@@ -40,14 +43,22 @@ class GameManager{
       purchase.setVisibility(false);
     } 
     
-
   }
+    void rollButtonClick() {
+    if (gameState == STATE_WAITING_TO_ROLL) {
+      diceRoll = dice.roll();
+      roll.setVisibility(false);
+          println("Roll clicked, hiding button");
+
+      gameState = STATE_ROLLING;
+    }
+  }
+
   
-  void displayUI(){
-   
-    //message box
-    rect(400, 400, 400, 400);
-    
+ void display() {
+  if (roll.isvisible()) {
+    roll.displayButton();  
+  }
   }
   
   void drawBoard(){

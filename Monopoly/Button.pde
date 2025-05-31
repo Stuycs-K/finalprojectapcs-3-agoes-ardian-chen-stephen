@@ -8,14 +8,12 @@ float buttonY;
 float buttonW;
 float buttonH;
 boolean visible;
-Dice dice;
   
 Button(String type, float xPos, float yPos){
   this.type = type;
   this.xPos = xPos;
   this.yPos = yPos;
   visible = false;
-  dice = new Dice();
 }
 
 public void displayButton(){
@@ -87,7 +85,7 @@ public int isClicked() {
       if (mouseX > button1X && mouseX < button1X + buttonW &&
           mouseY > buttonY && mouseY < buttonY + buttonH) {
         visible = false;
-        return dice.roll(); 
+        return 1;
       }
     }
     return -1; 

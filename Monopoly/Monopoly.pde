@@ -5,7 +5,16 @@ void setup(){
   manager = new GameManager(2);
 }
 
-void draw(){
-  manager.update();
+void draw() {
+  background(255);
   
+  manager.update();    
+  manager.display();   
+}
+
+void mousePressed() {
+  if (manager.roll.isvisible() && manager.roll.isClicked() != -1) {
+    manager.rollButtonClick();
+  }
+
 }
