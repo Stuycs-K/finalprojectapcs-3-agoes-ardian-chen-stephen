@@ -3,7 +3,7 @@ class GameManager{
   Player currentPlayer;
   int playerIndex;
   BoardSpace[] board;
-  BoardSpace[] availableProp;
+  ArrayList<PropertySpace> availableProp;
   Button purchase;
   Button roll;
   Dice dice;
@@ -23,7 +23,8 @@ class GameManager{
   public GameManager(int numPlayers){
     players = new Player[numPlayers];
     board = makeTestBoard();
-
+    availableProp = makeAvailProperty();
+    
     for (int i = 0; i < numPlayers; i++) {
       players[i] = new Player("Player " + (i+1), 1500, color(255, 0, 0), board);
     }
@@ -104,12 +105,22 @@ class GameManager{
   };
   }
   
+  ArrayList<PropertySpace> makeAvailProperty() {
+    ArrayList<PropertySpace> properties = new ArrayList<PropertySpace>();
+    for(BoardSpace space : board){
+      if (space instanceof PropertySpace){
+        properties.add((PropertySpace) space);
+      }
+    }
+    return properties;
+  }
+  
+  
   void rollButtonClick() {
       diceRoll = dice.roll();
       rolledDouble = dice.isDouble();
       roll.setVisibility(false);
-      gameState = STATE_ROLLING;
-    
+      gameState = STATE_ROLLING; 
   }
   
   void purchaseButtonClick(boolean purchase) {
