@@ -22,5 +22,12 @@ void mousePressed() {
   else if (manager.gameState == manager.STATE_WAITING_PURCHASE_DECISION && manager.purchase.isClicked() == 0){
     manager.purchaseButtonClick(false);
   }
+  
+  if (manager.notEnoughMoney.isvisible()) {
+    int result = manager.notEnoughMoney.isClicked();
+    if (result == 1) {
+      manager.gameState = manager.STATE_END_TURN;
+    }
+  }
 
 }

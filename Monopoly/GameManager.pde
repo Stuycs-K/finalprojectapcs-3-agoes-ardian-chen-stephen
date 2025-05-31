@@ -6,6 +6,7 @@ class GameManager{
   ArrayList<PropertySpace> availableProp;
   Button purchase;
   Button roll;
+  Button notEnoughMoney;
   Dice dice;
   String message;
   int diceRoll;
@@ -26,13 +27,14 @@ class GameManager{
     availableProp = makeAvailProperty();
     
     for (int i = 0; i < numPlayers; i++) {
-      players[i] = new Player("Player " + (i+1), 1500, color(255, 0, 0), board);
+      players[i] = new Player("Player " + (i+1), 50, color(255, 0, 0), board);
     }
     playerIndex = 0;
     
     //todo: figure out position of buttons
     purchase = new Button("purchase", 100, 100);
     roll = new Button("roll", 100, 100);
+    notEnoughMoney = new Button("not_enough_money", 100, 100);
     dice = new Dice();
     
     message = "";
@@ -70,7 +72,7 @@ class GameManager{
         gameState = STATE_WAITING_TO_ROLL;
       }
       else{
-        message = currentPlayer.getName() + "'s turn ended.";
+        message = currentPlayer.getName() + "'s turn ended";
         playerIndex = (playerIndex + 1) % players.length;
         System.out.println("end");
         diceRoll = -1;
@@ -141,6 +143,9 @@ class GameManager{
     if (purchase.isvisible()){
       purchase.displayButton();
     }
+    if (notEnoughMoney.isvisible()) {
+      notEnoughMoney.displayButton();
+    }
   }
   
   void drawBoard(){
@@ -156,9 +161,16 @@ class GameManager{
   }
   
   void buyProperty(PropertySpace space){
-    currentPlayer.addProperty(space);
-    space.setOwner(currentPlayer);
-    availableProp.remove(space);
+    int price = space.getPrice();
+    if (currentPlayer.canAfford(price)){
+      currentPlayer.addProperty(space);
+      currentPlayer.changeMoney(-price);
+      space.setOwner(currentPlayer);
+      availableProp.remove(space);
+    }
+    else{
+      notEnoughMoney.setVisibility(true);
+    }
   }
   
 }

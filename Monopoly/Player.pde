@@ -22,7 +22,7 @@ class Player{
     return this.money; 
   }
   
-  public void addMoney(int amount){
+  public void changeMoney(int amount){
     this.money += amount;
   }
   

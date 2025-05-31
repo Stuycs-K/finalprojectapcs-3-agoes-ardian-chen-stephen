@@ -59,7 +59,27 @@ public void displayButton(){
     textSize(16);
     text("Roll Dice", button1X + buttonW/2, buttonY + buttonH/2);
   }
-  
+   else if (type.equals("not_enough_money")) {
+      w = 330;
+      h = 100;
+
+      fill(180);
+      rect(xPos, yPos, w, h);
+      fill(0);
+      textSize(16);
+      textAlign(LEFT, BASELINE);
+      text("You don't have enough money for this property", xPos + 10, yPos + 30);
+
+      fill(255);
+      button1X = xPos + w / 2 - 40;
+      buttonY = yPos + 50;
+      buttonW = 80;
+      buttonH = 30;
+      rect(button1X, buttonY, buttonW, buttonH);
+      fill(0);
+      textAlign(CENTER, CENTER);
+      text("Okay", button1X + buttonW / 2, buttonY + buttonH / 2);
+    }
 }
 
 public void setVisibility(boolean status){
@@ -85,12 +105,20 @@ public int isClicked() {
     return -1;
   }
   else if (type.equals("roll")) {
-      if (mouseX > button1X && mouseX < button1X + buttonW &&
-          mouseY > buttonY && mouseY < buttonY + buttonH) {
+    if (mouseX > button1X && mouseX < button1X + buttonW &&
+       mouseY > buttonY && mouseY < buttonY + buttonH) {
         visible = false;
         return 1;
       }
-    }
     return -1; 
+  }
+  else if (type.equals("not_enough_money")){
+    if (mouseX > button1X && mouseX < button1X + buttonW &&
+       mouseY > buttonY && mouseY < buttonY + buttonH) {
+        visible = false;
+        return 1;
+      }
+   }
+       return -1; 
   }
 }
