@@ -102,7 +102,7 @@ class GameManager{
       new PropertySpace("Prop11",17, "blue", 10, 10, 10, 10, 100, 100),
       new EventSpace("Event8", 18, "blue", 10, 10, 10, 10),
       new PropertySpace("Prop12",19, "blue", 10, 10, 10, 10, 100, 100),
-  };
+    };
   }
   
   ArrayList<PropertySpace> makeAvailProperty() {
@@ -115,7 +115,6 @@ class GameManager{
     return properties;
   }
   
-  
   void rollButtonClick() {
       diceRoll = dice.roll();
       rolledDouble = dice.isDouble();
@@ -126,6 +125,7 @@ class GameManager{
   void purchaseButtonClick(boolean purchase) {
     if (gameState == STATE_WAITING_PURCHASE_DECISION) {
       if (purchase) {
+        buyProperty((PropertySpace) board[currentPlayer.getIndex()]);
         System.out.println("purchased");
       } else {
         System.out.println("not purchased");
@@ -134,8 +134,6 @@ class GameManager{
     }
   }
 
-
-  
   void display() {
     if (roll.isvisible()) {
       roll.displayButton();  
@@ -151,13 +149,16 @@ class GameManager{
   
   boolean spaceCanPurchase(BoardSpace space){
     if (space instanceof PropertySpace) {
-      return true;
+      PropertySpace prop = (PropertySpace) space;
+      return prop.getOwner() == null;
     }
     return false;
   }
   
-  void buyProperty(BoardSpace space){
-  
+  void buyProperty(PropertySpace space){
+    currentPlayer.addProperty(space);
+    space.setOwner(currentPlayer);
+    availableProp.remove(space);
   }
   
 }

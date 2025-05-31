@@ -12,6 +12,10 @@ class PropertySpace extends BoardSpace {
     this.owner = null;
   }
   
+  public String getName(){
+    return super.getName();
+  }
+  
   public int getPrice(){
      return this.price;
   }
