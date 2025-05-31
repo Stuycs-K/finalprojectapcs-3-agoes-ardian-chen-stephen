@@ -24,10 +24,7 @@ void mousePressed() {
   }
   
   if (manager.notEnoughMoney.isvisible()) {
-    int result = manager.notEnoughMoney.isClicked();
-    if (result == 1) {
-      manager.gameState = manager.STATE_END_TURN;
-    }
+    manager.notEnoughMoney.isClicked();
   }
 
 }
