@@ -4,7 +4,7 @@ class PropertySpace extends BoardSpace {
   private Player owner;
   private String propertyType;
   
-  public PropertySpace(String name, int index, String propertyType, float x, float y, float w, float h, int price, int rent) {
+  public PropertySpace(String name, int index, String propertyType, int x, int y, float w, float h, int price, int rent) {
     super(name, index, x, y, w, h);
     this.propertyType = propertyType;
     this.price = price;
