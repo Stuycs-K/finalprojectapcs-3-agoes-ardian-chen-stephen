@@ -82,6 +82,9 @@ class GameManager{
       else{
         moveDelayCounter--;
       }
+      if (moveStepsRemaining == 0){
+        gameState = STATE_PROCESS_LANDED_SPACE;
+      }
     }
     else if (gameState == STATE_PROCESS_LANDED_SPACE) {
       BoardSpace space = board[currentPlayer.getIndex()];
@@ -211,7 +214,11 @@ class GameManager{
          prop.getOwner().changeMoney(prop.getRent());
          currentPlayer.changeMoney(-prop.getRent());
          maintainHistory(currentPlayer.getName() + " paid $" + prop.getRent() + " rent to " + prop.getOwner().getName());
-         checkBankruptcy();
+
+         eventButton = new Button("rent", 200, 200);
+         eventButton.setVisibility(true);
+         waitingForEvent = true;
+         
          return false;
       }
       return true;
