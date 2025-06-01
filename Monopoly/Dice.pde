@@ -6,14 +6,21 @@ class Dice{
   
   }
   
-  public int roll(){
+  void roll(){
     die1 = (int) (Math.random() * 6) + 1;
     die2 = (int) (Math.random() * 6) + 1;
-    return die1 + die2;
   }
   
   boolean isDouble(){
     return die1 == die2;
+  }
+  
+  int getDice1(){
+    return die1;
+  }
+  
+  int getDice2(){
+    return die2;
   }
 
 }
