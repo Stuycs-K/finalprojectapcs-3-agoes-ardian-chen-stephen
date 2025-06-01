@@ -34,7 +34,7 @@ class GameManager{
     availableProp = makeAvailProperty();
     
     for (int i = 0; i < numPlayers; i++) {
-      players[i] = new Player("Player " + (i+1), 50, color(255, 0, 0), board);
+      players[i] = new Player("Player " + (i+1), 1500, color(255, 0, 0), board);
     }
     playerIndex = 0;
     
@@ -98,26 +98,26 @@ class GameManager{
   
   BoardSpace[] makeTestBoard() {
     return new BoardSpace[] {
-      new PropertySpace("Prop1",0, "blue", 10, 10, 10, 10, 100, 100),
-      new EventSpace("Event1", 1, "go", 10, 10, 10, 10),
-      new PropertySpace("Prop2",2, "blue", 10, 10, 10, 10, 100, 100),
-      new EventSpace("Event2", 3, "lawyer", 10, 10, 10, 10),
-      new PropertySpace("Prop3",4, "blue", 10, 10, 10, 10, 100, 100),
-      new PropertySpace("Prop4",5, "blue", 10, 10, 10, 10, 100, 100),
-      new EventSpace("Event3", 6, "inherit", 10, 10, 10, 10),
-      new PropertySpace("Prop5",7, "blue", 10, 10, 10, 10, 100, 100),
-      new EventSpace("Event4", 8, "tax", 10, 10, 10, 10),
-      new PropertySpace("Prop6",9, "blue", 10, 10, 10, 10, 100, 100),
-      new PropertySpace("Prop7",10, "blue", 10, 10, 10, 10, 100, 100),
-      new EventSpace("Event5", 11, "irs", 10, 10, 10, 10),
-      new PropertySpace("Prop8",12, "blue", 10, 10, 10, 10, 100, 100),
-      new EventSpace("Event6", 13, "go", 10, 10, 10, 10),
-      new PropertySpace("Prop9",14, "blue", 10, 10, 10, 10, 100, 100),
-      new PropertySpace("Prop10",15, "blue", 10, 10, 10, 10, 100, 100),
-      new EventSpace("Event7", 16, "irs", 10, 10, 10, 10),
-      new PropertySpace("Prop11",17, "blue", 10, 10, 10, 10, 100, 100),
-      new EventSpace("Event8", 18, "lawyer", 10, 10, 10, 10),
-      new PropertySpace("Prop12",19, "blue", 10, 10, 10, 10, 100, 100),
+      new PropertySpace("Prop1",0, "blue", 0, 10, 50, 50, 100, 100),
+      new EventSpace("Event1", 1, "go", 50, 10,  50, 50),
+      new PropertySpace("Prop2",2, "blue",100, 10,  50, 50, 100, 100),
+      new EventSpace("Event2", 3, "lawyer", 150, 10,  50, 50),
+      new PropertySpace("Prop3",4, "blue", 200, 10,  50, 50, 100, 100),
+      new PropertySpace("Prop4",5, "blue", 250, 10,  50, 50, 100, 100),
+      new EventSpace("Event3", 6, "inherit",300, 10,  50, 50),
+      new PropertySpace("Prop5",7, "blue", 350, 10,  50, 50, 100, 100),
+      new EventSpace("Event4", 8, "tax", 400, 10,  50, 50),
+      new PropertySpace("Prop6",9, "blue", 450, 10,  50, 50, 100, 100),
+      new PropertySpace("Prop7",10, "blue", 500, 10,  50, 50, 100, 100),
+      new EventSpace("Event5", 11, "irs", 550, 10,  50, 50),
+      new PropertySpace("Prop8",12, "blue", 600, 10,  50, 50, 100, 100),
+      new EventSpace("Event6", 13, "go", 650, 10,  50, 50),
+      new PropertySpace("Prop9",14, "blue", 700, 10,  50, 50, 100, 100),
+      new PropertySpace("Prop10",15, "blue", 750, 10,  50, 50, 100, 100),
+      new EventSpace("Event7", 16, "irs", 800, 10,  50, 50),
+      new PropertySpace("Prop11",17, "blue", 850, 10, 50, 50, 100, 100),
+      new EventSpace("Event8", 18, "lawyer", 900, 10, 50, 50),
+      new PropertySpace("Prop12",19, "blue", 950, 10,  50, 50, 100, 100),
     };
   }
   
@@ -169,10 +169,26 @@ class GameManager{
     }
     
     drawHistoryLog();
+    drawBoard();
   }
   
   void drawBoard(){
-  
+    for (BoardSpace space : board){
+      int x = space.getX();
+      int y = space.getY();
+      
+      fill(255);
+      rect(x, y, 50, 50);
+      
+    }
+    
+    for (int i = 0; i < players.length; i++) {
+    Player p = players[i];
+    int px = board[p.getIndex()].getX() + 15 + i * 15;
+    int py = board[p.getIndex()].getY() + 15;
+    fill(p.getColor());
+    ellipse(px, py, 12, 12);
+  }
   }
   
   boolean handleLanding(BoardSpace space){
