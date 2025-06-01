@@ -16,10 +16,11 @@ This document must be updated daily every time you finish a work session.
 
 ### 2024-05-27 - Finished Button class
 
-### 2024-05-20 - Planned timeline of different tasks and assigned them to each person
+### 2024-05-28 - Starting GameManager
 
-### 2024-05-22 - Started coding Player class
+### 2024-05-29 - Working on game logic for the entire game
 
-### 2024-05-23 - Started coding Button class
+### 2024-05-29 - Fixed error with main not seeing other tabs and merged finished classes into main
 
-### 2024-05-27 - Finished Button class
+### 2024-05-31 - Completed entire game logic 
+
