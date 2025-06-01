@@ -53,12 +53,9 @@ class GameManager{
   
   void update(){
     if (gameOver || waitingForEvent){
-      System.out.println("Help");
-            System.out.println(gameOver);
       return; 
     }
     
-    System.out.println("Should not be here");
     currentPlayer = players[playerIndex];
     
     if (gameState == STATE_WAITING_TO_ROLL) {
@@ -72,6 +69,7 @@ class GameManager{
     } 
     else if (gameState == STATE_PROCESS_LANDED_SPACE) {
       BoardSpace space = board[currentPlayer.getIndex()];
+      maintainHistory(currentPlayer.getName() + " landed on " + space.getName());
       boolean canPurchase = handleLanding(space);
       if (canPurchase) {
         gameState = STATE_WAITING_PURCHASE_DECISION;
@@ -88,7 +86,7 @@ class GameManager{
       }
       else{
         playerIndex = (playerIndex + 1) % players.length;
-        System.out.println("end");
+        maintainHistory(currentPlayer.getName() + " ended their turn");
         gameState = STATE_WAITING_TO_ROLL;
       }
     }
@@ -143,9 +141,8 @@ class GameManager{
     if (gameState == STATE_WAITING_PURCHASE_DECISION) {
       if (purchase) {
         buyProperty((PropertySpace) board[currentPlayer.getIndex()]);
-        System.out.println("purchased");
       } else {
-        System.out.println("not purchased");
+        maintainHistory(currentPlayer.getName() + " did not buy " + board[currentPlayer.getIndex()].getName());
       }
       gameState = STATE_END_TURN;
     }
