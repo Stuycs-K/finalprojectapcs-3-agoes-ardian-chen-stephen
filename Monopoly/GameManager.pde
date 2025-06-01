@@ -53,9 +53,12 @@ class GameManager{
   
   void update(){
     if (gameOver || waitingForEvent){
+      System.out.println("Help");
+            System.out.println(gameOver);
       return; 
     }
     
+    System.out.println("Should not be here");
     currentPlayer = players[playerIndex];
     
     if (gameState == STATE_WAITING_TO_ROLL) {
@@ -164,6 +167,8 @@ class GameManager{
     if (bankruptcy.isvisible()){
       bankruptcy.displayButton();
     }
+    
+    drawHistoryLog();
   }
   
   void drawBoard(){
@@ -237,7 +242,7 @@ class GameManager{
   void buyProperty(PropertySpace space){
     int price = space.getPrice();
     if (currentPlayer.canAfford(price)){
-      maintainHistory(currentPlayer + " purchased " + space.getName());
+      maintainHistory(currentPlayer.getName() + " purchased " + space.getName());
       currentPlayer.addProperty(space);
       currentPlayer.changeMoney(-price);
       space.setOwner(currentPlayer);
@@ -249,12 +254,11 @@ class GameManager{
   }
   
   void checkBankruptcy(){
-      if (!eventButton.isvisible()){
-        bankruptcy.setVisibility(true);
-      }
-      gameOver = true;
-      gameState = STATE_GAME_OVER;
-    
+    if (!eventButton.isvisible()){
+      bankruptcy.setVisibility(true);
+    }
+    gameOver = true;
+    gameState = STATE_GAME_OVER;
   }
   
   void maintainHistory(String entry){
@@ -270,6 +274,7 @@ class GameManager{
     int w = 380;
     int h = 290;
     int lineHeight = 23;
+    fill(255);
     rect(x, y, w, h);
     
     fill(0);
