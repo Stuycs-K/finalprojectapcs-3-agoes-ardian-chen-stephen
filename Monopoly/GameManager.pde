@@ -73,7 +73,15 @@ class GameManager{
       gameState = STATE_MOVING;
     } 
     else if (gameState == STATE_MOVING){
-    
+      if (moveDelayCounter <= 0){
+        currentPlayer.moveOneStep();
+        moveStepsRemaining--;
+        
+        moveDelayCounter = MOVE_DELAY_FRAMES;
+      }
+      else{
+        moveDelayCounter--;
+      }
     }
     else if (gameState == STATE_PROCESS_LANDED_SPACE) {
       BoardSpace space = board[currentPlayer.getIndex()];
