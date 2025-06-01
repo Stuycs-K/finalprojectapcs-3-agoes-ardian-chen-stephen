@@ -1,5 +1,4 @@
 GameManager manager;
-Button button;
 
 void setup(){
   size(1000, 1000);
@@ -28,8 +27,8 @@ void mousePressed() {
   if (manager.notEnoughMoney.isvisible()) {
     manager.notEnoughMoney.isClicked();
   }
-  if (button.isvisible()){
-    button.isClicked();
+  if (manager.eventButton.isvisible()){
+    manager.eventButton.isClicked();
   }
 
 }

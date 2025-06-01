@@ -7,6 +7,7 @@ class GameManager{
   Button purchase;
   Button roll;
   Button notEnoughMoney;
+  Button eventButton;
   Dice dice;
   String message;
   int diceRoll;
@@ -35,6 +36,7 @@ class GameManager{
     purchase = new Button("purchase", 100, 100);
     roll = new Button("roll", 100, 100);
     notEnoughMoney = new Button("not_enough_money", 100, 100);
+    eventButton = new Button("go", 100, 100);
     dice = new Dice();
     
     message = "";
@@ -55,7 +57,7 @@ class GameManager{
     } 
     else if (gameState == STATE_PROCESS_LANDED_SPACE) {
       BoardSpace space = board[currentPlayer.getIndex()];
-      System.out.println(currentPlayer.getName() + " " + currentPlayer.getIndex());
+      System.out.println(currentPlayer.getName() + " " + currentPlayer.getIndex() + " $" + currentPlayer.getMoney());
       boolean canPurchase = handleLanding(space);
       if (canPurchase) {
         gameState = STATE_WAITING_PURCHASE_DECISION;
@@ -85,24 +87,24 @@ class GameManager{
   BoardSpace[] makeTestBoard() {
     return new BoardSpace[] {
       new PropertySpace("Prop1",0, "blue", 10, 10, 10, 10, 100, 100),
-      new EventSpace("Event1", 1, "blue", 10, 10, 10, 10),
+      new EventSpace("Event1", 1, "go", 10, 10, 10, 10),
       new PropertySpace("Prop2",2, "blue", 10, 10, 10, 10, 100, 100),
-      new EventSpace("Event2", 3, "blue", 10, 10, 10, 10),
+      new EventSpace("Event2", 3, "lawyer", 10, 10, 10, 10),
       new PropertySpace("Prop3",4, "blue", 10, 10, 10, 10, 100, 100),
       new PropertySpace("Prop4",5, "blue", 10, 10, 10, 10, 100, 100),
-      new EventSpace("Event3", 6, "blue", 10, 10, 10, 10),
+      new EventSpace("Event3", 6, "inherit", 10, 10, 10, 10),
       new PropertySpace("Prop5",7, "blue", 10, 10, 10, 10, 100, 100),
-      new EventSpace("Event4", 8, "blue", 10, 10, 10, 10),
+      new EventSpace("Event4", 8, "tax", 10, 10, 10, 10),
       new PropertySpace("Prop6",9, "blue", 10, 10, 10, 10, 100, 100),
       new PropertySpace("Prop7",10, "blue", 10, 10, 10, 10, 100, 100),
-      new EventSpace("Event5", 11, "blue", 10, 10, 10, 10),
+      new EventSpace("Event5", 11, "irs", 10, 10, 10, 10),
       new PropertySpace("Prop8",12, "blue", 10, 10, 10, 10, 100, 100),
-      new EventSpace("Event6", 13, "blue", 10, 10, 10, 10),
+      new EventSpace("Event6", 13, "go", 10, 10, 10, 10),
       new PropertySpace("Prop9",14, "blue", 10, 10, 10, 10, 100, 100),
       new PropertySpace("Prop10",15, "blue", 10, 10, 10, 10, 100, 100),
-      new EventSpace("Event7", 16, "blue", 10, 10, 10, 10),
+      new EventSpace("Event7", 16, "irs", 10, 10, 10, 10),
       new PropertySpace("Prop11",17, "blue", 10, 10, 10, 10, 100, 100),
-      new EventSpace("Event8", 18, "blue", 10, 10, 10, 10),
+      new EventSpace("Event8", 18, "lawyer", 10, 10, 10, 10),
       new PropertySpace("Prop12",19, "blue", 10, 10, 10, 10, 100, 100),
     };
   }
@@ -146,6 +148,9 @@ class GameManager{
     if (notEnoughMoney.isvisible()) {
       notEnoughMoney.displayButton();
     }
+    if (eventButton.isvisible()) {
+      eventButton.displayButton();
+    }
   }
   
   void drawBoard(){
@@ -177,22 +182,27 @@ class GameManager{
           currentPlayer.setPos(0);
         }
         else {
-          eventMessage = "bank";
+          eventMessage = "irs";
+          currentPlayer.changeMoney(50);
         }
       }
       else if (type.equals("event")){
         if (choice == 0){
           eventMessage = "lawyer";
+          currentPlayer.changeMoney(-50);
         }
         else {
           eventMessage = "inherit";
+          currentPlayer.changeMoney(100);
         }
       }
       else {
         eventMessage = "tax";
+        currentPlayer.changeMoney(-100);
       }
      
-      Button eventButton = new Button(eventMessage, 200, 200);
+      eventButton = new Button(eventMessage, 200, 200);
+      eventButton.setVisibility(true);
       return false;
     }
   }

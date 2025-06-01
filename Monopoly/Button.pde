@@ -17,7 +17,6 @@ Button(String type, float xPos, float yPos){
 }
 
 public void displayButton(){
-  System.out.println("hi");
   if (!visible) return; 
 
   int w = 0;
@@ -82,14 +81,13 @@ public void displayButton(){
       text("Okay", button1X + buttonW / 2, buttonY + buttonH / 2);
     }
     else{
-      System.out.println("hi");
       String message = "";
       String eventType = "";
       if (type.equals("go")){
         message = "Move to GO and collect $200";
         eventType = "Chance Card";
       }
-      else if (type.equals("bank")){ 
+      else if (type.equals("irs")){ 
         message = "The IRS gives you a refund for $50";
         eventType = "Chance Card";
       }
@@ -102,7 +100,7 @@ public void displayButton(){
         eventType = "Community Card";
       }
       else{ 
-        message = "Pay $150 in income tax to the state";
+        message = "Pay $100 in income tax to the state";
         eventType = "Tax";
       }
       

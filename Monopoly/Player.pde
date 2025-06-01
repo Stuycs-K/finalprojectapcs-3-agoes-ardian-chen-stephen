@@ -58,6 +58,7 @@ class Player{
   public void move (int moves){
     if (currentBoardIndex + moves >= board.length){
       changeMoney(200);
+      System.out.println("player passed go");
     }
     this.currentBoardIndex = (currentBoardIndex + moves) % board.length;
     this.x = board[currentBoardIndex].getX();
@@ -67,6 +68,7 @@ class Player{
   public void setPos (int index){
     if (currentBoardIndex > index){
        changeMoney(200);
+       System.out.println("player passed go");
     }
     this.currentBoardIndex = index;
     this.x = board[currentBoardIndex].getX();
