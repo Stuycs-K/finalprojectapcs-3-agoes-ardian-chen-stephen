@@ -20,6 +20,10 @@ class GameManager{
 
   boolean gameOver;
   
+  int moveStepsRemaining;
+  int moveDelayCounter;
+  final int MOVE_DELAY_FRAMES = 10;
+  
   final int STATE_WAITING_TO_ROLL = 0;
   final int STATE_ROLLING = 1;
   final int STATE_MOVING = 2;
@@ -64,12 +68,13 @@ class GameManager{
     } 
     else if (gameState == STATE_ROLLING) {
       maintainHistory(currentPlayer.getName() + " rolled a " + diceRoll1 + " and a " + diceRoll2);
-      boolean passedGo = currentPlayer.move(diceRoll1 + diceRoll2);
-      if (passedGo){
-        maintainHistory(currentPlayer.getName() + " passed Go and got $200");
-      }
-      gameState = STATE_PROCESS_LANDED_SPACE;
+      moveStepsRemaining = diceRoll1 + diceRoll2;
+      moveDelayCounter = 0;
+      gameState = STATE_MOVING;
     } 
+    else if (gameState == STATE_MOVING){
+    
+    }
     else if (gameState == STATE_PROCESS_LANDED_SPACE) {
       BoardSpace space = board[currentPlayer.getIndex()];
       maintainHistory(currentPlayer.getName() + " landed on " + space.getName());
