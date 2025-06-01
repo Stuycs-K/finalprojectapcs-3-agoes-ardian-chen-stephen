@@ -55,25 +55,28 @@ class Player{
   }
     
   
-  public void move (int moves){
+  public boolean move (int moves){
+    boolean passedGo = false;
     if (currentBoardIndex + moves >= board.length){
       changeMoney(200);
-      System.out.println("player passed go");
+      passedGo = true;
     }
     this.currentBoardIndex = (currentBoardIndex + moves) % board.length;
     this.x = board[currentBoardIndex].getX();
     this.y = board[currentBoardIndex].getY();
+    return passedGo;
   }   
   
-  public void setPos (int index){
+  public boolean setPos (int index){
+    boolean passedGo = false;
     if (currentBoardIndex > index){
        changeMoney(200);
-       System.out.println("player passed go");
+       passedGo = true;
     }
     this.currentBoardIndex = index;
     this.x = board[currentBoardIndex].getX();
     this.y = board[currentBoardIndex].getY();
-  
+    return passedGo;
   }
   
 }

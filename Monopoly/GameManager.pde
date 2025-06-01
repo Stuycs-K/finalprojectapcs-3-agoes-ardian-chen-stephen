@@ -64,7 +64,10 @@ class GameManager{
     } 
     else if (gameState == STATE_ROLLING) {
       maintainHistory(currentPlayer.getName() + " rolled a " + diceRoll1 + " and a " + diceRoll2);
-      currentPlayer.move(diceRoll1 + diceRoll2);
+      boolean passedGo = currentPlayer.move(diceRoll1 + diceRoll2);
+      if (passedGo){
+        maintainHistory(currentPlayer.getName() + " passed Go and got $200");
+      }
       gameState = STATE_PROCESS_LANDED_SPACE;
     } 
     else if (gameState == STATE_PROCESS_LANDED_SPACE) {
@@ -194,25 +197,30 @@ class GameManager{
         if (choice == 0){
           eventMessage = "go";
           currentPlayer.setPos(0);
+          maintainHistory(currentPlayer.getName() + " passed Go and got $200");
         }
         else {
           eventMessage = "irs";
           currentPlayer.changeMoney(50);
+          maintainHistory(currentPlayer.getName() + " gained $50");
         }
       }
       else if (type.equals("event")){
         if (choice == 0){
           eventMessage = "lawyer";
           currentPlayer.changeMoney(-50);
+          maintainHistory(currentPlayer.getName() + " lost $50");
         }
         else {
           eventMessage = "inherit";
           currentPlayer.changeMoney(100);
+          maintainHistory(currentPlayer.getName() + " gained $10");
         }
       }
       else {
         eventMessage = "tax";
         currentPlayer.changeMoney(-100);
+        maintainHistory(currentPlayer.getName() + " lost $100");
       }
      
       eventButton = new Button(eventMessage, 200, 200);
