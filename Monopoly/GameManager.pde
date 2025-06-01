@@ -38,7 +38,7 @@ class GameManager{
     availableProp = makeAvailProperty();
     
     for (int i = 0; i < numPlayers; i++) {
-      players[i] = new Player("Player " + (i+1), 1500, color(255, 0, 0), board);
+      players[i] = new Player("Player" + (i+1), 400, color(255, 0, 0), board);
     }
     playerIndex = 0;
     
@@ -211,11 +211,13 @@ class GameManager{
     if (space instanceof PropertySpace) {
       PropertySpace prop = (PropertySpace) space;
       if (prop.getOwned()){
-         prop.getOwner().changeMoney(prop.getRent());
-         currentPlayer.changeMoney(-prop.getRent());
-         maintainHistory(currentPlayer.getName() + " paid $" + prop.getRent() + " rent to " + prop.getOwner().getName());
+         Player propOwner = prop.getOwner();
+         int rent = prop.getRent();
+         propOwner.changeMoney(rent);
+         currentPlayer.changeMoney(-rent);
+         maintainHistory(currentPlayer.getName() + " paid $" + rent + " rent to " + propOwner.getName());
 
-         eventButton = new Button("rent", 200, 200);
+         eventButton = new Button("rent " + currentPlayer.getName() + " " + rent + " " + propOwner.getName(), 200, 200);
          eventButton.setVisibility(true);
          waitingForEvent = true;
          
