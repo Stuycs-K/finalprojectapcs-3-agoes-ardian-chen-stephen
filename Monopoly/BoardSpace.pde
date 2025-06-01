@@ -1,12 +1,12 @@
   abstract class BoardSpace {
   private String spaceName;
   private int boardIndex;
-  private float x;
-  private float y;
+  private int x;
+  private int y;
   private float widthSize;
   private float heightSize;
   
-  public BoardSpace(String name, int boardIndex, float xPos, float yPos, float w, float h){
+  public BoardSpace(String name, int boardIndex, int xPos, int yPos, float w, float h){
     this.spaceName = name;
     this.boardIndex = boardIndex;
     this.x = xPos;
@@ -23,11 +23,11 @@
     return this.boardIndex;
   }
   
-  public float getX(){
+  public int getX(){
     return this.x;
   }
   
-  public float getY(){
+  public int getY(){
     return this.y;
   }
   

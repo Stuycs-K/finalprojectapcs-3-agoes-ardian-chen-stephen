@@ -4,21 +4,25 @@ class Player{
   int currentBoardIndex;
   int x, y;
   color c;
-  ArrayList<PropertySpace> ownedProperties;
+  ArrayList<BoardSpace> ownedProperties;
+  BoardSpace[] board;
 
-  Player(String name, int money, color c){
+  Player(String name, int money, color c, BoardSpace[] board){
     this.name = name;
     this.money = money;
     this.c = c;
     currentBoardIndex = 0;
-    ownedProperties = new ArrayList<PropertySpace>();
+    ownedProperties = new ArrayList<BoardSpace>();
+    this.board = board;
+    this.x = board[currentBoardIndex].getX();
+    this.y = board[currentBoardIndex].getY();
   }
   
   public int getMoney(){
     return this.money; 
   }
   
-  public void addMoney(int amount){
+  public void changeMoney(int amount){
     this.money += amount;
   }
   
@@ -46,15 +50,37 @@ class Player{
     return new int[]{x,y};
   }
   
+<<<<<<< HEAD
   public ArrayList<PropertySpace> getProperties(){
+=======
+  public ArrayList<BoardSpace> getProperties(){
+>>>>>>> 4fba7730a7ab5ce162c368da62be319a9d11dc96
     return ownedProperties;
   }
     
   
-  public void move (int boardIndex, int newX, int newY){
-    this.currentBoardIndex = boardIndex;
-    this.x = newX;
-    this.y = newY;
-  }    
+  public boolean move (int moves){
+    boolean passedGo = false;
+    if (currentBoardIndex + moves >= board.length){
+      changeMoney(200);
+      passedGo = true;
+    }
+    this.currentBoardIndex = (currentBoardIndex + moves) % board.length;
+    this.x = board[currentBoardIndex].getX();
+    this.y = board[currentBoardIndex].getY();
+    return passedGo;
+  }   
+  
+  public boolean setPos (int index){
+    boolean passedGo = false;
+    if (currentBoardIndex > index){
+       changeMoney(200);
+       passedGo = true;
+    }
+    this.currentBoardIndex = index;
+    this.x = board[currentBoardIndex].getX();
+    this.y = board[currentBoardIndex].getY();
+    return passedGo;
+  }
   
 }

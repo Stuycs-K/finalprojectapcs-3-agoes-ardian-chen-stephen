@@ -1,30 +1,41 @@
-PropertySpace test;
-PropertySpace test2;
-Player player1;
+GameManager manager;
 
 void setup(){
-  size(800, 600);
-  float spaceX = 100;        
-  float spaceY = 100;       
-  float spaceWidth = 120;   
-  float spaceHeight = 180; 
-  test = new PropertySpace("Hello", 1, "Greetings", spaceX, spaceY, spaceWidth, spaceHeight, 100, 10);
-  test2 = new PropertySpace("Hello", 1, "Greetings", spaceX + spaceWidth, spaceY, spaceWidth, spaceHeight, 100, 10);
-  println("Test Space: " + test.getName());
-  player1 = new Player("Ardian", 100, color(255, 0, 255));
-  test.setOwner(player1);
-
+  size(1000, 650);
+  manager = new GameManager(2);
 }
 
-void draw(){
-  background(205, 230, 208); 
+void draw() {
+  background(255);
+  
+  manager.update();    
+  manager.display();   
+}
 
-  if (test != null) {
-    test.draw();
-    test2.draw();
+void mousePressed() {
+  if (manager.gameState == manager.STATE_WAITING_TO_ROLL && manager.roll.isClicked() != -1) {
+    manager.rollButtonClick();
   }
-  fill(0);
-  textAlign(LEFT, TOP);
-  textSize(12);
-  text("MouseX: " + mouseX + "\nMouseY: " + mouseY, 10, 10);
+  if (manager.gameState == manager.STATE_WAITING_PURCHASE_DECISION && manager.purchase.isClicked() == 1) {
+    manager.purchaseButtonClick(true);
+  }
+  if (manager.gameState == manager.STATE_WAITING_PURCHASE_DECISION && manager.purchase.isClicked() == 0){
+    manager.purchaseButtonClick(false);
+  }
+  if (manager.notEnoughMoney.isvisible()) {
+    manager.notEnoughMoney.isClicked();
+  }
+
+  if (manager.eventButton.isvisible() && manager.eventButton.isClicked() != -1){
+    manager.eventButtonClick();
+  }
+  if (manager.gameState == manager.STATE_GAME_OVER && manager.bankruptcy.isClicked() == 1){
+    manager = new GameManager(2);
+    background(255);
+  }
+  if (manager.gameState == manager.STATE_GAME_OVER && manager.bankruptcy.isClicked() == 0){
+    exit();
+
+  }
+
 }
