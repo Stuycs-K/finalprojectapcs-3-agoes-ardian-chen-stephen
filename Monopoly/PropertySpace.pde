@@ -64,27 +64,5 @@
       }
     }
   }
-  
-  //@Override
-  /*public void onLand(Player player, GameManager GM){
-      GM.displayMessage(player.getName() + " landed on " + getName());
-      if (!getOwned()){
-        if (player.canAfford(this.price)) {
-          gameManager.offerProperty(this, player);
-        }
-        else {
-          GM.displayMessage(player.getName() + " can't afford this property..."
-          GM.endPlayerTurn();
-        }
-      }
-      else if (getOwner() != player) {
-          GM.displayMessage(getName() + " is owned by " + getOwner().getName();
-          GM.payRent(this, player, getOwner());
-      }
-      else {
-        GM.displayMessage(player.getName() + " landed on their own property";
-        GM.endPlayerTurn();
-      }
-  }*/
-  }  
+}  
         

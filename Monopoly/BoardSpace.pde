@@ -38,9 +38,7 @@
   public float getHeight(){
     return this.heightSize;
   }
-  
-  //public abstract void onLand(Player player, GameManager gameManager);
-  
+    
   public void draw(){
     stroke(0);
     fill(245, 245, 245);

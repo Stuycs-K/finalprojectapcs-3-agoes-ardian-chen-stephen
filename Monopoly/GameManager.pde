@@ -11,9 +11,9 @@ class GameManager{
   Button bankruptcy;
   Dice dice;
   ArrayList<String> historyLog;
+  
   int diceRoll1;
   int diceRoll2;
-  
   int gameState;
   boolean rolledDouble;
   boolean waitingForEvent;
@@ -28,6 +28,18 @@ class GameManager{
   final int STATE_END_TURN = 5;
   final int STATE_GAME_OVER = 99;
   
+  //board layout constant stuff
+  
+  int numPropEachSide = 3;
+  int totalBoardSpaces = (3 * numPropEachSide) + 4;
+  float cornerSize = 200.0f;
+  float propertyLongSide = 200.0f;
+  float propertyShortSide = 80.0f;  
+  float boardSideLength = (2 * cornerSize) + (numPropEachSide * propertyLongSide);
+  float boardMarginX = (1920.0f - boardSideLength) / 2.0f;
+  float boardMarginY = (1080.0f - boardSideLength) / 2.0f;
+
+  
   public GameManager(int numPlayers){
     players = new Player[numPlayers];
     board = makeTestBoard();
@@ -38,7 +50,8 @@ class GameManager{
     }
     playerIndex = 0;
     
-    //todo: figure out position of buttons
+    float uiX = boardMarginX + (2 * cornerSize) + (numPropEachSide * propertyLongSide) + 50;
+    float uiY = boardMarginY + 50;
     purchase = new Button("purchase", 100, 100);
     roll = new Button("roll", 100, 100);
     notEnoughMoney = new Button("not_enough_money", 100, 100);

@@ -4,7 +4,7 @@ class Player{
   int currentBoardIndex;
   int x, y;
   color c;
-  ArrayList<BoardSpace> ownedProperties;
+  ArrayList<PropertySpace> ownedProperties;
   BoardSpace[] board;
 
   Player(String name, int money, color c, BoardSpace[] board){
@@ -12,7 +12,7 @@ class Player{
     this.money = money;
     this.c = c;
     currentBoardIndex = 0;
-    ownedProperties = new ArrayList<BoardSpace>();
+    ownedProperties = new ArrayList<PropertySpace>();
     this.board = board;
     this.x = board[currentBoardIndex].getX();
     this.y = board[currentBoardIndex].getY();
@@ -50,11 +50,7 @@ class Player{
     return new int[]{x,y};
   }
   
-<<<<<<< HEAD
   public ArrayList<PropertySpace> getProperties(){
-=======
-  public ArrayList<BoardSpace> getProperties(){
->>>>>>> 4fba7730a7ab5ce162c368da62be319a9d11dc96
     return ownedProperties;
   }
     

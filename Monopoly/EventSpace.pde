@@ -21,15 +21,4 @@ class EventSpace extends BoardSpace {
     textAlign(CENTER, CENTER);
     text(getName(), getX() + getWidth() / 2, getY() + getHeight() * 0.35f); 
   }
-  
-  //@Override
-  /*
-  public onLand(Player player, GameManager GM) {
-    if (this.eventType.equals("GO")){
-      GM.displayMessage(player.getName() + " passed GO! Collect $200!");
-      GM.endPlayerTurn;
-    }
-  }
-  */
-  
 }
