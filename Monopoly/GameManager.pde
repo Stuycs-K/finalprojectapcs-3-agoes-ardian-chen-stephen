@@ -259,9 +259,33 @@ class GameManager{
   
   void maintainHistory(String entry){
     historyLog.add(entry);
-    if (historyLog.size() > 5){
+    if (historyLog.size() > 10){
       historyLog.remove(0);
     }
   }
+  
+  void drawHistoryLog(){
+    int x = 700;
+    int y = 360;
+    int w = 380;
+    int h = 290;
+    int lineHeight = 23;
+    rect(x, y, w, h);
+    
+    fill(0);
+    textSize(16);
+    textAlign(LEFT, TOP);
+    text("History Log", x + 10, y + 10);
+    
+    textSize(14);
+    for (int i = 0; i < historyLog.size(); i++) {
+      int lineY = y + 10 + 35 + i * lineHeight;  
+      if (lineY  < y + h - 10) {     
+      text(historyLog.get(i), x + 10, lineY);
+    }
+  }
+
+  }
+  
   
 }
