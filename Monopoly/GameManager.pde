@@ -74,7 +74,10 @@ class GameManager{
     } 
     else if (gameState == STATE_MOVING){
       if (moveDelayCounter <= 0){
-        currentPlayer.moveOneStep();
+        boolean passedGo = currentPlayer.moveOneStep();
+        if (passedGo){
+          maintainHistory(currentPlayer.getName() + " passed go and collected $200");
+        }
         moveStepsRemaining--;
         
         moveDelayCounter = MOVE_DELAY_FRAMES;
