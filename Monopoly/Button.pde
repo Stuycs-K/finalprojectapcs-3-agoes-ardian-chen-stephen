@@ -80,6 +80,30 @@ public void displayButton(){
       textAlign(CENTER, CENTER);
       text("Okay", button1X + buttonW / 2, buttonY + buttonH / 2);
     }
+    else if (type.equals("bankruptcy")){
+     w = 230; 
+    h = 150;
+    
+    fill(139, 0, 0);
+    rect(xPos, yPos, w, h);
+    fill(0);
+    textSize(20);
+    text("Game Over", xPos + 5, yPos + 30);
+    text("Do you want to play again?", xPos + 5, yPos + 50);
+    
+    fill(255);
+    button1X = xPos + 10;
+    button2X = xPos + 150;
+    buttonY = yPos + 80;
+    buttonW = 50;
+    buttonH = 50;
+    textAlign(LEFT, BASELINE);
+    rect(button1X, buttonY, buttonW, buttonH);
+    rect(button2X, buttonY, buttonW, buttonH);
+    fill(0);
+    text("Yes", button1X + 5, buttonY + 20);
+    text("No", button2X + 5, buttonY + 20);
+    }
     else{
       String message = "";
       String eventType = "";

@@ -20,15 +20,18 @@ void mousePressed() {
   if (manager.gameState == manager.STATE_WAITING_PURCHASE_DECISION && manager.purchase.isClicked() == 1) {
     manager.purchaseButtonClick(true);
   }
-  else if (manager.gameState == manager.STATE_WAITING_PURCHASE_DECISION && manager.purchase.isClicked() == 0){
+  if (manager.gameState == manager.STATE_WAITING_PURCHASE_DECISION && manager.purchase.isClicked() == 0){
     manager.purchaseButtonClick(false);
   }
-  
+  if (manager.gameState == manager.STATE_GAME_OVER && manager.bankruptcy.isClicked() == 1){
+    manager = new GameManager(2);
+  }
   if (manager.notEnoughMoney.isvisible()) {
     manager.notEnoughMoney.isClicked();
   }
-  if (manager.eventButton.isvisible()){
-    manager.eventButton.isClicked();
+
+  if (manager.eventButton.isvisible() && manager.eventButton.isClicked() != -1){
+    manager.eventButtonClick();
   }
 
 }

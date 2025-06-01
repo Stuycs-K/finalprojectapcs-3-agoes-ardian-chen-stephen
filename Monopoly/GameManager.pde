@@ -8,12 +8,16 @@ class GameManager{
   Button roll;
   Button notEnoughMoney;
   Button eventButton;
+  Button bankruptcy;
   Dice dice;
   String message;
   int diceRoll;
   
   int gameState;
   boolean rolledDouble;
+  boolean waitingForEvent;
+
+  boolean gameOver;
   
   final int STATE_WAITING_TO_ROLL = 0;
   final int STATE_ROLLING = 1;
@@ -21,6 +25,7 @@ class GameManager{
   final int STATE_PROCESS_LANDED_SPACE = 3;
   final int STATE_WAITING_PURCHASE_DECISION = 4;
   final int STATE_END_TURN = 5;
+  final int STATE_GAME_OVER = 99;
   
   public GameManager(int numPlayers){
     players = new Player[numPlayers];
@@ -37,13 +42,19 @@ class GameManager{
     roll = new Button("roll", 100, 100);
     notEnoughMoney = new Button("not_enough_money", 100, 100);
     eventButton = new Button("go", 100, 100);
+    bankruptcy = new Button("bankruptcy", 100, 100);
     dice = new Dice();
     
     message = "";
     rolledDouble = false;
+    waitingForEvent = false;
   }
   
   void update(){
+    if (gameOver || waitingForEvent){
+      return; 
+    }
+    
     currentPlayer = players[playerIndex];
     
     if (gameState == STATE_WAITING_TO_ROLL) {
@@ -151,6 +162,9 @@ class GameManager{
     if (eventButton.isvisible()) {
       eventButton.displayButton();
     }
+    if (bankruptcy.isvisible()){
+      bankruptcy.displayButton();
+    }
   }
   
   void drawBoard(){
@@ -163,9 +177,7 @@ class GameManager{
       if (prop.getOwned()){
          prop.getOwner().changeMoney(prop.getRent());
          currentPlayer.changeMoney(-prop.getRent());
-         if (currentPlayer.getMoney() < 0){
-           //bankrupt end
-         }
+         checkBankruptcy();
          return false;
       }
       return true;
@@ -203,8 +215,21 @@ class GameManager{
      
       eventButton = new Button(eventMessage, 200, 200);
       eventButton.setVisibility(true);
+      waitingForEvent = true;
+
       return false;
     }
+  }
+  
+  void eventButtonClick() {
+    eventButton.setVisibility(false);
+    if (currentPlayer.getMoney() < 0) {
+      checkBankruptcy(); 
+    } 
+    else {
+      gameState = STATE_END_TURN;
+    }
+    waitingForEvent = false;
   }
   
   void buyProperty(PropertySpace space){
@@ -217,6 +242,16 @@ class GameManager{
     }
     else{
       notEnoughMoney.setVisibility(true);
+    }
+  }
+  
+  void checkBankruptcy(){
+    if (currentPlayer.getMoney() < 0){
+      if (!eventButton.isvisible()){
+        bankruptcy.setVisibility(true);
+      }
+      gameOver = true;
+      gameState = STATE_GAME_OVER;
     }
   }
   
