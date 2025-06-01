@@ -173,7 +173,7 @@ public boolean isvisible(){
 }
 
 public int isClicked() {
-  if (type.equals("purchase")){
+  if (type.equals("purchase") || type.equals("bankruptcy")){
     if (mouseX > button1X && mouseX < button1X + buttonW && mouseY > buttonY && mouseY < buttonY + buttonH) {
       System.out.println("clicked left");
       visible = false;
