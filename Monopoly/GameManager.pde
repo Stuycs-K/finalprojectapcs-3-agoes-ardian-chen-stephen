@@ -302,7 +302,9 @@ class GameManager {
       }
       else if (type.equals("JAIL")){
         inJail = true;
-        currentPlayer.setPosition();
+        currentPlayer.setPos(jail.getBoardIndex());
+        eventMessage = "jail";
+        maintainHistory(currentPlayer.getName() + "got caught for fraud and is in jail");
       }
       else if (type.equals("chance")) {
         if (choice == 0) {

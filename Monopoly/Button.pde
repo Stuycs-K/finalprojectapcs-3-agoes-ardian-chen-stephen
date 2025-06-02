@@ -132,6 +132,10 @@ public void displayButton(){
         message = parts[1] + " payed $" + parts[2] + " to " + parts[3];
         eventType = "Pay Rent";
       }
+      else if (type.equals("jail")){
+        message = "got caught for fraud and is in jail";
+        eventType = "Jail";
+      }
       else{ 
         message = "Pay $100 in income tax to the state";
         eventType = "Tax";
