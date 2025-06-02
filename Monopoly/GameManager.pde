@@ -34,6 +34,10 @@ class GameManager {
   private float boardSideLength = (2 * cornerSize) + (numPropEachSide * propertySide);
   private float boardStartX = 100.0f;
   private float boardStartY = 100.0f;
+  
+  private int moveDelayCounter;
+  private int moveStepsRemaining;
+  public final int MOVE_DELAY_FRAMES = 10;
 
   public GameManager(int numPlayers) {
     players = new Player[numPlayers];
@@ -74,12 +78,27 @@ class GameManager {
       purchase.setVisibility(false);
     }} else if (gameState == STATE_ROLLING) {
       maintainHistory(currentPlayer.getName() + " rolled a " + diceRoll1 + " and a " + diceRoll2);
-      boolean passedGo = currentPlayer.move(diceRoll1 + diceRoll2);
-      if (passedGo) {
-        maintainHistory(currentPlayer.getName() + " passed Go and got $50");
+      moveStepsRemaining = diceRoll1 + diceRoll2;
+      gameState = STATE_MOVING;
+    } 
+     else if (gameState == STATE_MOVING){
+      if (moveDelayCounter <= 0){
+        boolean passedGo = currentPlayer.moveOneStep();
+        if (passedGo){
+          maintainHistory(currentPlayer.getName() + " passed go and collected $50");
+        }
+        moveStepsRemaining--;
+        
+        moveDelayCounter = MOVE_DELAY_FRAMES;
       }
-      gameState = STATE_PROCESS_LANDED_SPACE;
-    } else if (gameState == STATE_PROCESS_LANDED_SPACE) {
+      else{
+        moveDelayCounter--;
+      }
+      if (moveStepsRemaining == 0){
+        gameState = STATE_PROCESS_LANDED_SPACE;
+      }
+    }
+     else if (gameState == STATE_PROCESS_LANDED_SPACE) {
       BoardSpace space = board[currentPlayer.getIndex()];
       maintainHistory(currentPlayer.getName() + " landed on " + space.getName());
       boolean canPurchase = handleLanding(space);
