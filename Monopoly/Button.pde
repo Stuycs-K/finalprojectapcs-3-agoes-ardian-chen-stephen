@@ -82,7 +82,7 @@ class Button{
     }
     
     else if (type.equals("bankruptcy")){
-      w = 400; 
+      w = 300; 
       h = 150;
       
       fill(139, 0, 0);
