@@ -71,7 +71,7 @@ class Player{
   public boolean setPos (int index){
     boolean passedGo = false;
     if (currentBoardIndex > index){
-       changeMoney(200);
+       changeMoney(50);
        passedGo = true;
     }
     this.currentBoardIndex = index;

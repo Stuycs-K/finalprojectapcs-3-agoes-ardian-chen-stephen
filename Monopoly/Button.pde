@@ -109,7 +109,7 @@ public void displayButton(){
       String message = "";
       String eventType = "";
       if (type.equals("go")){
-        message = "Move to GO and collect $200";
+        message = "Move to GO and collect $50";
         eventType = "Chance Card";
       }
       else if (type.equals("irs")){ 
