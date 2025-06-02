@@ -1,4 +1,4 @@
-GameManager manager;
+private GameManager manager;
 
 void setup(){
   size(1280, 720);
