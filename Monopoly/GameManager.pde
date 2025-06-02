@@ -52,11 +52,11 @@ class GameManager{
     
     float uiX = boardMarginX + (2 * cornerSize) + (numPropEachSide * propertyLongSide) + 50;
     float uiY = boardMarginY + 50;
-    purchase = new Button("purchase", 100, 100);
-    roll = new Button("roll", 100, 100);
-    notEnoughMoney = new Button("not_enough_money", 100, 100);
-    eventButton = new Button("go", 100, 100);
-    bankruptcy = new Button("bankruptcy", 100, 100);
+    roll = new Button("roll", uiPanelX, uiPanelY); // Example position for roll button
+    purchase = new Button("purchase", width/2.0f - 105, height/2.0f - 75); // Centered pop-up
+    notEnoughMoney = new Button("not_enough_money", width/2.0f - 165, height/2.0f - 50);
+    eventButton = new Button("go", width/2.0f - 165, height/2.0f - 70); // Default type
+    bankruptcy = new Button("bankruptcy", width/2.0f - 115, height/2.0f - 75);
     dice = new Dice();
     
     historyLog = new ArrayList<String>();
