@@ -27,3 +27,6 @@ Stephen and I merged all of our classes into main, started working on drawing th
 
 ### 2024-05-30 - Coding
 Continued testing drawing boardspaces, able to show name and price of property, created two spaces, added indicator for owner
+
+### 2024-06-1 - Coding
+Completed the board and completed MVP logic, using Stephen's work.
