@@ -20,6 +20,10 @@ class GameManager{
 
   boolean gameOver;
   
+  int moveStepsRemaining;
+  int moveDelayCounter;
+  final int MOVE_DELAY_FRAMES = 10;
+  
   final int STATE_WAITING_TO_ROLL = 0;
   final int STATE_ROLLING = 1;
   final int STATE_MOVING = 2;
@@ -34,7 +38,7 @@ class GameManager{
     availableProp = makeAvailProperty();
     
     for (int i = 0; i < numPlayers; i++) {
-      players[i] = new Player("Player " + (i+1), 50, color(255, 0, 0), board);
+      players[i] = new Player("Player" + (i+1), 400, color(255, 0, 0), board);
     }
     playerIndex = 0;
     
@@ -64,12 +68,27 @@ class GameManager{
     } 
     else if (gameState == STATE_ROLLING) {
       maintainHistory(currentPlayer.getName() + " rolled a " + diceRoll1 + " and a " + diceRoll2);
-      boolean passedGo = currentPlayer.move(diceRoll1 + diceRoll2);
-      if (passedGo){
-        maintainHistory(currentPlayer.getName() + " passed Go and got $200");
-      }
-      gameState = STATE_PROCESS_LANDED_SPACE;
+      moveStepsRemaining = diceRoll1 + diceRoll2;
+      moveDelayCounter = 0;
+      gameState = STATE_MOVING;
     } 
+    else if (gameState == STATE_MOVING){
+      if (moveDelayCounter <= 0){
+        boolean passedGo = currentPlayer.moveOneStep();
+        if (passedGo){
+          maintainHistory(currentPlayer.getName() + " passed go and collected $200");
+        }
+        moveStepsRemaining--;
+        
+        moveDelayCounter = MOVE_DELAY_FRAMES;
+      }
+      else{
+        moveDelayCounter--;
+      }
+      if (moveStepsRemaining == 0){
+        gameState = STATE_PROCESS_LANDED_SPACE;
+      }
+    }
     else if (gameState == STATE_PROCESS_LANDED_SPACE) {
       BoardSpace space = board[currentPlayer.getIndex()];
       maintainHistory(currentPlayer.getName() + " landed on " + space.getName());
@@ -97,27 +116,28 @@ class GameManager{
   }
   
   BoardSpace[] makeTestBoard() {
+    //filler code
     return new BoardSpace[] {
-      new PropertySpace("Prop1",0, "blue", 10, 10, 10, 10, 100, 100),
-      new EventSpace("Event1", 1, "go", 10, 10, 10, 10),
-      new PropertySpace("Prop2",2, "blue", 10, 10, 10, 10, 100, 100),
-      new EventSpace("Event2", 3, "lawyer", 10, 10, 10, 10),
-      new PropertySpace("Prop3",4, "blue", 10, 10, 10, 10, 100, 100),
-      new PropertySpace("Prop4",5, "blue", 10, 10, 10, 10, 100, 100),
-      new EventSpace("Event3", 6, "inherit", 10, 10, 10, 10),
-      new PropertySpace("Prop5",7, "blue", 10, 10, 10, 10, 100, 100),
-      new EventSpace("Event4", 8, "tax", 10, 10, 10, 10),
-      new PropertySpace("Prop6",9, "blue", 10, 10, 10, 10, 100, 100),
-      new PropertySpace("Prop7",10, "blue", 10, 10, 10, 10, 100, 100),
-      new EventSpace("Event5", 11, "irs", 10, 10, 10, 10),
-      new PropertySpace("Prop8",12, "blue", 10, 10, 10, 10, 100, 100),
-      new EventSpace("Event6", 13, "go", 10, 10, 10, 10),
-      new PropertySpace("Prop9",14, "blue", 10, 10, 10, 10, 100, 100),
-      new PropertySpace("Prop10",15, "blue", 10, 10, 10, 10, 100, 100),
-      new EventSpace("Event7", 16, "irs", 10, 10, 10, 10),
-      new PropertySpace("Prop11",17, "blue", 10, 10, 10, 10, 100, 100),
-      new EventSpace("Event8", 18, "lawyer", 10, 10, 10, 10),
-      new PropertySpace("Prop12",19, "blue", 10, 10, 10, 10, 100, 100),
+      new PropertySpace("Prop1",0, "blue", 0, 10, 50, 50, 100, 100),
+      new EventSpace("Event1", 1, "go", 50, 10,  50, 50),
+      new PropertySpace("Prop2",2, "blue",100, 10,  50, 50, 100, 100),
+      new EventSpace("Event2", 3, "lawyer", 150, 10,  50, 50),
+      new PropertySpace("Prop3",4, "blue", 200, 10,  50, 50, 100, 100),
+      new PropertySpace("Prop4",5, "blue", 250, 10,  50, 50, 100, 100),
+      new EventSpace("Event3", 6, "inherit",300, 10,  50, 50),
+      new PropertySpace("Prop5",7, "blue", 350, 10,  50, 50, 100, 100),
+      new EventSpace("Event4", 8, "tax", 400, 10,  50, 50),
+      new PropertySpace("Prop6",9, "blue", 450, 10,  50, 50, 100, 100),
+      new PropertySpace("Prop7",10, "blue", 500, 10,  50, 50, 100, 100),
+      new EventSpace("Event5", 11, "irs", 550, 10,  50, 50),
+      new PropertySpace("Prop8",12, "blue", 600, 10,  50, 50, 100, 100),
+      new EventSpace("Event6", 13, "go", 650, 10,  50, 50),
+      new PropertySpace("Prop9",14, "blue", 700, 10,  50, 50, 100, 100),
+      new PropertySpace("Prop10",15, "blue", 750, 10,  50, 50, 100, 100),
+      new EventSpace("Event7", 16, "irs", 800, 10,  50, 50),
+      new PropertySpace("Prop11",17, "blue", 850, 10, 50, 50, 100, 100),
+      new EventSpace("Event8", 18, "lawyer", 900, 10, 50, 50),
+      new PropertySpace("Prop12",19, "blue", 950, 10,  50, 50, 100, 100),
     };
   }
   
@@ -169,20 +189,42 @@ class GameManager{
     }
     
     drawHistoryLog();
+    drawBoard();
   }
   
   void drawBoard(){
-  
+    for (BoardSpace space : board){
+      int x = space.getX();
+      int y = space.getY();
+      
+      fill(255);
+      rect(x, y, 50, 50);
+      
+    }
+    
+    for (int i = 0; i < players.length; i++) {
+    Player p = players[i];
+    int px = board[p.getIndex()].getX() + 15 + i * 15;
+    int py = board[p.getIndex()].getY() + 15;
+    fill(p.getColor());
+    ellipse(px, py, 12, 12);
+  }
   }
   
   boolean handleLanding(BoardSpace space){
     if (space instanceof PropertySpace) {
       PropertySpace prop = (PropertySpace) space;
       if (prop.getOwned()){
-         prop.getOwner().changeMoney(prop.getRent());
-         currentPlayer.changeMoney(-prop.getRent());
-         maintainHistory(currentPlayer.getName() + " paid $" + prop.getRent() + " rent to " + prop.getOwner().getName());
-         checkBankruptcy();
+         Player propOwner = prop.getOwner();
+         int rent = prop.getRent();
+         propOwner.changeMoney(rent);
+         currentPlayer.changeMoney(-rent);
+         maintainHistory(currentPlayer.getName() + " paid $" + rent + " rent to " + propOwner.getName());
+
+         eventButton = new Button("rent " + currentPlayer.getName() + " " + rent + " " + propOwner.getName(), 200, 200);
+         eventButton.setVisibility(true);
+         waitingForEvent = true;
+         
          return false;
       }
       return true;
