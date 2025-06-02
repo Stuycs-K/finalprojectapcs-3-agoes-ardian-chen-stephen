@@ -58,7 +58,7 @@ class Player{
   public boolean move(int stepsToMove){
     boolean passedGo = false;
     if (currentBoardIndex + stepsToMove >= board.length){
-      changeMoney(50);
+      changeMoney(100);
       passedGo = true;
     }
     this.currentBoardIndex = (currentBoardIndex + stepsToMove) % board.length;
@@ -69,7 +69,7 @@ class Player{
    public boolean moveOneStep(){
     boolean passedGo = false;
     if (currentBoardIndex + 1 >= board.length){
-      changeMoney(50);
+      changeMoney(100);
       passedGo = true;
     }
     this.currentBoardIndex = (currentBoardIndex + 1) % board.length;
@@ -80,7 +80,7 @@ class Player{
   public boolean setPos (int index){
     boolean passedGo = false;
     if (currentBoardIndex > index){
-       changeMoney(50);
+       changeMoney(100);
        passedGo = true;
     }
     this.currentBoardIndex = index;
@@ -95,11 +95,13 @@ class Player{
   }
   
   public void draw(){
-    fill(this.c);    
-    noStroke();     
-    ellipseMode(CENTER); 
-    float tokenSize = 30;
-    ellipse(this.x, this.y, tokenSize, tokenSize); 
+     fill(this.c);    
+     noStroke();     
+     ellipseMode(CENTER); 
+     float tokenSize = 30;
+     stroke(0);
+     ellipse(this.x, this.y, tokenSize, tokenSize); 
+     noStroke();
      fill(0); 
      textAlign(CENTER, CENTER);
      textSize(tokenSize * 0.5f);
