@@ -2,9 +2,7 @@ class Dice{
   int die1, die2;
   
   
-  Dice(){
-  
-  }
+  Dice(){}
   
   void roll(){
     die1 = (int) (Math.random() * 6) + 1;

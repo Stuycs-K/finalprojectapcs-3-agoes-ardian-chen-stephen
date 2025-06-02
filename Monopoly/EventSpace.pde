@@ -19,6 +19,6 @@ class EventSpace extends BoardSpace {
     stroke(0);
     fill(0);
     textAlign(CENTER, CENTER);
-    text(getName(), getX() + getWidth() / 2, getY() + getHeight() * 0.35f); 
+    text(getName(), getX() + getWidth() / 2, getY() + getHeight() * 0.35f - 15f); 
   }
 }

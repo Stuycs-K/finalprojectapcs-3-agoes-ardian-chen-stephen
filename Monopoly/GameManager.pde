@@ -17,7 +17,6 @@ class GameManager{
   int gameState;
   boolean rolledDouble;
   boolean waitingForEvent;
-
   boolean gameOver;
   
   final int STATE_WAITING_TO_ROLL = 0;
@@ -27,9 +26,7 @@ class GameManager{
   final int STATE_WAITING_PURCHASE_DECISION = 4;
   final int STATE_END_TURN = 5;
   final int STATE_GAME_OVER = 99;
-  
-  //board layout constant stuff
-  
+    
   int numPropEachSide = 3;
   int totalBoardSpaces = (4 * numPropEachSide) + 4;
   float cornerSize = 100.0f;
@@ -39,22 +36,22 @@ class GameManager{
   float boardStartX = 100.0f;
   float boardStartY = 100.0f;
 
-  
   public GameManager(int numPlayers){
     players = new Player[numPlayers];
     board = makeTestBoard();
     availableProp = makeAvailProperty();
     
     for (int i = 0; i < numPlayers; i++) {
-      players[i] = new Player("Player " + (i+1), 50, color(255, 0, 0), board);
+      color[] colors = {color(255, 0, 0), color(0, 255, 0)};
+      players[i] = new Player("Player " + (i+1), 500, colors[i], board);
     }
     playerIndex = 0;
    
-    purchase = new Button("purchase", width - 100, 100);
-    roll = new Button("roll", width - 100, 100);
-    notEnoughMoney = new Button("not_enough_money", width - 100, 100);
-    eventButton = new Button("go", width - 100, 100);
-    bankruptcy = new Button("bankruptcy", width - 100, 100);
+    purchase = new Button("purchase", (boardSideLength + boardStartX) / 2 - 60, (boardSideLength + boardStartY) / 2);
+    roll = new Button("roll",(boardSideLength + boardStartX) / 2, (boardSideLength + boardStartY) / 2);
+    notEnoughMoney = new Button("not_enough_money", width - 300, 100);
+    eventButton = new Button("go", width - 300, 100);
+    bankruptcy = new Button("bankruptcy", width - 300, 100);
     dice = new Dice();
     
     historyLog = new ArrayList<String>();
@@ -66,9 +63,7 @@ class GameManager{
     if (gameOver || waitingForEvent){
       return; 
     }
-    
     currentPlayer = players[playerIndex];
-    
     if (gameState == STATE_WAITING_TO_ROLL) {
       roll.setVisibility(true);
       purchase.setVisibility(false);
@@ -165,12 +160,12 @@ class GameManager{
   }
   
   void rollButtonClick() {
-      dice.roll();
-      diceRoll1 = dice.getDice1();
-      diceRoll2 = dice.getDice2();
-      rolledDouble = dice.isDouble();
-      roll.setVisibility(false);
-      gameState = STATE_ROLLING; 
+    dice.roll();
+    diceRoll1 = dice.getDice1();
+    diceRoll2 = dice.getDice2();
+    rolledDouble = dice.isDouble();
+    roll.setVisibility(false);
+    gameState = STATE_ROLLING; 
   }
   
   void purchaseButtonClick(boolean purchase) {
@@ -200,9 +195,15 @@ class GameManager{
     if (bankruptcy.isvisible()){
       bankruptcy.displayButton();
     }
- 
     drawHistoryLog();
     drawBoard();
+    if (players != null) {
+      for (Player p : players) {
+        if (p != null) {
+          p.draw(); 
+        }
+      }
+    }
   }
   
   void drawBoard(){
@@ -229,7 +230,7 @@ class GameManager{
     }
     else{
       EventSpace event = (EventSpace) space;
-      
+   
       int choice = (int) (Math.random() * 2);
       String type = event.getType();
       String eventMessage = ""; 
@@ -332,10 +333,7 @@ class GameManager{
       int lineY = y + 10 + 35 + i * lineHeight;  
       if (lineY  < y + h - 10) {     
       text(historyLog.get(i), x + 10, lineY);
+      }
     }
   }
-
-  }
-  
-  
 }

@@ -23,20 +23,19 @@ public void displayButton(){
   int h = 0;
   
   if (type.equals("purchase")){
-    w = 210; 
-    h = 150;
+    w = 220; 
+    h = 80;
     
     fill(100, 0, 0);
     rect(xPos, yPos, w, h);
     fill(0);
     textSize(20);
-    text("Would you like to", xPos + 5, yPos + 30);
-    text("purchase this property?", xPos + 5, yPos + 50);
-    
+    text("Would you like to", xPos + 110, yPos + 30);
+    text("purchase this property?", xPos + 110, yPos + 50);
     fill(255);
-    button1X = xPos + 10;
-    button2X = xPos + 150;
-    buttonY = yPos + 80;
+    button1X = xPos;
+    button2X = xPos + 170;
+    buttonY = yPos + 90;
     buttonW = 50;
     buttonH = 50;
     textAlign(LEFT, BASELINE);
@@ -46,6 +45,7 @@ public void displayButton(){
     text("Yes", button1X + 5, buttonY + 20);
     text("No", button2X + 5, buttonY + 20);
   }
+  
   else if (type.equals("roll")) {
     button1X = xPos;
     buttonY = yPos;
@@ -59,6 +59,7 @@ public void displayButton(){
     textSize(16);
     text("Roll Dice", button1X + buttonW/2, buttonY + buttonH/2);
   }
+  
    else if (type.equals("not_enough_money")) {
       w = 330;
       h = 100;
@@ -80,29 +81,30 @@ public void displayButton(){
       textAlign(CENTER, CENTER);
       text("Okay", button1X + buttonW / 2, buttonY + buttonH / 2);
     }
+    
     else if (type.equals("bankruptcy")){
-     w = 230; 
-    h = 150;
-    
-    fill(139, 0, 0);
-    rect(xPos, yPos, w, h);
-    fill(0);
-    textSize(20);
-    text("Game Over", xPos + 5, yPos + 30);
-    text("Do you want to play again?", xPos + 5, yPos + 50);
-    
-    fill(255);
-    button1X = xPos + 10;
-    button2X = xPos + 150;
-    buttonY = yPos + 80;
-    buttonW = 50;
-    buttonH = 50;
-    textAlign(LEFT, BASELINE);
-    rect(button1X, buttonY, buttonW, buttonH);
-    rect(button2X, buttonY, buttonW, buttonH);
-    fill(0);
-    text("Yes", button1X + 5, buttonY + 20);
-    text("No", button2X + 5, buttonY + 20);
+      w = 230; 
+      h = 150;
+      
+      fill(139, 0, 0);
+      rect(xPos, yPos, w, h);
+      fill(0);
+      textSize(20);
+      text("Game Over", xPos + 5, yPos + 30);
+      text("Do you want to play again?", xPos + 5, yPos + 50);
+      
+      fill(255);
+      button1X = xPos + 10;
+      button2X = xPos + 150;
+      buttonY = yPos + 80;
+      buttonW = 50;
+      buttonH = 50;
+      textAlign(LEFT, BASELINE);
+      rect(button1X, buttonY, buttonW, buttonH);
+      rect(button2X, buttonY, buttonW, buttonH);
+      fill(0);
+      text("Yes", button1X + 5, buttonY + 20);
+      text("No", button2X + 5, buttonY + 20);
     }
     else{
       String message = "";
@@ -173,36 +175,34 @@ public void displayButton(){
       textAlign(CENTER, CENTER);
       text("Okay", button1X + buttonW / 2, buttonY + buttonH / 2);
     }
-}
+  }
 
-public void setVisibility(boolean status){
-  visible = status;
-}
-
-public boolean isvisible(){
-  return visible;
-}
-
-public int isClicked() {
-  if (type.equals("purchase") || type.equals("bankruptcy")){
-    if (mouseX > button1X && mouseX < button1X + buttonW && mouseY > buttonY && mouseY < buttonY + buttonH) {
-      visible = false;
-      return 1;
-    } 
-    else if (mouseX > button2X && mouseX < button2X + buttonW && mouseY > buttonY && mouseY < buttonY + buttonH) {
-      visible = false;
-      return 0;
+    public void setVisibility(boolean status){
+      visible = status;
     }
-    return -1;
-  }
-  else {
-    if (mouseX > button1X && mouseX < button1X + buttonW &&
-       mouseY > buttonY && mouseY < buttonY + buttonH) {
-        visible = false;
-        return 1;
-      }
-    return -1; 
-  }
+
+    public boolean isvisible(){
+      return visible;
+    }
   
+    public int isClicked() {
+      if (type.equals("purchase") || type.equals("bankruptcy")){
+        if (mouseX > button1X && mouseX < button1X + buttonW && mouseY > buttonY && mouseY < buttonY + buttonH) {
+          visible = false;
+          return 1;
+        } 
+      else if (mouseX > button2X && mouseX < button2X + buttonW && mouseY > buttonY && mouseY < buttonY + buttonH) {
+        visible = false;
+        return 0;
+      }
+      return -1;
+    }
+    else {
+      if (mouseX > button1X && mouseX < button1X + buttonW && mouseY > buttonY && mouseY < buttonY + buttonH) {
+          visible = false;
+          return 1;
+      }
+        return -1; 
+    }
   }
 }

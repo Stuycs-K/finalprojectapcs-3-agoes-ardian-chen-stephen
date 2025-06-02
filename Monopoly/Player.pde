@@ -14,8 +14,9 @@ class Player{
     currentBoardIndex = 0;
     ownedProperties = new ArrayList<PropertySpace>();
     this.board = board;
-    this.x = board[currentBoardIndex].getX();
-    this.y = board[currentBoardIndex].getY();
+    BoardSpace currentSpace = board[currentBoardIndex];
+    this.x = currentSpace.getX() + (int)(currentSpace.getWidth() / 2.0f);
+    this.y = currentSpace.getY() + (int)(currentSpace.getHeight() / 2.0f);
   }
   
   public int getMoney(){
@@ -55,15 +56,16 @@ class Player{
   }
     
   
-  public boolean moveOneStep (){
+  public boolean move(int stepsToMove){
     boolean passedGo = false;
-    if (currentBoardIndex + 1 >= board.length){
+    if (currentBoardIndex + stepsToMove >= board.length){
       changeMoney(200);
       passedGo = true;
     }
-    this.currentBoardIndex = (currentBoardIndex + 1) % board.length;
-    this.x = board[currentBoardIndex].getX();
-    this.y = board[currentBoardIndex].getY();
+    this.currentBoardIndex = (currentBoardIndex + stepsToMove) % board.length;
+    BoardSpace currentSpace = board[currentBoardIndex];
+    this.x = board[currentBoardIndex].getX() + (int)(currentSpace.getWidth() / 2.0f);
+    this.y = board[currentBoardIndex].getY() + (int)(currentSpace.getHeight() / 2.0f);
     return passedGo;
   }   
   
@@ -74,9 +76,31 @@ class Player{
        passedGo = true;
     }
     this.currentBoardIndex = index;
-    this.x = board[currentBoardIndex].getX();
-    this.y = board[currentBoardIndex].getY();
+    updatePosition();
     return passedGo;
   }
   
+  public void updatePosition(){
+    if (this.board != null && this.board.length > 0 && // Check board exists and has length
+      currentBoardIndex >= 0 && currentBoardIndex < this.board.length &&
+      this.board[currentBoardIndex] != null) {
+    BoardSpace currentSpace = this.board[currentBoardIndex];
+    this.x = currentSpace.getX() + (int)(currentSpace.getWidth() / 2);
+    this.y = currentSpace.getY() + (int)(currentSpace.getHeight() / 2);
+    }
+  }
+  public void draw(){
+    fill(this.c);    
+    noStroke();     
+    ellipseMode(CENTER); 
+    float tokenSize = 30;
+    ellipse(this.x, this.y, tokenSize, tokenSize); 
+     fill(0); 
+     textAlign(CENTER, CENTER);
+     textSize(tokenSize * 0.5f);
+     if (name != null && name.length() > 0) {
+       text("P" + name.substring("Player ".length()), this.x, this.y); 
+     }
+     stroke(0); 
+  }
 }
