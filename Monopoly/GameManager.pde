@@ -27,13 +27,13 @@ class GameManager {
   public final int STATE_END_TURN = 5;
   public final int STATE_GAME_OVER = 99;
 
-  private int numPropEachSide = 3;
+  private int numPropEachSide = 7;
   private int totalBoardSpaces = (4 * numPropEachSide) + 4;
-  private float cornerSize = 100.0f;
-  private float propertySide = 100.0f;
+  private float cornerSize = 95.0f;
+  private float propertySide = 95.0f;
   private float boardSideLength = (2 * cornerSize) + (numPropEachSide * propertySide);
-  private float boardStartX = 100.0f;
-  private float boardStartY = 100.0f;
+  private float boardStartX = 10.0f;
+  private float boardStartY = 10.0f;
   
   private int moveDelayCounter;
   private int moveStepsRemaining;
@@ -130,8 +130,8 @@ class GameManager {
     BoardSpace[] newBoard = new BoardSpace[totalBoardSpaces];
     int space = 0;
     float currentX, currentY;
-    currentX = 100.0f;
-    currentY = 100.0f;
+    currentX = 10.0f;
+    currentY = 10.0f;
     newBoard[space] = new EventSpace("GO", space, "GO", (int)currentX, (int)currentY, cornerSize, cornerSize);
     space++;
     currentY = boardStartY;
