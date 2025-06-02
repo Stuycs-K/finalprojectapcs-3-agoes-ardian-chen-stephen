@@ -55,11 +55,10 @@ class Player{
     return ownedProperties;
   }
     
-  
   public boolean move(int stepsToMove){
     boolean passedGo = false;
     if (currentBoardIndex + stepsToMove >= board.length){
-      changeMoney(200);
+      changeMoney(50);
       passedGo = true;
     }
     this.currentBoardIndex = (currentBoardIndex + stepsToMove) % board.length;
@@ -81,14 +80,11 @@ class Player{
   }
   
   public void updatePosition(){
-    if (this.board != null && this.board.length > 0 && // Check board exists and has length
-      currentBoardIndex >= 0 && currentBoardIndex < this.board.length &&
-      this.board[currentBoardIndex] != null) {
     BoardSpace currentSpace = this.board[currentBoardIndex];
     this.x = currentSpace.getX() + (int)(currentSpace.getWidth() / 2);
     this.y = currentSpace.getY() + (int)(currentSpace.getHeight() / 2);
-    }
   }
+  
   public void draw(){
     fill(this.c);    
     noStroke();     

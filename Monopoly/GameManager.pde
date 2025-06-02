@@ -30,9 +30,8 @@ class GameManager {
   int numPropEachSide = 3;
   int totalBoardSpaces = (4 * numPropEachSide) + 4;
   float cornerSize = 100.0f;
-  float propertyLongSide = 100.0f;
-  float propertyShortSide = 100.0f;
-  float boardSideLength = (2 * cornerSize) + (numPropEachSide * propertyLongSide);
+  float propertySide = 100.0f;
+  float boardSideLength = (2 * cornerSize) + (numPropEachSide * propertySide);
   float boardStartX = 100.0f;
   float boardStartY = 100.0f;
 
@@ -43,15 +42,15 @@ class GameManager {
 
     for (int i = 0; i < numPlayers; i++) {
       color[] colors = {color(255, 0, 0), color(0, 255, 0)};
-      players[i] = new Player("Player " + (i+1), 500, colors[i], board);
+      players[i] = new Player("Player " + (i+1), -10, colors[i], board);
     }
     playerIndex = 0;
 
     purchase = new Button("purchase", (boardSideLength + boardStartX) / 2 - 60, (boardSideLength + boardStartY) / 2);
     roll = new Button("roll", (boardSideLength + boardStartX) / 2, (boardSideLength + boardStartY) / 2);
-    notEnoughMoney = new Button("not_enough_money", width - 300, 100);
-    eventButton = new Button("go", width - 300, 100);
-    bankruptcy = new Button("bankruptcy", width - 300, 100);
+    notEnoughMoney = new Button("not_enough_money", (propertySide + boardStartX) / 2, (boardSideLength + boardStartY) / 2);
+    eventButton = new Button("go", (boardSideLength + boardStartX) / 2, (boardSideLength + boardStartY) / 2);
+    bankruptcy = new Button("bankruptcy", (boardSideLength + boardStartX) / 2, (boardSideLength + boardStartY) / 2);
     dice = new Dice();
 
     historyLog = new ArrayList<String>();
@@ -71,7 +70,7 @@ class GameManager {
       maintainHistory(currentPlayer.getName() + " rolled a " + diceRoll1 + " and a " + diceRoll2);
       boolean passedGo = currentPlayer.move(diceRoll1 + diceRoll2);
       if (passedGo) {
-        maintainHistory(currentPlayer.getName() + " passed Go and got $200");
+        maintainHistory(currentPlayer.getName() + " passed Go and got $50");
       }
       gameState = STATE_PROCESS_LANDED_SPACE;
     } else if (gameState == STATE_PROCESS_LANDED_SPACE) {
@@ -85,6 +84,12 @@ class GameManager {
         gameState = STATE_END_TURN;
       }
     } else if (gameState == STATE_END_TURN) {
+      if (!gameOver){
+        checkBankruptcy();
+      }
+      else {
+        return;
+      }
       if (rolledDouble) {
         rolledDouble = false;
         gameState = STATE_WAITING_TO_ROLL;
@@ -106,38 +111,38 @@ class GameManager {
     space++;
     currentY = boardStartY;
     for (int i = 0; i < numPropEachSide; i++) {
-      currentX = boardStartX + cornerSize + i * propertyLongSide;
-      newBoard[space] = new PropertySpace("PropertyT " + (i + 1), space, "Blue", (int)currentX, (int)currentY, propertyLongSide, propertyShortSide, 140 + i * 20, 10 + i * 2);
+      currentX = boardStartX + cornerSize + i * propertySide;
+      newBoard[space] = new PropertySpace("PropertyT " + (i + 1), space, "Blue", (int)currentX, (int)currentY, propertySide, propertySide, 140 + i * 20, 10 + i * 2);
       space++;
     }
-    currentX = boardStartX + cornerSize + (numPropEachSide * propertyLongSide);
+    currentX = boardStartX + cornerSize + (numPropEachSide * propertySide);
     currentY = boardStartY;
     newBoard[space] = new EventSpace("CHANCE", space, "chance", (int)currentX, (int)currentY, cornerSize, cornerSize);
     space++;
-    currentX = boardStartX + cornerSize + (numPropEachSide * propertyLongSide) + (cornerSize - propertyShortSide);
+    currentX = boardStartX + cornerSize + (numPropEachSide * propertySide) + (cornerSize - propertySide);
     for (int i = 0; i < numPropEachSide; i++) {
-      currentY = boardStartY + cornerSize + i * propertyLongSide;
-      newBoard[space] = new PropertySpace("PropertyR " + (i + 1), space, "Orange", (int)currentX, (int)currentY, propertyShortSide, propertyLongSide, 180 + i * 20, 14 + i * 2);
+      currentY = boardStartY + cornerSize + i * propertySide;
+      newBoard[space] = new PropertySpace("PropertyR " + (i + 1), space, "Orange", (int)currentX, (int)currentY, propertySide, propertySide, 180 + i * 20, 14 + i * 2);
       space++;
     }
-    currentX = boardStartX + cornerSize + (numPropEachSide * propertyLongSide);
-    currentY = boardStartY + cornerSize + (numPropEachSide * propertyLongSide);
+    currentX = boardStartX + cornerSize + (numPropEachSide * propertySide);
+    currentY = boardStartY + cornerSize + (numPropEachSide * propertySide);
     newBoard[space] = new EventSpace("EVENT", space, "event", (int)currentX, (int)currentY, cornerSize, cornerSize);
     space++;
-    currentY = boardStartY + cornerSize + (numPropEachSide * propertyLongSide) + (cornerSize - propertyShortSide);
+    currentY = boardStartY + cornerSize + (numPropEachSide * propertySide) + (cornerSize - propertySide);
     for (int i = 0; i < numPropEachSide; i++) {
-      currentX = boardStartX + cornerSize + (numPropEachSide - 1 - i) * propertyLongSide;
-      newBoard[space] = new PropertySpace("PropertyB " + (i + 1), space, "Brown", (int)currentX, (int)currentY, propertyLongSide, propertyShortSide, 60 + i * 20, 4 + i * 2);
+      currentX = boardStartX + cornerSize + (numPropEachSide - 1 - i) * propertySide;
+      newBoard[space] = new PropertySpace("PropertyB " + (i + 1), space, "Brown", (int)currentX, (int)currentY, propertySide, propertySide, 60 + i * 20, 4 + i * 2);
       space++;
     }
     currentX = boardStartX;
-    currentY = boardStartY + cornerSize + (numPropEachSide * propertyLongSide);
+    currentY = boardStartY + cornerSize + (numPropEachSide * propertySide);
     newBoard[space] = new EventSpace("GET TAXED", space, "tax", (int)currentX, (int)currentY, cornerSize, cornerSize);
     space++;
     currentX = boardStartX;
     for (int i = 0; i < numPropEachSide; i++) {
-      currentY = boardStartY + cornerSize + (numPropEachSide - 1 - i) * propertyLongSide;
-      newBoard[space] = new PropertySpace("PropertyL " + (i + 1), space, "LightBlue", (int)currentX, (int)currentY, propertyShortSide, propertyLongSide, 100 + i * 20, 6 + i * 2);
+      currentY = boardStartY + cornerSize + (numPropEachSide - 1 - i) * propertySide;
+      newBoard[space] = new PropertySpace("PropertyL " + (i + 1), space, "LightBlue", (int)currentX, (int)currentY, propertySide, propertySide, 100 + i * 20, 6 + i * 2);
       space++;
     }
     return newBoard;
@@ -233,7 +238,7 @@ class GameManager {
 
     fill(currentPlayer.getColor());
     noStroke();
-    ellipseMode(CENTER); // More common to center the swatch
+    ellipseMode(CENTER); 
     ellipse(width - 175, 200, 30, 30);
     stroke(0);
   }
@@ -256,13 +261,15 @@ class GameManager {
       String type = event.getType();
       String eventMessage = "";
       if (type.equals("GO")) {
-          maintainHistory(currentPlayer.getName() + " passed Go and got $200");
+          maintainHistory(currentPlayer.getName() + " passed Go and got $50");
+          gameState = STATE_END_TURN;
+          return false; 
       }
       else if (type.equals("chance")) {
         if (choice == 0) {
           eventMessage = "go";
           currentPlayer.setPos(0);
-          maintainHistory(currentPlayer.getName() + " passed Go and got $200");
+          maintainHistory(currentPlayer.getName() + " passed Go and got $50");
         } else {
           eventMessage = "irs";
           currentPlayer.changeMoney(50);
@@ -276,7 +283,7 @@ class GameManager {
         } else {
           eventMessage = "inherit";
           currentPlayer.changeMoney(100);
-          maintainHistory(currentPlayer.getName() + " gained $10");
+          maintainHistory(currentPlayer.getName() + " gained $100");
         }
       } else {
         eventMessage = "tax";
@@ -295,7 +302,6 @@ class GameManager {
   void eventButtonClick() {
     eventButton.setVisibility(false);
     if (currentPlayer.getMoney() < 0) {
-      maintainHistory(currentPlayer.getName() + " has gone bankrupt");
       checkBankruptcy();
     } else {
       gameState = STATE_END_TURN;
@@ -318,10 +324,10 @@ class GameManager {
 
   void checkBankruptcy() {
     if (currentPlayer.getMoney() < 0) {
-    maintainHistory(currentPlayer.getName() + " has gone bankrupt!");
-    gameOver = true;
-    gameState = STATE_GAME_OVER;
-    bankruptcy.setVisibility(true); 
+      maintainHistory(currentPlayer.getName() + " has gone bankrupt");
+      gameOver = true;
+      gameState = STATE_GAME_OVER;
+      bankruptcy.setVisibility(true); 
     }
   }
 
