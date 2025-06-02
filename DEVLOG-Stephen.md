@@ -24,3 +24,6 @@ This document must be updated daily every time you finish a work session.
 
 ### 2025-05-31 - Completed entire game logic 
 
+### 2025-06-02 - Working on jail system and added animation to player moving
+
+
