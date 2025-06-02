@@ -116,6 +116,7 @@ class GameManager{
   }
   
   BoardSpace[] makeTestBoard() {
+    //filler code
     return new BoardSpace[] {
       new PropertySpace("Prop1",0, "blue", 0, 10, 50, 50, 100, 100),
       new EventSpace("Event1", 1, "go", 50, 10,  50, 50),
