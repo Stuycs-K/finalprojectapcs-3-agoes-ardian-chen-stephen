@@ -18,10 +18,9 @@ Button(String type, float xPos, float yPos){
 
 public void displayButton(){
   if (!visible) return; 
-
   int w = 0;
   int h = 0;
-  
+ 
   if (type.equals("purchase")){
     w = 220; 
     h = 80;
@@ -67,7 +66,7 @@ public void displayButton(){
       fill(180);
       rect(xPos, yPos, w, h);
       fill(0);
-      textSize(16);
+      textSize(14);
       textAlign(LEFT, BASELINE);
       text("You don't have enough money for this property", xPos + 10, yPos + 30);
 
@@ -83,19 +82,19 @@ public void displayButton(){
     }
     
     else if (type.equals("bankruptcy")){
-      w = 230; 
+      w = 400; 
       h = 150;
       
       fill(139, 0, 0);
       rect(xPos, yPos, w, h);
       fill(0);
       textSize(20);
-      text("Game Over", xPos + 5, yPos + 30);
-      text("Do you want to play again?", xPos + 5, yPos + 50);
+      text("Game Over", xPos + 150, yPos + 30);
+      text("Do you want to play again?", xPos + 150, yPos + 50);
       
       fill(255);
-      button1X = xPos + 10;
-      button2X = xPos + 150;
+      button1X = xPos + 30;
+      button2X = xPos + 210;
       buttonY = yPos + 80;
       buttonW = 50;
       buttonH = 50;

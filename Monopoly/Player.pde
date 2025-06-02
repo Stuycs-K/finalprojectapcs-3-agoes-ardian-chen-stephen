@@ -79,7 +79,7 @@ class Player{
     return passedGo;
   }
   
-  public void updatePosition(){
+  private void updatePosition(){
     BoardSpace currentSpace = this.board[currentBoardIndex];
     this.x = currentSpace.getX() + (int)(currentSpace.getWidth() / 2);
     this.y = currentSpace.getY() + (int)(currentSpace.getHeight() / 2);

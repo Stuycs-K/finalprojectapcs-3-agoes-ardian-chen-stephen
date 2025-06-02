@@ -12,6 +12,13 @@ void draw() {
 }
 
 void mousePressed() {
+  if (manager.gameState == manager.STATE_GAME_OVER && manager.bankruptcy.isClicked() == 1){
+    manager = new GameManager(2);
+    background(255);
+  }
+  if (manager.gameState == manager.STATE_GAME_OVER && manager.bankruptcy.isClicked() == 0){
+    exit();
+  }
   if (manager.gameState == manager.STATE_WAITING_TO_ROLL && manager.roll.isClicked() != -1) {
     manager.rollButtonClick();
   }
@@ -26,12 +33,5 @@ void mousePressed() {
   }
   if (manager.eventButton.isvisible() && manager.eventButton.isClicked() != -1){
     manager.eventButtonClick();
-  }
-  if (manager.gameState == manager.STATE_GAME_OVER && manager.bankruptcy.isClicked() == 1){
-    manager = new GameManager(2);
-    background(255);
-  }
-  if (manager.gameState == manager.STATE_GAME_OVER && manager.bankruptcy.isClicked() == 0){
-    exit();
   }
 }

@@ -1,5 +1,5 @@
 class Dice{
-  int die1, die2;
+ private int die1, die2;
   
   
   Dice(){}

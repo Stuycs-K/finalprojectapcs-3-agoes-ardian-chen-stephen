@@ -1,39 +1,39 @@
 class GameManager {
-  Player[] players;
-  Player currentPlayer;
-  int playerIndex;
-  BoardSpace[] board;
-  ArrayList<PropertySpace> availableProp;
-  Button purchase;
-  Button roll;
-  Button notEnoughMoney;
-  Button eventButton;
-  Button bankruptcy;
-  Dice dice;
-  ArrayList<String> historyLog;
+  private Player[] players;
+  private Player currentPlayer;
+  private int playerIndex;
+  private BoardSpace[] board;
+  private ArrayList<PropertySpace> availableProp;
+  private Button purchase;
+  private Button roll;
+  private Button notEnoughMoney;
+  private Button eventButton;
+  private Button bankruptcy;
+  private Dice dice;
+  private ArrayList<String> historyLog;
 
-  int diceRoll1;
-  int diceRoll2;
-  int gameState;
-  boolean rolledDouble;
-  boolean waitingForEvent;
-  boolean gameOver;
+  private int diceRoll1;
+  private int diceRoll2;
+  private int gameState;
+  private boolean rolledDouble;
+  private boolean waitingForEvent;
+  private boolean gameOver;
 
-  final int STATE_WAITING_TO_ROLL = 0;
-  final int STATE_ROLLING = 1;
-  final int STATE_MOVING = 2;
-  final int STATE_PROCESS_LANDED_SPACE = 3;
-  final int STATE_WAITING_PURCHASE_DECISION = 4;
-  final int STATE_END_TURN = 5;
-  final int STATE_GAME_OVER = 99;
+  public final int STATE_WAITING_TO_ROLL = 0;
+  public final int STATE_ROLLING = 1;
+  public final int STATE_MOVING = 2;
+  public final int STATE_PROCESS_LANDED_SPACE = 3;
+  public final int STATE_WAITING_PURCHASE_DECISION = 4;
+  public final int STATE_END_TURN = 5;
+  public final int STATE_GAME_OVER = 99;
 
-  int numPropEachSide = 3;
-  int totalBoardSpaces = (4 * numPropEachSide) + 4;
-  float cornerSize = 100.0f;
-  float propertySide = 100.0f;
-  float boardSideLength = (2 * cornerSize) + (numPropEachSide * propertySide);
-  float boardStartX = 100.0f;
-  float boardStartY = 100.0f;
+  private int numPropEachSide = 3;
+  private int totalBoardSpaces = (4 * numPropEachSide) + 4;
+  private float cornerSize = 100.0f;
+  private float propertySide = 100.0f;
+  private float boardSideLength = (2 * cornerSize) + (numPropEachSide * propertySide);
+  private float boardStartX = 100.0f;
+  private float boardStartY = 100.0f;
 
   public GameManager(int numPlayers) {
     players = new Player[numPlayers];
@@ -42,15 +42,15 @@ class GameManager {
 
     for (int i = 0; i < numPlayers; i++) {
       color[] colors = {color(255, 0, 0), color(0, 255, 0)};
-      players[i] = new Player("Player " + (i+1), -10, colors[i], board);
+      players[i] = new Player("Player " + (i+1), 300, colors[i], board);
     }
     playerIndex = 0;
 
     purchase = new Button("purchase", (boardSideLength + boardStartX) / 2 - 60, (boardSideLength + boardStartY) / 2);
     roll = new Button("roll", (boardSideLength + boardStartX) / 2, (boardSideLength + boardStartY) / 2);
-    notEnoughMoney = new Button("not_enough_money", (propertySide + boardStartX) / 2, (boardSideLength + boardStartY) / 2);
-    eventButton = new Button("go", (boardSideLength + boardStartX) / 2, (boardSideLength + boardStartY) / 2);
-    bankruptcy = new Button("bankruptcy", (boardSideLength + boardStartX) / 2, (boardSideLength + boardStartY) / 2);
+    notEnoughMoney = new Button("not_enough_money", propertySide + boardStartX, propertySide + boardStartY + 30);
+    eventButton = new Button("go", propertySide + boardStartX, propertySide + boardStartY + 30);
+    bankruptcy = new Button("bankruptcy", propertySide + boardStartX, propertySide + boardStartY + 30);
     dice = new Dice();
 
     historyLog = new ArrayList<String>();
@@ -58,15 +58,21 @@ class GameManager {
     waitingForEvent = false;
   }
 
-  void update() {
+  private void update() {
     if (gameOver || waitingForEvent) {
       return;
     }
     currentPlayer = players[playerIndex];
     if (gameState == STATE_WAITING_TO_ROLL) {
+      if (!purchase.isvisible() &&
+        !notEnoughMoney.isvisible() &&
+        !eventButton.isvisible() &&
+        !bankruptcy.isvisible()) {
       roll.setVisibility(true);
+      } else {
+      roll.setVisibility(false);
       purchase.setVisibility(false);
-    } else if (gameState == STATE_ROLLING) {
+    }} else if (gameState == STATE_ROLLING) {
       maintainHistory(currentPlayer.getName() + " rolled a " + diceRoll1 + " and a " + diceRoll2);
       boolean passedGo = currentPlayer.move(diceRoll1 + diceRoll2);
       if (passedGo) {
@@ -101,7 +107,7 @@ class GameManager {
     }
   }
 
-  BoardSpace[] makeTestBoard() {
+  private BoardSpace[] makeTestBoard() {
     BoardSpace[] newBoard = new BoardSpace[totalBoardSpaces];
     int space = 0;
     float currentX, currentY;
@@ -148,7 +154,7 @@ class GameManager {
     return newBoard;
   }
 
-  ArrayList<PropertySpace> makeAvailProperty() {
+  private ArrayList<PropertySpace> makeAvailProperty() {
     ArrayList<PropertySpace> properties = new ArrayList<PropertySpace>();
     for (BoardSpace space : board) {
       if (space instanceof PropertySpace) {
@@ -158,7 +164,7 @@ class GameManager {
     return properties;
   }
 
-  void rollButtonClick() {
+  public void rollButtonClick() {
     dice.roll();
     diceRoll1 = dice.getDice1();
     diceRoll2 = dice.getDice2();
@@ -167,7 +173,7 @@ class GameManager {
     gameState = STATE_ROLLING;
   }
 
-  void purchaseButtonClick(boolean purchase) {
+  public void purchaseButtonClick(boolean purchase) {
     if (gameState == STATE_WAITING_PURCHASE_DECISION) {
       if (purchase) {
         buyProperty((PropertySpace) board[currentPlayer.getIndex()]);
@@ -178,7 +184,7 @@ class GameManager {
     }
   }
 
-  void display() {
+  public void display() {
     if (roll.isvisible()) {
       roll.displayButton();
     }
@@ -206,7 +212,7 @@ class GameManager {
     }
   }
 
-  void drawBoard() {
+  private void drawBoard() {
     if (board != null) {
       for (BoardSpace space : board) {
         if (space != null) {
@@ -216,7 +222,7 @@ class GameManager {
     }
   }
 
-  void playerStatus() {
+  private void playerStatus() {
     fill(230, 230, 250, 220);
     stroke(50);
     strokeWeight(1);
@@ -243,15 +249,20 @@ class GameManager {
     stroke(0);
   }
 
-  boolean handleLanding(BoardSpace space) {
+  private boolean handleLanding(BoardSpace space) {
     if (space instanceof PropertySpace) {
       PropertySpace prop = (PropertySpace) space;
       if (prop.getOwned()) {
+        if (prop.getOwner() == currentPlayer) {
+        maintainHistory(currentPlayer.getName() + " landed on their own property: " + prop.getName() + ".");
+        return false;
+      } else {
         prop.getOwner().changeMoney(prop.getRent());
         currentPlayer.changeMoney(-prop.getRent());
         maintainHistory(currentPlayer.getName() + " paid $" + prop.getRent() + " rent to " + prop.getOwner().getName());
         checkBankruptcy();
         return false;
+      }
       }
       return true;
     } else {
@@ -298,8 +309,9 @@ class GameManager {
       return false;
     }
   }
+  
 
-  void eventButtonClick() {
+  public void eventButtonClick() {
     eventButton.setVisibility(false);
     if (currentPlayer.getMoney() < 0) {
       checkBankruptcy();
@@ -309,7 +321,7 @@ class GameManager {
     waitingForEvent = false;
   }
 
-  void buyProperty(PropertySpace space) {
+  private void buyProperty(PropertySpace space) {
     int price = space.getPrice();
     if (currentPlayer.canAfford(price)) {
       maintainHistory(currentPlayer.getName() + " purchased " + space.getName());
@@ -319,10 +331,11 @@ class GameManager {
       availableProp.remove(space);
     } else {
       notEnoughMoney.setVisibility(true);
+      roll.setVisibility(false);
     }
   }
 
-  void checkBankruptcy() {
+  private void checkBankruptcy() {
     if (currentPlayer.getMoney() < 0) {
       maintainHistory(currentPlayer.getName() + " has gone bankrupt");
       gameOver = true;
@@ -331,14 +344,14 @@ class GameManager {
     }
   }
 
-  void maintainHistory(String entry) {
+  private void maintainHistory(String entry) {
     historyLog.add(entry);
     if (historyLog.size() > 10) {
       historyLog.remove(0);
     }
   }
 
-  void drawHistoryLog() {
+  private void drawHistoryLog() {
     int w = 380;
     int h = 290;
     int x = width - w - 10;
