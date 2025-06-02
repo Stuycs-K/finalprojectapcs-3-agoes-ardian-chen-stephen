@@ -55,13 +55,13 @@ class Player{
   }
     
   
-  public boolean move (int moves){
+  public boolean moveOneStep (){
     boolean passedGo = false;
-    if (currentBoardIndex + moves >= board.length){
+    if (currentBoardIndex + 1 >= board.length){
       changeMoney(200);
       passedGo = true;
     }
-    this.currentBoardIndex = (currentBoardIndex + moves) % board.length;
+    this.currentBoardIndex = (currentBoardIndex + 1) % board.length;
     this.x = board[currentBoardIndex].getX();
     this.y = board[currentBoardIndex].getY();
     return passedGo;

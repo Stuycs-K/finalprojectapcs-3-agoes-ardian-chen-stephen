@@ -123,6 +123,14 @@ public void displayButton(){
         message = "You inherit $100 from a distant relative";
         eventType = "Community Card";
       }
+      else if (type.length() > 4 && type.substring(0,4).equals("rent")){
+        String[] parts = type.split(" ");
+        for(String s: parts){
+          System.out.println(s);
+        }
+        message = parts[1] + " payed $" + parts[2] + " to " + parts[3];
+        eventType = "Pay Rent";
+      }
       else{ 
         message = "Pay $100 in income tax to the state";
         eventType = "Tax";
@@ -136,6 +144,9 @@ public void displayButton(){
       }
       else if (eventType.equals("Community Card")){
         fill(173, 216, 230);
+      }
+      else if (eventType.equals("Pay Rent")){
+        fill(255, 102, 102);
       }
       else{
         fill(100);
