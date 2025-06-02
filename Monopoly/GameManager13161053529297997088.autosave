@@ -98,7 +98,7 @@ class GameManager {
         gameState = STATE_PROCESS_LANDED_SPACE;
       }
     }
-     else if (gameState == STATE_PROCESS_LANDED_SPACE) {
+    else if (gameState == STATE_PROCESS_LANDED_SPACE) {
       BoardSpace space = board[currentPlayer.getIndex()];
       maintainHistory(currentPlayer.getName() + " landed on " + space.getName());
       boolean canPurchase = handleLanding(space);
@@ -328,71 +328,3 @@ class GameManager {
       return false;
     }
   }
-  
-
-  public void eventButtonClick() {
-    eventButton.setVisibility(false);
-    if (currentPlayer.getMoney() < 0) {
-      checkBankruptcy();
-    } else {
-      gameState = STATE_END_TURN;
-    }
-    waitingForEvent = false;
-  }
-
-  private void buyProperty(PropertySpace space) {
-    int price = space.getPrice();
-    if (currentPlayer.canAfford(price)) {
-      maintainHistory(currentPlayer.getName() + " purchased " + space.getName());
-      currentPlayer.addProperty(space);
-      currentPlayer.changeMoney(-price);
-      space.setOwner(currentPlayer);
-      availableProp.remove(space);
-    } else {
-      maintainHistory(currentPlayer.getName() + " cannot afford " + space.getName() + ".");
-      notEnoughMoney.setVisibility(true); 
-      roll.setVisibility(false);        
-      purchase.setVisibility(false);    
-      waitingForEvent = true;      
-    }
-  }
-
-  private void checkBankruptcy() {
-    if (currentPlayer.getMoney() < 0) {
-      maintainHistory(currentPlayer.getName() + " has gone bankrupt");
-      gameOver = true;
-      gameState = STATE_GAME_OVER;
-      bankruptcy.setVisibility(true); 
-    }
-  }
-
-  private void maintainHistory(String entry) {
-    historyLog.add(entry);
-    if (historyLog.size() > 10) {
-      historyLog.remove(0);
-    }
-  }
-
-  private void drawHistoryLog() {
-    int w = 380;
-    int h = 290;
-    int x = width - w - 10;
-    int y = height - h - 10;
-    int lineHeight = 23;
-    fill(255);
-    rect(x, y, w, h);
-
-    fill(0);
-    textSize(16);
-    textAlign(LEFT, TOP);
-    text("History Log", x + 10, y + 10);
-
-    textSize(14);
-    for (int i = 0; i < historyLog.size(); i++) {
-      int lineY = y + 10 + 35 + i * lineHeight;
-      if (lineY  < y + h - 10) {
-        text(historyLog.get(i), x + 10, lineY);
-      }
-    }
-  }
-}
