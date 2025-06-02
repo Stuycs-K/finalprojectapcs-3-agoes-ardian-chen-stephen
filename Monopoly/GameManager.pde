@@ -38,6 +38,9 @@ class GameManager {
   private int moveDelayCounter;
   private int moveStepsRemaining;
   public final int MOVE_DELAY_FRAMES = 10;
+  
+  boolean inJail;
+  BoardSpace jail;
 
   public GameManager(int numPlayers) {
     players = new Player[numPlayers];
@@ -60,6 +63,8 @@ class GameManager {
     historyLog = new ArrayList<String>();
     rolledDouble = false;
     waitingForEvent = false;
+    
+    inJail = false;
   }
 
   private void update() {
@@ -291,9 +296,13 @@ class GameManager {
       String type = event.getType();
       String eventMessage = "";
       if (type.equals("GO")) {
-          maintainHistory(currentPlayer.getName() + " passed Go and got $50");
-          gameState = STATE_END_TURN;
-          return false; 
+        maintainHistory(currentPlayer.getName() + " passed Go and got $50");
+        gameState = STATE_END_TURN;
+        return false; 
+      }
+      else if (type.equals("JAIL")){
+        inJail = true;
+        currentPlayer.setPosition();
       }
       else if (type.equals("chance")) {
         if (choice == 0) {

@@ -1,4 +1,4 @@
-  abstract class BoardSpace {
+abstract class BoardSpace {
   private String spaceName;
   private int boardIndex;
   private int x;
