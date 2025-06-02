@@ -12,6 +12,26 @@ void draw() {
 }
 
 void mousePressed() {
+  if (manager.waitingForEvent) {
+    if (manager.notEnoughMoney.isvisible()) {
+      int choice = manager.notEnoughMoney.isClicked();
+      if (choice == 1) { 
+        manager.waitingForEvent = false;       
+        manager.gameState = manager.STATE_END_TURN; 
+        return;                                 
+      }
+      if (choice != -1) return; 
+      return; 
+    } else if (manager.eventButton.isvisible()) {
+      int choice = manager.eventButton.isClicked();
+      if (choice == 1) { 
+        manager.eventButtonClick(); 
+        return;
+      }
+      if (choice != -1) return;
+    }
+    return;
+  }
   if (manager.gameState == manager.STATE_GAME_OVER && manager.bankruptcy.isClicked() == 1){
     manager = new GameManager(2);
     background(255);

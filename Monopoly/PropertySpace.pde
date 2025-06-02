@@ -42,7 +42,7 @@
   
   @Override
   public void draw(){
-    super.draw();
+    super.draw(); 
     fill(255);
     noStroke();
     rect(getX() + 1, getY() + 1, getWidth() - 2, getHeight() - 2);

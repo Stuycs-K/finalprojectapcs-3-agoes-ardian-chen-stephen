@@ -330,8 +330,11 @@ class GameManager {
       space.setOwner(currentPlayer);
       availableProp.remove(space);
     } else {
-      notEnoughMoney.setVisibility(true);
-      roll.setVisibility(false);
+      maintainHistory(currentPlayer.getName() + " cannot afford " + space.getName() + ".");
+      notEnoughMoney.setVisibility(true); 
+      roll.setVisibility(false);        
+      purchase.setVisibility(false);    
+      waitingForEvent = true;      
     }
   }
 
