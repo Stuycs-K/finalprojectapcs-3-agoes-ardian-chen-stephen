@@ -62,11 +62,20 @@ class Player{
       passedGo = true;
     }
     this.currentBoardIndex = (currentBoardIndex + stepsToMove) % board.length;
-    BoardSpace currentSpace = board[currentBoardIndex];
-    this.x = board[currentBoardIndex].getX() + (int)(currentSpace.getWidth() / 2.0f);
-    this.y = board[currentBoardIndex].getY() + (int)(currentSpace.getHeight() / 2.0f);
+    updatePosition();
     return passedGo;
   }   
+  
+   public boolean moveOneStep(){
+    boolean passedGo = false;
+    if (currentBoardIndex + 1 >= board.length){
+      changeMoney(50);
+      passedGo = true;
+    }
+    this.currentBoardIndex = (currentBoardIndex + 1) % board.length;
+    updatePosition();
+    return passedGo;
+   }   
   
   public boolean setPos (int index){
     boolean passedGo = false;
