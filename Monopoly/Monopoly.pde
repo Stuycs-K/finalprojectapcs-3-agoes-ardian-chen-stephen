@@ -34,5 +34,4 @@ void mousePressed() {
   if (manager.gameState == manager.STATE_GAME_OVER && manager.bankruptcy.isClicked() == 0){
     exit();
   }
-
 }
