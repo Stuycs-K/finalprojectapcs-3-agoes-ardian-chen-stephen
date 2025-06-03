@@ -70,6 +70,24 @@ class GameManager {
       return;
     }
     currentPlayer = players[playerIndex];
+    if (currentPlayer.inJail()){
+      if (!purchase.isvisible() &&
+        !notEnoughMoney.isvisible() &&
+        !eventButton.isvisible() &&
+        !bankruptcy.isvisible()) {
+        roll.setVisibility(true);
+      }
+      else if (gameState == STATE_ROLLING){
+        maintainHistory(currentPlayer.getName() + "is attempting to leave jail");
+        
+        if(diceRoll1 == diceRoll2){
+          maintainHistory(currentPlayer.getName() + " rolled a double and is released from jail!");
+          currentPlayer.releaseJail();
+          gameState = STATE_MOVING;
+          moveStepsRemaining = diceRoll1 + diceRoll2;
+        }
+      }
+    }
     if (gameState == STATE_WAITING_TO_ROLL) {
       if (!purchase.isvisible() &&
         !notEnoughMoney.isvisible() &&
@@ -302,7 +320,7 @@ class GameManager {
         return false; 
       }
       else if (type.equals("JAIL")){
-        currentPlayer.setPos(jail.getBoardIndex());
+        currentPlayer.sentToJail(jail.getBoardIndex());
         eventMessage = "jail";
         maintainHistory(currentPlayer.getName() + "got caught for fraud and is in jail");
       }

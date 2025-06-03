@@ -39,6 +39,11 @@ class Player{
     jailTurns--;
   }
   
+  public void releaseJail(){
+    inJail = false;
+    jailTurns = 0;
+  }
+  
   public int getTailTurns(){
     return jailTurns;
   }
