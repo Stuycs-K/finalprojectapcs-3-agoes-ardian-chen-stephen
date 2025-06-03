@@ -450,16 +450,13 @@ class GameManager {
         currentPlayer.changeMoney(-100);
         maintainHistory(currentPlayer.getName() + " lost $100");
       }
-
       eventButton = new Button(eventMessage, 200, 200);
       eventButton.setVisibility(true);
       waitingForEvent = true;
-
       return false;
     }
   }
   
-
   public void eventButtonClick() {
     eventButton.setVisibility(false);
     if (currentPlayer.getMoney() < 0) {
