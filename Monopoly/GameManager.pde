@@ -86,7 +86,20 @@ class GameManager {
           gameState = STATE_MOVING;
           moveStepsRemaining = diceRoll1 + diceRoll2;
         }
+        else {
+          currentPlayer.changeJailTurns();
+          if (currentPlayer.getJailTurns() <= 0) {
+            maintainHistory(currentPlayer.getName() + " paid $50 to leave jail after 3 failed attempts");
+            currentPlayer.changeMoney(-50);
+            currentPlayer.releaseJail();
+            gameState = STATE_MOVING;
+            moveStepsRemaining = diceRoll1 + diceRoll2;
+          } else {
+            maintainHistory(currentPlayer.getName() + " failed to roll a double. Turn skipped.");
+            gameState = STATE_END_TURN;
+          }
       }
+    }
     }
     if (gameState == STATE_WAITING_TO_ROLL) {
       if (!purchase.isvisible() &&

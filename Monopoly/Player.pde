@@ -44,7 +44,7 @@ class Player{
     jailTurns = 0;
   }
   
-  public int getTailTurns(){
+  public int getJailTurns(){
     return jailTurns;
   }
   
