@@ -27,13 +27,13 @@ class GameManager {
   public final int STATE_END_TURN = 5;
   public final int STATE_GAME_OVER = 99;
 
-  private int numPropEachSide = 3;
+  private int numPropEachSide = 7;
   private int totalBoardSpaces = (4 * numPropEachSide) + 4;
-  private float cornerSize = 100.0f;
-  private float propertySide = 100.0f;
+  private float cornerSize = 95.0f;
+  private float propertySide = 95.0f;
   private float boardSideLength = (2 * cornerSize) + (numPropEachSide * propertySide);
-  private float boardStartX = 100.0f;
-  private float boardStartY = 100.0f;
+  private float boardStartX = 10.0f;
+  private float boardStartY = 10.0f;
   
   private int moveDelayCounter;
   private int moveStepsRemaining;
@@ -48,15 +48,15 @@ class GameManager {
 
     for (int i = 0; i < numPlayers; i++) {
       color[] colors = {color(255, 0, 0), color(0, 255, 0)};
-      players[i] = new Player("Player " + (i+1), 300, colors[i], board);
+      players[i] = new Player("Player " + (i+1), 500, colors[i], board);
     }
     playerIndex = 0;
 
-    purchase = new Button("purchase", (boardSideLength + boardStartX) / 2 - 60, (boardSideLength + boardStartY) / 2);
-    roll = new Button("roll", (boardSideLength + boardStartX) / 2, (boardSideLength + boardStartY) / 2);
-    notEnoughMoney = new Button("not_enough_money", propertySide + boardStartX, propertySide + boardStartY + 30);
-    eventButton = new Button("go", propertySide + boardStartX, propertySide + boardStartY + 30);
-    bankruptcy = new Button("bankruptcy", propertySide + boardStartX, propertySide + boardStartY + 30);
+    purchase = new Button("purchase", propertySide * 3.5, propertySide * 2.5);
+    roll = new Button("roll", propertySide * 4 + boardStartX, (boardSideLength + boardStartY) / 2);
+    notEnoughMoney = new Button("not_enough_money", propertySide * 2.5 + boardStartX, propertySide * 2.5);
+    eventButton = new Button("go",  propertySide * 3.5, propertySide * 2.5);
+    bankruptcy = new Button("bankruptcy",  propertySide * 3.5, propertySide * 2.5);
     dice = new Dice();
 
     historyLog = new ArrayList<String>();
@@ -119,7 +119,7 @@ class GameManager {
       if (moveDelayCounter <= 0){
         boolean passedGo = currentPlayer.moveOneStep();
         if (passedGo){
-          maintainHistory(currentPlayer.getName() + " passed go and collected $50");
+          maintainHistory(currentPlayer.getName() + " passed go and collected $100");
         }
         moveStepsRemaining--;
         
@@ -164,15 +164,27 @@ class GameManager {
     BoardSpace[] newBoard = new BoardSpace[totalBoardSpaces];
     int space = 0;
     float currentX, currentY;
-    currentX = 100.0f;
-    currentY = 100.0f;
+    currentX = 10.0f;
+    currentY = 10.0f;
     newBoard[space] = new EventSpace("GO", space, "GO", (int)currentX, (int)currentY, cornerSize, cornerSize);
     space++;
     currentY = boardStartY;
     for (int i = 0; i < numPropEachSide; i++) {
+      String[] propertySet1 = {"HTML Heaven", "CSS Corner", "JavaScript Junction"}; 
       currentX = boardStartX + cornerSize + i * propertySide;
-      newBoard[space] = new PropertySpace("PropertyT " + (i + 1), space, "Blue", (int)currentX, (int)currentY, propertySide, propertySide, 140 + i * 20, 10 + i * 2);
-      space++;
+      if (i <= 2){
+        newBoard[space] = new PropertySpace(propertySet1[i], space, "green", (int)currentX, (int)currentY, propertySide, propertySide, 30 + i * 10, 2 + i * 2, color(119, 235, 115));
+        space++;
+      }
+      else if (i >= 4){
+         String[] propertySet2 = {"Array Avenue", "List Lanes", "Tree Terrace"}; 
+         newBoard[space] = new PropertySpace(propertySet2[i-4], space, "cyan", (int)currentX, (int)currentY, propertySide, propertySide, 100 + (i-4) * 10, 10 + (i-4) * 2, color(110, 245, 227));
+         space++;
+      }
+      else {
+        newBoard[space] = new EventSpace("CHANCE", space, "chance", (int)currentX, (int)currentY, cornerSize, cornerSize);
+        space++;
+      }
     }
     currentX = boardStartX + cornerSize + (numPropEachSide * propertySide);
     currentY = boardStartY;
@@ -181,28 +193,64 @@ class GameManager {
     currentX = boardStartX + cornerSize + (numPropEachSide * propertySide) + (cornerSize - propertySide);
     for (int i = 0; i < numPropEachSide; i++) {
       currentY = boardStartY + cornerSize + i * propertySide;
-      newBoard[space] = new PropertySpace("PropertyR " + (i + 1), space, "Orange", (int)currentX, (int)currentY, propertySide, propertySide, 180 + i * 20, 14 + i * 2);
-      space++;
+      if (i <= 2){
+        String[] propertySet1 = {"Bubble Boulevard", "Selection Street", "Insertion Place"};
+        newBoard[space] = new PropertySpace(propertySet1[i], space, "pink", (int)currentX, (int)currentY, propertySide, propertySide, 140 + i * 10, 18 + i * 1, color(227, 104, 170));
+        space++;
+      }
+      else if (i >= 4){
+         String[] propertySet2 = {"Python Plaza", "C+ City", "Java Rails"}; 
+         newBoard[space] = new PropertySpace(propertySet2[i-4], space, "red", (int)currentX, (int)currentY, propertySide, propertySide, 180 + (i-4) * 10, 22 + (i-4) * 1, color(240, 72, 72));
+         space++;
+      }
+      else {
+        newBoard[space] = new EventSpace("CHEST", space, "event", (int)currentX, (int)currentY, cornerSize, cornerSize);
+        space++;
+      }
     }
     currentX = boardStartX + cornerSize + (numPropEachSide * propertySide);
     currentY = boardStartY + cornerSize + (numPropEachSide * propertySide);
-    newBoard[space] = new EventSpace("EVENT", space, "event", (int)currentX, (int)currentY, cornerSize, cornerSize);
+    newBoard[space] = new EventSpace("CHEST", space, "event", (int)currentX, (int)currentY, cornerSize, cornerSize);
     space++;
     currentY = boardStartY + cornerSize + (numPropEachSide * propertySide) + (cornerSize - propertySide);
     for (int i = 0; i < numPropEachSide; i++) {
       currentX = boardStartX + cornerSize + (numPropEachSide - 1 - i) * propertySide;
-      newBoard[space] = new PropertySpace("PropertyB " + (i + 1), space, "Brown", (int)currentX, (int)currentY, propertySide, propertySide, 60 + i * 20, 4 + i * 2);
-      space++;
+      if (i <= 2){
+        String[] propertySet1 = {"Merge Markets", "Heap Heights", "Quick Quarters"};
+        newBoard[space] = new PropertySpace(propertySet1[i], space, "orange", (int)currentX, (int)currentY, propertySide, propertySide, 220 + i * 10, 26 + i, color(227, 132, 64));
+        space++;
+      }
+      else if (i >= 4){
+         String[] propertySet2 = {"Integer Parks", "Bool Bakery", "Float Ferrys"}; 
+         newBoard[space] = new PropertySpace(propertySet2[i-4], space, "yellow", (int)currentX, (int)currentY, propertySide, propertySide, 250 + (i-4) * 10, 30 + (i-4), color(227, 237, 78));
+         space++;
+      }
+      else {
+        newBoard[space] = new EventSpace("CHANCE", space, "chance", (int)currentX, (int)currentY, cornerSize, cornerSize);
+        space++;
+      }
     }
     currentX = boardStartX;
     currentY = boardStartY + cornerSize + (numPropEachSide * propertySide);
-    newBoard[space] = new EventSpace("GET TAXED", space, "tax", (int)currentX, (int)currentY, cornerSize, cornerSize);
+    newBoard[space] = new EventSpace("TAXED", space, "tax", (int)currentX, (int)currentY, cornerSize, cornerSize);
     space++;
     currentX = boardStartX;
     for (int i = 0; i < numPropEachSide; i++) {
       currentY = boardStartY + cornerSize + (numPropEachSide - 1 - i) * propertySide;
-      newBoard[space] = new PropertySpace("PropertyL " + (i + 1), space, "LightBlue", (int)currentX, (int)currentY, propertySide, propertySide, 100 + i * 20, 6 + i * 2);
-      space++;
+      if (i <= 2){
+        String[] propertySet1 = {"Instance Isles", "Classy Commons", "Object Overlooks"};
+        newBoard[space] = new PropertySpace(propertySet1[i], space, "vomit", (int)currentX, (int)currentY, propertySide, propertySide, 300 + i * 10, 34 + i, color(206, 214, 131));
+        space++;
+      }
+      else if (i >= 4){
+         String[] propertySet2 = {"While Ways", "For Fairway", "Iterate Walks"}; 
+         newBoard[space] = new PropertySpace(propertySet2[i-4], space, "gray", (int)currentX, (int)currentY, propertySide, propertySide, 350 + (i-4) * 10, 37 + (i-4), color(156, 153, 152));
+         space++;
+      }
+      else {
+        newBoard[space] = new EventSpace("CHEST", space, "event", (int)currentX, (int)currentY, cornerSize, cornerSize);
+        space++;
+      }
     }
     return newBoard;
   }
@@ -328,9 +376,9 @@ class GameManager {
       String type = event.getType();
       String eventMessage = "";
       if (type.equals("GO")) {
-        maintainHistory(currentPlayer.getName() + " passed Go and got $50");
-        gameState = STATE_END_TURN;
-        return false; 
+          maintainHistory(currentPlayer.getName() + " passed Go and got $100");
+          gameState = STATE_END_TURN;
+          return false; 
       }
       else if (type.equals("JAIL")){
         currentPlayer.sentToJail(jail.getBoardIndex());
@@ -341,7 +389,7 @@ class GameManager {
         if (choice == 0) {
           eventMessage = "go";
           currentPlayer.setPos(0);
-          maintainHistory(currentPlayer.getName() + " passed Go and got $50");
+          maintainHistory(currentPlayer.getName() + " passed Go and got $100");
         } else {
           eventMessage = "irs";
           currentPlayer.changeMoney(50);
