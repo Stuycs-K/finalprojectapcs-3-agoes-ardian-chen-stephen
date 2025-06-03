@@ -109,7 +109,7 @@ class Button{
       String message = "";
       String eventType = "";
       if (type.equals("go")){
-        message = "Move to GO and collect $50";
+        message = "Move to GO and collect $100";
         eventType = "Chance Card";
       }
       else if (type.equals("irs")){ 

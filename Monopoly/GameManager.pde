@@ -290,29 +290,70 @@ class GameManager {
   }
 
   private void playerStatus() {
-    fill(230, 230, 250, 220);
+    float boxW = 280; 
+    float startH = 110; 
+    float propertyLineHeight = 20; 
+    int maxPropertiesToShow = 24; 
+    
+    ArrayList<PropertySpace> props = currentPlayer.getProperties();
+    int numPropsToDisplay = min(props.size(), maxPropertiesToShow); 
+    float propertiesListHeight = numPropsToDisplay * propertyLineHeight;
+    if (props.size() > maxPropertiesToShow) {
+      propertiesListHeight += propertyLineHeight; 
+    }
+    float boxH = startH + propertiesListHeight;
+    if (props.isEmpty()){ 
+        boxH = startH - 20; 
+    }
+    float screenMargin = 20;
+    float padding = 15;
+    int statusTextSize = 18; 
+    int propertyTextSize = 14; 
+    float generalLineHeight = statusTextSize + 8; 
+  
+    float boxX = width - boxW - screenMargin;
+    float boxY = screenMargin;
+  
+    fill(230, 230, 250, 220); 
     stroke(50);
     strokeWeight(1);
-    rect(width-300, 20, 250, 250, 5);
+    rect(boxX, boxY, boxW, boxH, 5); 
+  
     fill(0);
-    textSize(25);
     textAlign(LEFT, TOP);
-
-    fill(currentPlayer.getColor());
+  
+    float currentTextY = boxY + padding;
+    textSize(statusTextSize);
     String turnText = "Turn: " + currentPlayer.getName();
-    text(turnText, width-290, 40);
-
-    fill(0);
-    String moneyText1 = players[0].getName() + " Money: $" + players[0].getMoney();
-    text(moneyText1, width-290, 80);
-    
-    String moneyText2 = players[1].getName() +" Money: $" + players[1].getMoney();
-    text(moneyText2, width-290, 120);
-
+    text(turnText, boxX + padding, currentTextY);
+    currentTextY += generalLineHeight;
+  
+    String moneyText = "Money: $" + currentPlayer.getMoney();
+    text(moneyText, boxX + padding, currentTextY);
+    currentTextY += generalLineHeight;
+  
+    if (!props.isEmpty()) {
+      textSize(statusTextSize - 2); 
+      text("Properties:", boxX + padding, currentTextY);
+      currentTextY += propertyLineHeight; 
+      textSize(propertyTextSize);
+      for (int i = 0; i < numPropsToDisplay; i++) {
+        PropertySpace prop = props.get(i);
+        if (prop != null) {
+          text("- " + prop.getName(), boxX + padding + 10, currentTextY); 
+          currentTextY += propertyLineHeight;
+        }
+      }
+    } 
+    else {
+      textSize(propertyTextSize); 
+      text("(No properties owned)", boxX + padding, currentTextY);
+    }
     fill(currentPlayer.getColor());
     noStroke();
-    ellipseMode(CENTER); 
-    ellipse(width - 175, 200, 30, 30);
+    ellipseMode(CENTER);
+    float playerSize = statusTextSize * 2; 
+    ellipse(boxX + boxW - 50, boxY + padding * 2, playerSize, playerSize);
     stroke(0);
   }
 
