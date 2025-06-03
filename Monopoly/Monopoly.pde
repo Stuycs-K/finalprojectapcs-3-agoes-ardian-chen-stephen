@@ -1,7 +1,7 @@
 private GameManager manager;
 
 void setup(){
-  size(1600, 900);
+  size(1280, 720);
   manager = new GameManager(2);
 }
 

@@ -29,8 +29,8 @@ class GameManager {
 
   private int numPropEachSide = 7;
   private int totalBoardSpaces = (4 * numPropEachSide) + 4;
-  private float cornerSize = 95.0f;
-  private float propertySide = 95.0f;
+  private float cornerSize = 70.0f;
+  private float propertySide = 70.0f;
   private float boardSideLength = (2 * cornerSize) + (numPropEachSide * propertySide);
   private float boardStartX = 10.0f;
   private float boardStartY = 10.0f;
@@ -188,7 +188,8 @@ class GameManager {
     }
     currentX = boardStartX + cornerSize + (numPropEachSide * propertySide);
     currentY = boardStartY;
-    newBoard[space] = new EventSpace("CHANCE", space, "chance", (int)currentX, (int)currentY, cornerSize, cornerSize);
+    newBoard[space] = new EventSpace("JAIL", space, "jail", (int)currentX, (int)currentY, cornerSize, cornerSize);
+    jail = newBoard[space];
     space++;
     currentX = boardStartX + cornerSize + (numPropEachSide * propertySide) + (cornerSize - propertySide);
     for (int i = 0; i < numPropEachSide; i++) {
@@ -232,7 +233,7 @@ class GameManager {
     }
     currentX = boardStartX;
     currentY = boardStartY + cornerSize + (numPropEachSide * propertySide);
-    newBoard[space] = new EventSpace("TAXED", space, "tax", (int)currentX, (int)currentY, cornerSize, cornerSize);
+    newBoard[space] = new EventSpace("GO JAIL", space, "gojail", (int)currentX, (int)currentY, cornerSize, cornerSize);
     space++;
     currentX = boardStartX;
     for (int i = 0; i < numPropEachSide; i++) {
@@ -248,7 +249,7 @@ class GameManager {
          space++;
       }
       else {
-        newBoard[space] = new EventSpace("CHEST", space, "event", (int)currentX, (int)currentY, cornerSize, cornerSize);
+        newBoard[space] = new EventSpace("TAXED", space, "tax", (int)currentX, (int)currentY, cornerSize, cornerSize);
         space++;
       }
     }
@@ -380,9 +381,9 @@ class GameManager {
           gameState = STATE_END_TURN;
           return false; 
       }
-      else if (type.equals("JAIL")){
+      else if (type.equals("gojail")){
         currentPlayer.sentToJail(jail.getBoardIndex());
-        eventMessage = "jail";
+        eventMessage = "Go to Jail";
         maintainHistory(currentPlayer.getName() + "got caught for fraud and is in jail");
       }
       else if (type.equals("chance")) {
