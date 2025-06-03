@@ -25,7 +25,7 @@ class Button{
       w = 220; 
       h = 80;
       
-      fill(100, 0, 0);
+      fill(240, 10, 0);
       rect(xPos, yPos, w, h);
       fill(0);
       textSize(20);
@@ -57,6 +57,20 @@ class Button{
       textAlign(CENTER, CENTER);
       textSize(16);
       text("Roll Dice", button1X + buttonW/2, buttonY + buttonH/2);
+    }
+    
+    else if (type.equals("end_turn")) {
+      button1X = xPos;
+      buttonY = yPos;
+      buttonW = 100;
+      buttonH = 50;
+
+      fill(0, 200, 10);
+      rect(button1X, buttonY, buttonW, buttonH);
+      fill(255);
+      textAlign(CENTER, CENTER);
+      textSize(16);
+      text("End Turn", button1X + buttonW/2, buttonY + buttonH/2);
     }
   
    else if (type.equals("not_enough_money")) {
