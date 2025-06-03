@@ -39,7 +39,6 @@ class GameManager {
   private int moveStepsRemaining;
   public final int MOVE_DELAY_FRAMES = 10;
   
-  boolean inJail;
   BoardSpace jail;
 
   public GameManager(int numPlayers) {
@@ -64,7 +63,6 @@ class GameManager {
     rolledDouble = false;
     waitingForEvent = false;
     
-    inJail = false;
   }
 
   private void update() {
@@ -304,7 +302,6 @@ class GameManager {
         return false; 
       }
       else if (type.equals("JAIL")){
-        inJail = true;
         currentPlayer.setPos(jail.getBoardIndex());
         eventMessage = "jail";
         maintainHistory(currentPlayer.getName() + "got caught for fraud and is in jail");
