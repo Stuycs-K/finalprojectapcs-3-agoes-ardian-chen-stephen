@@ -170,7 +170,7 @@ class GameManager {
          space++;
       }
       else {
-        newBoard[space] = new EventSpace("CHANCE", space, "chance", (int)currentX, (int)currentY, cornerSize, cornerSize);
+        newBoard[space] = new EventSpace("CHEST", space, "event", (int)currentX, (int)currentY, cornerSize, cornerSize);
         space++;
       }
     }
@@ -214,7 +214,7 @@ class GameManager {
          space++;
       }
       else {
-        newBoard[space] = new EventSpace("CHANCE", space, "chance", (int)currentX, (int)currentY, cornerSize, cornerSize);
+        newBoard[space] = new EventSpace("CHEST", space, "event", (int)currentX, (int)currentY, cornerSize, cornerSize);
         space++;
       }
     }
