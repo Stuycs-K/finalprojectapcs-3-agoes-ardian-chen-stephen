@@ -1,17 +1,17 @@
 class EventSpace extends BoardSpace {
   private String eventType;
-  
-  public EventSpace(String name, int boardIndex, float xPos, float yPos, float w, float h, String event){
-    super(name, boardIndex, xPos, yPos, w, h);
+
+  public EventSpace(String name, int boardIndex, String event, int xPos, int yPos, float w, float h) {
+    super(name, boardIndex, xPos, yPos, w, h, color(255));
     this.eventType = event;
   }
-  
-  public String getType(){
+
+  public String getType() {
     return this.eventType;
   }
-  
+
   @Override
-  public void draw(){
+    public void draw() {
     super.draw();
     fill(255);
     noStroke();
@@ -19,16 +19,6 @@ class EventSpace extends BoardSpace {
     stroke(0);
     fill(0);
     textAlign(CENTER, CENTER);
-    text(getName(), getX() + getWidth() / 2, getY() + getHeight() * 0.35f); 
+    text(getName(), getX() + getWidth() / 2, getY() + getHeight() * 0.35f - 15f);
   }
-  
-  //@Override
-  /*
-  public onLand(Player player, GameManager GM) {
-    if (this.eventType.equals("GO")){
-      GM.displayMessage(player.getName() + " passed GO! Collect $200!");
-      GM.endPlayerTurn;
-    }
-  }
-  */
 }
