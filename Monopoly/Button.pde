@@ -129,7 +129,7 @@ public void displayButton(){
         for(String s: parts){
           System.out.println(s);
         }
-        message = parts[1] + " payed $" + parts[2] + " to " + parts[3];
+        message = parts[1] + " " + parts[2] + " payed $" + parts[3] + " to " + parts[4] + " " + parts[5];
         eventType = "Pay Rent";
       }
       else if (type.equals("jail")){

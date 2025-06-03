@@ -284,7 +284,10 @@ class GameManager {
         prop.getOwner().changeMoney(prop.getRent());
         currentPlayer.changeMoney(-prop.getRent());
         maintainHistory(currentPlayer.getName() + " paid $" + prop.getRent() + " rent to " + prop.getOwner().getName());
-        checkBankruptcy();
+        
+        eventButton = new Button("rent " + currentPlayer.getName() + " " + prop.getRent() + " " + prop.getOwner().getName(), 200, 275);
+        eventButton.setVisibility(true);
+        waitingForEvent = true;
         return false;
       }
       }
