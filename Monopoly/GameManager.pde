@@ -72,35 +72,24 @@ class GameManager {
       return;
     }
     currentPlayer = players[playerIndex];
-    if (currentPlayer.inJail()){
-          System.out.println("true");
-      if (!purchase.isvisible() &&
-        !notEnoughMoney.isvisible() &&
-        !eventButton.isvisible() &&
-        !bankruptcy.isvisible()) {
-        roll.setVisibility(true);
-      }
-      else if (gameState == STATE_ROLLING){
-        maintainHistory(currentPlayer.getName() + "is attempting to leave jail");
-        
-        if(diceRoll1 == diceRoll2){
-          maintainHistory(currentPlayer.getName() + " rolled a double and is released from jail!");
-          currentPlayer.releaseJail();
-          gameState = STATE_MOVING;
-          moveStepsRemaining = diceRoll1 + diceRoll2;
-        }
-        else {
-          currentPlayer.changeJailTurns();
-          if (currentPlayer.getJailTurns() <= 0) {
-            maintainHistory(currentPlayer.getName() + " paid $50 to leave jail after 3 failed attempts");
-            currentPlayer.changeMoney(-50);
-            currentPlayer.releaseJail();
-            gameState = STATE_MOVING;
-            moveStepsRemaining = diceRoll1 + diceRoll2;
-          } else {
-            maintainHistory(currentPlayer.getName() + " failed to roll a double. Turn skipped.");
-            gameState = STATE_END_TURN;
-          }
+    
+    if (currentPlayer.isInJail()) {
+      if (diceRoll1 == diceRoll2) {
+        maintainHistory(currentPlayer.getName() + " rolled a double and got out of jail.");
+        currentPlayer.releaseJail();
+        gameState = STATE_MOVING;
+        moveStepsRemaining = diceRoll1 + diceRoll2;
+    } else {
+      currentPlayer.changeJailTurns();
+      if (currentPlayer.getJailTurns() <= 0) {
+        maintainHistory(currentPlayer.getName() + " paid $50 to leave jail after 3 failed attempts.");
+        currentPlayer.changeMoney(-50);
+        currentPlayer.releaseJail();
+        gameState = STATE_MOVING;
+        moveStepsRemaining = diceRoll1 + diceRoll2;
+      } else {
+        maintainHistory(currentPlayer.getName() + " failed to roll a double. Turn skipped.");
+        gameState = STATE_END_TURN;
       }
     }
     }
@@ -153,9 +142,12 @@ class GameManager {
         return;
       }
       if (rolledDouble) {
+        System.out.println("1");
         rolledDouble = false;
         gameState = STATE_WAITING_TO_ROLL;
       } else {
+                System.out.println("2");
+
         playerIndex = (playerIndex + 1) % players.length;
         maintainHistory(currentPlayer.getName() + " ended their turn");
         gameState = STATE_WAITING_TO_ROLL;
@@ -271,7 +263,7 @@ class GameManager {
 
   public void rollButtonClick() {
     if (diceOverride > 0){
-      diceRoll1 = diceOverride / 2;
+      diceRoll1 = diceOverride / 2 - 1;
       diceRoll2 = diceOverride - diceRoll1;
       diceOverride = 0;
     }
@@ -395,6 +387,7 @@ class GameManager {
         currentPlayer.sentToJail(jail.getBoardIndex());
         eventMessage = "gojail";
         maintainHistory(currentPlayer.getName() + " got caught for fraud and is in jail");
+        gameState = STATE_END_TURN;
       }
       else if (type.equals("chance")) {
         if (choice == 0) {

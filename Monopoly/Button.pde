@@ -133,7 +133,7 @@ class Button{
         eventType = "Pay Rent";
       }
       else if (type.equals("gojail")){
-        message = "got caught for fraud and is in jail";
+        message = "Caught for fraud and sent in jail";
         eventType = "Jail";
       }
       else if (type.equals("tax")){ 

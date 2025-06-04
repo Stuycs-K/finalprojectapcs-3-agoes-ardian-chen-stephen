@@ -25,11 +25,12 @@ class Player{
     jailTurns = 0;
   }
   
-  public boolean inJail(){
+  public boolean isInJail(){
     return inJail;
   }
   
   public void sentToJail(int jailIndex){
+    System.out.println("sending to jail");
     inJail = true;
     jailTurns = 3;
     setPos(jailIndex);

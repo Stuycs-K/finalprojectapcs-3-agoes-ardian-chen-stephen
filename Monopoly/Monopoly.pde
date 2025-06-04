@@ -1,10 +1,12 @@
 private GameManager manager;
 boolean override;
+String overrideS;
 
 void setup(){
   size(1280, 720);
   manager = new GameManager(2);
   override = false;
+  overrideS = "";
 }
 
 void draw() {
@@ -18,12 +20,17 @@ void draw() {
 
 void keyPressed(){
   if (override){
-    int val = Integer.parseInt("" + key);
-    if (val > 0){
-      System.out.println("working " + val );
-      manager.overrideDice(val);
+    if (key == ENTER){
+      int val = Integer.parseInt(overrideS);
+      if (val > 0){
+        manager.overrideDice(val);
+      }
+      override = false;
+      overrideS = "";
     }
-    override = false;
+    else{
+      overrideS += key;
+    }
   }
   if(key == 'o' && manager.roll.isvisible()){
     override = true;
