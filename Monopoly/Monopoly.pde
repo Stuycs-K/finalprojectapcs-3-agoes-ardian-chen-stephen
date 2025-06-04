@@ -1,14 +1,40 @@
 private GameManager manager;
+boolean override;
+String overrideS;
 
 void setup(){
   size(1600, 900);
   manager = new GameManager(2);
+  override = false;
+  overrideS = "";
 }
 
 void draw() {
   background(255);
+  if (override){
+    text("Override: " + override, 1200, 100);
+  }
   manager.update();    
   manager.display();   
+}
+
+void keyPressed(){
+  if (override){
+    if (key == ENTER){
+      int val = Integer.parseInt(overrideS);
+      if (val > 0){
+        manager.overrideDice(val);
+      }
+      override = false;
+      overrideS = "";
+    }
+    else{
+      overrideS += key;
+    }
+  }
+  if(key == 'o' && manager.roll.isvisible()){
+    override = true;
+  }
 }
 
 void mousePressed() {

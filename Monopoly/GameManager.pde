@@ -15,6 +15,7 @@ class GameManager {
 
   private int diceRoll1;
   private int diceRoll2;
+  private int diceOverride;
   private int gameState;
   private boolean rolledDouble;
   private boolean waitingForEvent;
@@ -59,6 +60,7 @@ class GameManager {
     bankruptcy = new Button("bankruptcy",  propertySide * 3.5, propertySide * 2.5);
     endButton = new Button ("end_turn", propertySide * 4 + boardStartX, (boardSideLength + boardStartY) / 2);
     dice = new Dice();
+    diceOverride = 0;
 
     historyLog = new ArrayList<String>();
     rolledDouble = false;
@@ -281,14 +283,42 @@ class GameManager {
   return false;
   }
 
-
+  public void overrideDice(int override){
+    diceOverride = override;
+    rollButtonClick();
+  }
+  
   public void rollButtonClick() {
-    dice.roll();
-    diceRoll1 = dice.getDice1();
-    diceRoll2 = dice.getDice2();
-    rolledDouble = dice.isDouble();
-    roll.setVisibility(false);
-    gameState = STATE_ROLLING;
+    if (diceOverride >= 2 && diceOverride <= 12) { 
+      if (diceOverride <= 7) {
+        diceRoll1 = min(6, diceOverride - 1); 
+        if (diceRoll1 < 1) diceRoll1 = 1; 
+          diceRoll2 = diceOverride - diceRoll1;
+      } 
+      else { 
+        diceRoll1 = 6; 
+        diceRoll2 = diceOverride - 6;
+      }
+      if (diceRoll2 < 1) {
+        diceRoll2 = 1;
+        diceRoll1 = diceOverride - 1;
+        if (diceRoll1 > 6) diceRoll1 = 6; 
+      }
+     if (diceRoll1 < 1) { 
+        diceRoll1 = 1;
+        diceRoll2 = diceOverride - 1;
+      }
+      rolledDouble = (diceRoll1 == diceRoll2); 
+      diceOverride = 0; 
+    }
+    else {
+      dice.roll();
+      diceRoll1 = dice.getDice1();
+      diceRoll2 = dice.getDice2();
+      rolledDouble = dice.isDouble();
+      roll.setVisibility(false);
+      gameState = STATE_ROLLING;
+    }
   }
 
   public void purchaseButtonClick(boolean purchase) {
@@ -557,4 +587,5 @@ class GameManager {
       }
     }
   }
+
 }
