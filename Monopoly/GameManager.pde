@@ -14,6 +14,7 @@ class GameManager {
 
   private int diceRoll1;
   private int diceRoll2;
+  private int diceOverride;
   private int gameState;
   private boolean rolledDouble;
   private boolean waitingForEvent;
@@ -58,6 +59,7 @@ class GameManager {
     eventButton = new Button("go",  propertySide * 3.5, propertySide * 2.5);
     bankruptcy = new Button("bankruptcy",  propertySide * 3.5, propertySide * 2.5);
     dice = new Dice();
+    diceOverride = 0;
 
     historyLog = new ArrayList<String>();
     rolledDouble = false;
@@ -267,10 +269,17 @@ class GameManager {
   }
 
   public void rollButtonClick() {
+    if (diceOverride > 0){
+      diceRoll1 = diceOverride / 2;
+      diceRoll2 = diceOverride - diceRoll1;
+      diceOverride = 0;
+    }
+    else{
     dice.roll();
     diceRoll1 = dice.getDice1();
     diceRoll2 = dice.getDice2();
     rolledDouble = dice.isDouble();
+    }
     roll.setVisibility(false);
     gameState = STATE_ROLLING;
   }
@@ -462,6 +471,11 @@ class GameManager {
     if (historyLog.size() > 10) {
       historyLog.remove(0);
     }
+  }
+  
+  public void overrideDice(int override){
+    diceOverride = override;
+    return true;
   }
 
   private void drawHistoryLog() {
