@@ -29,7 +29,9 @@ void keyPressed(){
       overrideS = "";
     }
     else{
-      overrideS += key;
+      if (Character.isDigit(key)){
+        overrideS += key;
+      }
     }
   }
   if(key == 'o' && manager.roll.isvisible()){
