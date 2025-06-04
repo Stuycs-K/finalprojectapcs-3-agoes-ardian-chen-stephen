@@ -75,16 +75,12 @@ class GameManager {
     
     if (currentPlayer.isInJail()) {
       if (gameState == STATE_WAITING_TO_ROLL) {
-        System.out.println("waiting to roll jail");
       if (!purchase.isvisible() &&
         !notEnoughMoney.isvisible() &&
         !eventButton.isvisible() &&
         !bankruptcy.isvisible()) {
-                  System.out.println("visible roll jail");
       roll.setVisibility(true);
       } else {
-                          System.out.println("invisible roll jail");
-
       roll.setVisibility(false);
       purchase.setVisibility(false);
     }}
@@ -121,7 +117,6 @@ class GameManager {
       roll.setVisibility(false);
       purchase.setVisibility(false);
     }} else if (gameState == STATE_ROLLING && !currentPlayer.isInJail()) {
-      maintainHistory(currentPlayer.getName() + " rolled a " + diceRoll1 + " and a " + diceRoll2);
       moveStepsRemaining = diceRoll1 + diceRoll2;
       gameState = STATE_MOVING;
     } 
@@ -283,15 +278,13 @@ class GameManager {
       diceOverride = 0;
     }
     else{
-      System.out.println(currentPlayer.getName() + " rolling " + currentPlayer.isInJail());
-    dice.roll();
-    diceRoll1 = dice.getDice1();
-    diceRoll2 = dice.getDice2();
-    rolledDouble = dice.isDouble();
+      dice.roll();
+      diceRoll1 = dice.getDice1();
+      diceRoll2 = dice.getDice2();
+      rolledDouble = dice.isDouble();
+      maintainHistory(currentPlayer.getName() + " rolled a " + diceRoll1 + " and a " + diceRoll2);
     }
     roll.setVisibility(false);
-          System.out.println(currentPlayer.getName() + " going to rolling state " + currentPlayer.isInJail());
-
     gameState = STATE_ROLLING;
   }
 
