@@ -257,6 +257,30 @@ class GameManager {
     }
     return properties;
   }
+  
+  public boolean playerOwnsFullSet(Player player, String colorGroup) {
+    if (player == null || colorGroup == null || colorGroup.isEmpty() || board == null) {
+      return false;
+    }
+    int propertiesInThisGroupOwnedByPlayer = 0;
+    int totalPropertiesInThisColorGroup = 0;
+    for (BoardSpace space : board) {
+      if (space instanceof PropertySpace) {
+        PropertySpace prop = (PropertySpace) space;
+        if (colorGroup.equals(prop.getType())) {
+          totalPropertiesInThisColorGroup++;
+          if (prop.getOwner() == player) {
+            propertiesInThisGroupOwnedByPlayer++;
+          }
+        }
+      }
+    }
+    if (totalPropertiesInThisColorGroup == 3 && propertiesInThisGroupOwnedByPlayer == 3) {
+      return true;
+    }
+  return false;
+  }
+
 
   public void rollButtonClick() {
     dice.roll();
@@ -404,14 +428,15 @@ class GameManager {
         maintainHistory(currentPlayer.getName() + " landed on their own property: " + prop.getName() + ".");
         gameState = CAN_END_TURN;
         return false;
-      } else {
-        prop.getOwner().changeMoney(prop.getRent());
-        currentPlayer.changeMoney(-prop.getRent());
-        maintainHistory(currentPlayer.getName() + " paid $" + prop.getRent() + " rent to " + prop.getOwner().getName());
-        gameState = CAN_END_TURN;
-        checkBankruptcy();
-        return false;
-      }
+        } 
+        else {
+          prop.getOwner().changeMoney(prop.getCurrentRent(this));
+          currentPlayer.changeMoney(prop.getCurrentRent(this));
+          maintainHistory(currentPlayer.getName() + " paid $" + prop.getCurrentRent(this) + " rent to " + prop.getOwner().getName());
+          gameState = CAN_END_TURN;
+          checkBankruptcy();
+          return false;
+        }
       }
       return true;
     } else {

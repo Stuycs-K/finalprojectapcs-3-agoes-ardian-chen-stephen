@@ -1,6 +1,6 @@
   class PropertySpace extends BoardSpace {
   private int price;
-  private int rent;
+  private int baseRent;
   private Player owner;
   private String propertyType;
   
@@ -8,7 +8,7 @@
     super(name, index, x, y, w, h, c);
     this.propertyType = propertyType;
     this.price = price;
-    this.rent = rent;
+    this.baseRent = rent;
     this.owner = null;
   }
   
@@ -24,8 +24,19 @@
      return this.price;
   }
   
-  public int getRent(){
-     return this.rent;
+  public int getBaseRent(){
+     return this.baseRent;
+  }
+  
+  public int getCurrentRent(GameManager gameManager) {
+    if (owner == null) {
+      return 0;
+    }
+    int currentRentValue = this.baseRent;
+    if (gameManager.playerOwnsFullSet(this.owner, this.propertyType)) {
+      currentRentValue = (int) (this.baseRent * 1.25f);
+    }
+    return currentRentValue;
   }
   
   public Player getOwner() {
