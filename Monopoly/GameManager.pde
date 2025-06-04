@@ -298,9 +298,9 @@ class GameManager {
       } else {
         maintainHistory(currentPlayer.getName() + " did not buy " + board[currentPlayer.getIndex()].getName());
       }
-      if (!waitingForEvent) { // If notEnoughMoney dialog wasn't triggered
+      if (!waitingForEvent) { 
         if (rolledDouble) {
-          rolledDouble = false; // Consume the double
+          rolledDouble = false; 
           maintainHistory(currentPlayer.getName() + " rolled a double! Gets another turn.");
           gameState = STATE_WAITING_TO_ROLL;
         } 
