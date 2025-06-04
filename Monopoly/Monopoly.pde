@@ -1,14 +1,29 @@
 private GameManager manager;
+boolean override;
 
 void setup(){
   size(1280, 720);
   manager = new GameManager(2);
+  override = false;
 }
 
 void draw() {
   background(255);
   manager.update();    
   manager.display();   
+}
+
+void keyPressed(){
+  if (override){
+    int val = Integer.parseInt("" + key);
+    if (val > 0){
+      
+    }
+    override = false;
+  }
+  if(key == '0' && manager.roll.isvisible()){
+    override = true;
+  }
 }
 
 void mousePressed() {

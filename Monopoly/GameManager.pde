@@ -383,7 +383,7 @@ class GameManager {
       }
       else if (type.equals("gojail")){
         currentPlayer.sentToJail(jail.getBoardIndex());
-        eventMessage = "Go to Jail";
+        eventMessage = "gojail";
         maintainHistory(currentPlayer.getName() + "got caught for fraud and is in jail");
       }
       else if (type.equals("chance")) {

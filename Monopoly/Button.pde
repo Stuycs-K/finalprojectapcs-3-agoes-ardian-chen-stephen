@@ -136,9 +136,12 @@ class Button{
         message = "got caught for fraud and is in jail";
         eventType = "Jail";
       }
-      else{ 
+      else if (type.equals("tax")){ 
         message = "Pay $100 in income tax to the state";
         eventType = "Tax";
+      }
+      else{
+        return;
       }
       
       w = 330;
