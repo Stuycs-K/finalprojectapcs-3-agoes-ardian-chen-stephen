@@ -9,6 +9,9 @@ void setup(){
 
 void draw() {
   background(255);
+  if (override){
+    text("Override: " + override, 750, 100);
+  }
   manager.update();    
   manager.display();   
 }
@@ -17,11 +20,12 @@ void keyPressed(){
   if (override){
     int val = Integer.parseInt("" + key);
     if (val > 0){
-      
+      System.out.println("working " + val );
+      manager.overrideDice(val);
     }
     override = false;
   }
-  if(key == '0' && manager.roll.isvisible()){
+  if(key == 'o' && manager.roll.isvisible()){
     override = true;
   }
 }

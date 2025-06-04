@@ -73,6 +73,7 @@ class GameManager {
     }
     currentPlayer = players[playerIndex];
     if (currentPlayer.inJail()){
+          System.out.println("true");
       if (!purchase.isvisible() &&
         !notEnoughMoney.isvisible() &&
         !eventButton.isvisible() &&
@@ -393,7 +394,7 @@ class GameManager {
       else if (type.equals("gojail")){
         currentPlayer.sentToJail(jail.getBoardIndex());
         eventMessage = "gojail";
-        maintainHistory(currentPlayer.getName() + "got caught for fraud and is in jail");
+        maintainHistory(currentPlayer.getName() + " got caught for fraud and is in jail");
       }
       else if (type.equals("chance")) {
         if (choice == 0) {
@@ -475,7 +476,7 @@ class GameManager {
   
   public void overrideDice(int override){
     diceOverride = override;
-    return true;
+    rollButtonClick();
   }
 
   private void drawHistoryLog() {
