@@ -33,3 +33,7 @@ Completed the board and completed MVP logic, using Stephen's work.
 
 ### 2025-06-2 - Coding
 Added colors and actual property names, prices, and rents. 
+
+### 2025-06-3 - Coding
+Added an end turn button and changed the player status ui
+

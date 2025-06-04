@@ -9,6 +9,7 @@ class GameManager {
   private Button notEnoughMoney;
   private Button eventButton;
   private Button bankruptcy;
+  private Button endButton;
   private Dice dice;
   private ArrayList<String> historyLog;
 
@@ -25,6 +26,7 @@ class GameManager {
   public final int STATE_PROCESS_LANDED_SPACE = 3;
   public final int STATE_WAITING_PURCHASE_DECISION = 4;
   public final int STATE_END_TURN = 5;
+  public final int CAN_END_TURN = 6;
   public final int STATE_GAME_OVER = 99;
 
   private int numPropEachSide = 7;
@@ -46,7 +48,7 @@ class GameManager {
 
     for (int i = 0; i < numPlayers; i++) {
       color[] colors = {color(255, 0, 0), color(0, 255, 0)};
-      players[i] = new Player("Player " + (i+1), 500, colors[i], board);
+      players[i] = new Player("Player " + (i+1), 1000, colors[i], board);
     }
     playerIndex = 0;
 
@@ -55,6 +57,7 @@ class GameManager {
     notEnoughMoney = new Button("not_enough_money", propertySide * 2.5 + boardStartX, propertySide * 2.5);
     eventButton = new Button("go",  propertySide * 3.5, propertySide * 2.5);
     bankruptcy = new Button("bankruptcy",  propertySide * 3.5, propertySide * 2.5);
+    endButton = new Button ("end_turn", propertySide * 4 + boardStartX, (boardSideLength + boardStartY) / 2);
     dice = new Dice();
 
     historyLog = new ArrayList<String>();
@@ -71,7 +74,8 @@ class GameManager {
       if (!purchase.isvisible() &&
         !notEnoughMoney.isvisible() &&
         !eventButton.isvisible() &&
-        !bankruptcy.isvisible()) {
+        !bankruptcy.isvisible() &&
+        !endButton.isvisible()){
       roll.setVisibility(true);
       } else {
       roll.setVisibility(false);
@@ -106,9 +110,17 @@ class GameManager {
         gameState = STATE_WAITING_PURCHASE_DECISION;
         purchase.setVisibility(true);
       } else {
-        gameState = STATE_END_TURN;
+        gameState = CAN_END_TURN;
       }
-    } else if (gameState == STATE_END_TURN) {
+     } 
+     else if (gameState == CAN_END_TURN) { 
+        roll.setVisibility(false);
+        purchase.setVisibility(false);
+        notEnoughMoney.setVisibility(false);
+        eventButton.setVisibility(false);
+        endButton.setVisibility(true); 
+    } 
+    else if (gameState == STATE_END_TURN) {
       if (!gameOver){
         checkBankruptcy();
       }
@@ -117,13 +129,28 @@ class GameManager {
       }
       if (rolledDouble) {
         rolledDouble = false;
+        maintainHistory(currentPlayer.getName() + " rolled a double! Gets another turn.");
         gameState = STATE_WAITING_TO_ROLL;
       } else {
-        playerIndex = (playerIndex + 1) % players.length;
-        maintainHistory(currentPlayer.getName() + " ended their turn");
-        gameState = STATE_WAITING_TO_ROLL;
+        gameState = CAN_END_TURN;
       }
     }
+  }
+
+  public void finalizeTurn() {
+    if (gameOver) return;
+    endButton.setVisibility(false); 
+    checkBankruptcy(); 
+    if (!gameOver) { 
+      checkBankruptcy();
+    }
+    if (gameOver) {
+      return;
+    }
+    int previousPlayerIndex = playerIndex;
+    playerIndex = (playerIndex + 1) % players.length;
+    maintainHistory(players[previousPlayerIndex].getName() + " ended their turn.");
+    gameState = STATE_WAITING_TO_ROLL;
   }
 
   private BoardSpace[] makeTestBoard() {
@@ -247,7 +274,16 @@ class GameManager {
       } else {
         maintainHistory(currentPlayer.getName() + " did not buy " + board[currentPlayer.getIndex()].getName());
       }
-      gameState = STATE_END_TURN;
+      if (!waitingForEvent) { // If notEnoughMoney dialog wasn't triggered
+        if (rolledDouble) {
+          rolledDouble = false; // Consume the double
+          maintainHistory(currentPlayer.getName() + " rolled a double! Gets another turn.");
+          gameState = STATE_WAITING_TO_ROLL;
+        } 
+        else {
+          gameState = CAN_END_TURN;
+        }
+      }    
     }
   }
 
@@ -267,6 +303,9 @@ class GameManager {
     if (bankruptcy.isvisible()) {
       bankruptcy.displayButton();
     }
+    if (endButton.isvisible()) {       
+      endButton.displayButton();
+  }
     drawHistoryLog();
     drawBoard();
     playerStatus();
@@ -290,29 +329,70 @@ class GameManager {
   }
 
   private void playerStatus() {
-    fill(230, 230, 250, 220);
+    float boxW = 280; 
+    float startH = 110; 
+    float propertyLineHeight = 20; 
+    int maxPropertiesToShow = 24; 
+    
+    ArrayList<PropertySpace> props = currentPlayer.getProperties();
+    int numPropsToDisplay = min(props.size(), maxPropertiesToShow); 
+    float propertiesListHeight = numPropsToDisplay * propertyLineHeight;
+    if (props.size() > maxPropertiesToShow) {
+      propertiesListHeight += propertyLineHeight; 
+    }
+    float boxH = startH + propertiesListHeight;
+    if (props.isEmpty()){ 
+        boxH = startH - 20; 
+    }
+    float screenMargin = 20;
+    float padding = 15;
+    int statusTextSize = 18; 
+    int propertyTextSize = 14; 
+    float generalLineHeight = statusTextSize + 8; 
+  
+    float boxX = width - boxW - screenMargin;
+    float boxY = screenMargin;
+  
+    fill(230, 230, 250, 220); 
     stroke(50);
     strokeWeight(1);
-    rect(width-300, 20, 250, 250, 5);
+    rect(boxX, boxY, boxW, boxH, 5); 
+  
     fill(0);
-    textSize(25);
     textAlign(LEFT, TOP);
-
-    fill(currentPlayer.getColor());
+  
+    float currentTextY = boxY + padding;
+    textSize(statusTextSize);
     String turnText = "Turn: " + currentPlayer.getName();
-    text(turnText, width-290, 40);
-
-    fill(0);
-    String moneyText1 = players[0].getName() + " Money: $" + players[0].getMoney();
-    text(moneyText1, width-290, 80);
-    
-    String moneyText2 = players[1].getName() +" Money: $" + players[1].getMoney();
-    text(moneyText2, width-290, 120);
-
+    text(turnText, boxX + padding, currentTextY);
+    currentTextY += generalLineHeight;
+  
+    String moneyText = "Money: $" + currentPlayer.getMoney();
+    text(moneyText, boxX + padding, currentTextY);
+    currentTextY += generalLineHeight;
+  
+    if (!props.isEmpty()) {
+      textSize(statusTextSize - 2); 
+      text("Properties:", boxX + padding, currentTextY);
+      currentTextY += propertyLineHeight; 
+      textSize(propertyTextSize);
+      for (int i = 0; i < numPropsToDisplay; i++) {
+        PropertySpace prop = props.get(i);
+        if (prop != null) {
+          text("- " + prop.getName(), boxX + padding + 10, currentTextY); 
+          currentTextY += propertyLineHeight;
+        }
+      }
+    } 
+    else {
+      textSize(propertyTextSize); 
+      text("(No properties owned)", boxX + padding, currentTextY);
+    }
     fill(currentPlayer.getColor());
     noStroke();
-    ellipseMode(CENTER); 
-    ellipse(width - 175, 200, 30, 30);
+    ellipseMode(CENTER);
+    float playerSize = statusTextSize * 2; 
+    ellipse(boxX + boxW - 50, boxY + padding * 2, playerSize, playerSize);
     stroke(0);
   }
 
@@ -322,11 +402,13 @@ class GameManager {
       if (prop.getOwned()) {
         if (prop.getOwner() == currentPlayer) {
         maintainHistory(currentPlayer.getName() + " landed on their own property: " + prop.getName() + ".");
+        gameState = CAN_END_TURN;
         return false;
       } else {
         prop.getOwner().changeMoney(prop.getRent());
         currentPlayer.changeMoney(-prop.getRent());
         maintainHistory(currentPlayer.getName() + " paid $" + prop.getRent() + " rent to " + prop.getOwner().getName());
+        gameState = CAN_END_TURN;
         checkBankruptcy();
         return false;
       }
@@ -340,7 +422,7 @@ class GameManager {
       String eventMessage = "";
       if (type.equals("GO")) {
           maintainHistory(currentPlayer.getName() + " passed Go and got $100");
-          gameState = STATE_END_TURN;
+          gameState = CAN_END_TURN;
           return false; 
       }
       else if (type.equals("chance")) {
@@ -368,22 +450,29 @@ class GameManager {
         currentPlayer.changeMoney(-100);
         maintainHistory(currentPlayer.getName() + " lost $100");
       }
-
       eventButton = new Button(eventMessage, 200, 200);
       eventButton.setVisibility(true);
       waitingForEvent = true;
-
       return false;
     }
   }
   
-
   public void eventButtonClick() {
     eventButton.setVisibility(false);
     if (currentPlayer.getMoney() < 0) {
       checkBankruptcy();
-    } else {
-      gameState = STATE_END_TURN;
+    } 
+    else {
+       if (!gameOver) { 
+        if (rolledDouble) {
+          rolledDouble = false; 
+          maintainHistory(currentPlayer.getName() + " rolled a double! Gets another turn.");
+          gameState = STATE_WAITING_TO_ROLL;
+        } 
+        else {
+          gameState = CAN_END_TURN;
+        }
+      }
     }
     waitingForEvent = false;
   }

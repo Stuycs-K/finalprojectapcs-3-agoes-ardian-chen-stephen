@@ -13,14 +13,20 @@ void draw() {
 
 void mousePressed() {
   if (manager.waitingForEvent) {
-    if (manager.notEnoughMoney.isvisible()) {
-      int choice = manager.notEnoughMoney.isClicked();
-      if (choice == 1) { 
-        manager.waitingForEvent = false;       
-        manager.gameState = manager.STATE_END_TURN; 
-        return;                                 
+  if (manager.notEnoughMoney.isvisible()) {
+    int choice = manager.notEnoughMoney.isClicked();
+    if (choice == 1) { 
+      manager.waitingForEvent = false;
+      if (manager.rolledDouble) { 
+        manager.rolledDouble = false; 
+        manager.maintainHistory(manager.currentPlayer.getName() + " rolled a double! Gets another turn.");
+        manager.gameState = manager.STATE_WAITING_TO_ROLL;
+      } else {
+        manager.gameState = manager.CAN_END_TURN;
       }
-      if (choice != -1) return; 
+      return;
+    }
+    if (choice != -1) return; 
       return; 
     } else if (manager.eventButton.isvisible()) {
       int choice = manager.eventButton.isClicked();
@@ -31,6 +37,13 @@ void mousePressed() {
       if (choice != -1) return;
     }
     return;
+  }
+  if (manager.gameState == manager.CAN_END_TURN && manager.endButton.isvisible()) {
+    int choice = manager.endButton.isClicked();
+    if (choice == 1) { 
+      manager.finalizeTurn(); 
+      return; 
+    }
   }
   if (manager.gameState == manager.STATE_GAME_OVER && manager.bankruptcy.isClicked() == 1){
     manager = new GameManager(2);
