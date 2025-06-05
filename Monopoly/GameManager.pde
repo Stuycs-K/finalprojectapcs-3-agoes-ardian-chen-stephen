@@ -8,6 +8,7 @@ class GameManager {
   private Button roll;
   private Button notEnoughMoney;
   private Button eventButton;
+  private Button showDice;
   private Button bankruptcy;
   private Button endButton;
   private Dice dice;
@@ -63,6 +64,7 @@ class GameManager {
     eventButton = new Button("go",  propertySide * 3.5, propertySide * 2.5);
     bankruptcy = new Button("bankruptcy",  propertySide * 3.5, propertySide * 2.5);
     endButton = new Button ("end_turn", propertySide * 4 + boardStartX, (boardSideLength + boardStartY) / 2);
+    showDice = new Button ("diceImage", propertySide * 4 + boardStartX, (boardSideLength + boardStartY) / 2);
     dice = new Dice();
     diceOverride = 0;
 
@@ -313,6 +315,9 @@ class GameManager {
       diceRoll2 = dice.getDice2();
       rolledDouble = dice.isDouble();
 
+      showDice.setVisibility(true);
+      drawDieFace(diceRoll1, propertySide * 4 + boardStartX + 35,  (boardSideLength + boardStartY) / 2 + 80 );
+      drawDieFace(diceRoll2, propertySide * 4 + boardStartX + 125, (boardSideLength + boardStartY) / 2 + 80);
       maintainHistory(currentPlayer.getName() + " rolled a " + diceRoll1 + " and a " + diceRoll2);
     }
     roll.setVisibility(false);
@@ -322,6 +327,30 @@ class GameManager {
       drawDieFace(diceRoll1, 500, 500);
       drawDieFace(diceRoll2, 600, 500);
       gameState = STATE_ROLLING;
+  }
+  
+  public void drawDieFace(int num, float x, float y){
+    fill(255);
+    rect(x, y, 60, 60);
+    fill(0);
+    
+    int centerX = x + 30;
+    int centerY = y + 30;
+    
+    int[][] dots = new int[][]{
+      {centerX, centerY},
+      {centerX - 15, centerY - 15, centerX + 15, centerY + 15},
+      {centerX - 15, centerY - 15, centerX + 15, centerY + 15},
+      {centerX - 15, centerY - 15, centerX, centerY, centerX + 15, centerY + 15},
+      {centerX - 15, centerY - 15, centerX + 15, centerY - 15, centerX - 15, centerY + 15, centerX + 15, centerY + 15},
+      {centerX - 15, centerY - 15, centerX + 15, centerY - 15, centerX, centerY, centerX - 15, centerY + 15, centerX + 15, centerY + 15},
+      {centerX - 15, centerY - 15, centerX + 15, centerY - 15, centerX - 15, centerY, centerX + 15, centerY, centerX - 15, centerY + 15, centerX + 15, centerY + 15}
+    };
+    
+    for (int i = 0; i < dots[num - 1].length; i +=2){
+        ellipse(dots[num - 1][i], dots[num - 1][i + 1], 5, 5);
+    }
+
   }
 
   public void purchaseButtonClick(boolean purchase) {
@@ -588,29 +617,6 @@ class GameManager {
     rollButtonClick();
   }
   
-  public void drawDieFace(int num, int x, int y){
-    fill(255);
-    rect(x, y, 60, 60);
-    fill(0);
-    
-    int centerX = x + 30;
-    int centerY = y + 30;
-    
-    int[][] dots = new int[][]{
-      {centerX, centerY},
-      {centerX - 15, centerY - 15, centerX + 15, centerY + 15},
-      {centerX - 15, centerY - 15, centerX + 15, centerY + 15},
-      {centerX - 15, centerY - 15, centerX, centerY, centerX + 15, centerY + 15},
-      {centerX - 15, centerY - 15, centerX + 15, centerY - 15, centerX - 15, centerY + 15, centerX + 15, centerY + 15},
-      {centerX - 15, centerY - 15, centerX + 15, centerY - 15, centerX, centerY, centerX - 15, centerY + 15, centerX + 15, centerY + 15},
-      {centerX - 15, centerY - 15, centerX + 15, centerY - 15, centerX - 15, centerY, centerX + 15, centerY, centerX - 15, centerY + 15, centerX + 15, centerY + 15}
-    };
-    
-    for (int i = 0; i < dots[num - 1].length; i +=2){
-        ellipse(dots[num - 1][i], dots[num - 1][i + 1], 5, 5);
-    }
-
-  }
 
   private void drawHistoryLog() {
     int w = 380;

@@ -56,8 +56,8 @@ class Button{
       text("Dice Roll", xPos + 80, yPos + 30);
       text("You Rolled a 23", xPos + 60, yPos + 60);
 
-      rect(xPos + 35, yPos + 80, 60, 60);
-      rect(xPos + 125, yPos + 80, 60, 60);
+      //rect(xPos + 35, yPos + 80, 60, 60);
+      //rect(xPos + 125, yPos + 80, 60, 60);
 
       fill(255);
       button1X = xPos + w / 2 - 40;
