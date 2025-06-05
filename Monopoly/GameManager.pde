@@ -314,18 +314,18 @@ class GameManager {
       diceRoll1 = dice.getDice1();
       diceRoll2 = dice.getDice2();
       rolledDouble = dice.isDouble();
-
-      showDice.setVisibility(true);
+    }
+    
+     showDice.setVisibility(true);
       drawDieFace(diceRoll1, propertySide * 4 + boardStartX + 35,  (boardSideLength + boardStartY) / 2 + 80 );
       drawDieFace(diceRoll2, propertySide * 4 + boardStartX + 125, (boardSideLength + boardStartY) / 2 + 80);
       maintainHistory(currentPlayer.getName() + " rolled a " + diceRoll1 + " and a " + diceRoll2);
-    }
     roll.setVisibility(false);
+
   }
   
   public void diceRollClick(){
-      drawDieFace(diceRoll1, 500, 500);
-      drawDieFace(diceRoll2, 600, 500);
+      showDice.setVisibility(false);
       gameState = STATE_ROLLING;
   }
   
@@ -334,10 +334,10 @@ class GameManager {
     rect(x, y, 60, 60);
     fill(0);
     
-    int centerX = x + 30;
-    int centerY = y + 30;
+    float centerX = x + 30;
+    float centerY = y + 30;
     
-    int[][] dots = new int[][]{
+    float[][] dots = new float[][]{
       {centerX, centerY},
       {centerX - 15, centerY - 15, centerX + 15, centerY + 15},
       {centerX - 15, centerY - 15, centerX + 15, centerY + 15},
@@ -391,7 +391,10 @@ class GameManager {
     }
     if (endButton.isvisible()) {       
       endButton.displayButton();
-  }
+    }
+    if (showDice.isvisible()) {       
+      showDice.displayButton();
+    }
     drawHistoryLog();
     drawBoard();
     playerStatus();

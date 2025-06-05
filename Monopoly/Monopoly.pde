@@ -1,25 +1,21 @@
 private GameManager manager;
 boolean override;
 String overrideS;
-private Button button;
 
 void setup(){
   size(1280, 720);
-  button = new Button("diceImage", 400, 400);
-  button.setVisibility(true);
-  button.displayButton();
-  //manager = new GameManager(2);
-  //override = false;
-  //overrideS = "";
+  manager = new GameManager(2);
+  override = false;
+  overrideS = "";
 }
 
 void draw() {
-  //background(255);
-  //if (override){
-  //  text("Override: " + override, 750, 100);
-  //}
-  //manager.update();    
-  //manager.display();   
+  background(255);
+  if (override){
+    text("Override: " + override, 750, 100);
+  }
+  manager.update();    
+  manager.display();   
 }
 
 void keyPressed(){
@@ -98,5 +94,8 @@ void mousePressed() {
   }
   if (manager.eventButton.isvisible() && manager.eventButton.isClicked() != -1){
     manager.eventButtonClick();
+  }
+  if (manager.showDice.isvisible() && manager.showDice.isClicked() != -1){
+    manager.diceRollClick();
   }
 }
