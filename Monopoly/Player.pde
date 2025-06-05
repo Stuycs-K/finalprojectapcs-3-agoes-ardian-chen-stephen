@@ -6,6 +6,9 @@ class Player{
   color c;
   ArrayList<PropertySpace> ownedProperties;
   BoardSpace[] board;
+  
+  boolean inJail;
+  int jailTurns;
 
   Player(String name, int money, color c, BoardSpace[] board){
     this.name = name;
@@ -17,6 +20,33 @@ class Player{
     BoardSpace currentSpace = board[currentBoardIndex];
     this.x = currentSpace.getX() + (int)(currentSpace.getWidth() / 2.0f);
     this.y = currentSpace.getY() + (int)(currentSpace.getHeight() / 2.0f);
+    
+    inJail = false;
+    jailTurns = 0;
+  }
+  
+  public boolean isInJail(){
+    return inJail;
+  }
+  
+  public void sentToJail(int jailIndex){
+    System.out.println("sending to jail");
+    inJail = true;
+    jailTurns = 4;
+    setPos(jailIndex);
+  }
+  
+  public void changeJailTurns(){
+    jailTurns--;
+  }
+  
+  public void releaseJail(){
+    inJail = false;
+    jailTurns = 0;
+  }
+  
+  public int getJailTurns(){
+    return jailTurns;
   }
   
   public int getMoney(){
@@ -58,7 +88,7 @@ class Player{
   public boolean move(int stepsToMove){
     boolean passedGo = false;
     if (currentBoardIndex + stepsToMove >= board.length){
-      changeMoney(50);
+      changeMoney(100);
       passedGo = true;
     }
     this.currentBoardIndex = (currentBoardIndex + stepsToMove) % board.length;
@@ -69,7 +99,7 @@ class Player{
    public boolean moveOneStep(){
     boolean passedGo = false;
     if (currentBoardIndex + 1 >= board.length){
-      changeMoney(50);
+      changeMoney(100);
       passedGo = true;
     }
     this.currentBoardIndex = (currentBoardIndex + 1) % board.length;
@@ -80,7 +110,7 @@ class Player{
   public boolean setPos (int index){
     boolean passedGo = false;
     if (currentBoardIndex > index){
-       changeMoney(50);
+       changeMoney(100);
        passedGo = true;
     }
     this.currentBoardIndex = index;
@@ -95,11 +125,13 @@ class Player{
   }
   
   public void draw(){
-    fill(this.c);    
-    noStroke();     
-    ellipseMode(CENTER); 
-    float tokenSize = 30;
-    ellipse(this.x, this.y, tokenSize, tokenSize); 
+     fill(this.c);    
+     noStroke();     
+     ellipseMode(CENTER); 
+     float tokenSize = 30;
+     stroke(0);
+     ellipse(this.x, this.y, tokenSize, tokenSize); 
+     noStroke();
      fill(0); 
      textAlign(CENTER, CENTER);
      textSize(tokenSize * 0.5f);

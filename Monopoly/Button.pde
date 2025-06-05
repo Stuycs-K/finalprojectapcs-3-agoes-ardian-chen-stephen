@@ -1,63 +1,77 @@
 class Button{
-String type;
-float xPos;
-float yPos;
-float button1X;
-float button2X;
-float buttonY;
-float buttonW;
-float buttonH;
-boolean visible;
-  
-Button(String type, float xPos, float yPos){
-  this.type = type;
-  this.xPos = xPos;
-  this.yPos = yPos;
-  visible = false;
-}
+  String type;
+  float xPos;
+  float yPos;
+  float button1X;
+  float button2X;
+  float buttonY;
+  float buttonW;
+  float buttonH;
+  boolean visible;
+      
+  Button(String type, float xPos, float yPos){
+    this.type = type;
+    this.xPos = xPos;
+    this.yPos = yPos;
+    visible = false;
+  }
 
-public void displayButton(){
-  if (!visible) return; 
-  int w = 0;
-  int h = 0;
- 
-  if (type.equals("purchase")){
-    w = 220; 
-    h = 80;
+  public void displayButton(){
+    if (!visible) return; 
+    int w = 0;
+    int h = 0;
+   
+    if (type.equals("purchase")){
+      w = 220; 
+      h = 80;
+      
+      fill(240, 10, 0);
+      rect(xPos, yPos, w, h);
+      fill(0);
+      textSize(20);
+      text("Would you like to", xPos + 110, yPos + 30);
+      text("purchase this property?", xPos + 110, yPos + 50);
+      fill(255);
+      button1X = xPos;
+      button2X = xPos + 170;
+      buttonY = yPos + 90;
+      buttonW = 50;
+      buttonH = 50;
+      textAlign(LEFT, BASELINE);
+      rect(button1X, buttonY, buttonW, buttonH);
+      rect(button2X, buttonY, buttonW, buttonH);
+      fill(0);
+      text("Yes", button1X + 5, buttonY + 20);
+      text("No", button2X + 5, buttonY + 20);
+    }
+  
+    else if (type.equals("roll")) {
+      button1X = xPos;
+      buttonY = yPos;
+      buttonW = 100;
+      buttonH = 50;
+
+      fill(0, 150, 255);
+      rect(button1X, buttonY, buttonW, buttonH);
+      fill(255);
+      textAlign(CENTER, CENTER);
+      textSize(16);
+      text("Roll Dice", button1X + buttonW/2, buttonY + buttonH/2);
+    }
     
-    fill(100, 0, 0);
-    rect(xPos, yPos, w, h);
-    fill(0);
-    textSize(20);
-    text("Would you like to", xPos + 110, yPos + 30);
-    text("purchase this property?", xPos + 110, yPos + 50);
-    fill(255);
-    button1X = xPos;
-    button2X = xPos + 170;
-    buttonY = yPos + 90;
-    buttonW = 50;
-    buttonH = 50;
-    textAlign(LEFT, BASELINE);
-    rect(button1X, buttonY, buttonW, buttonH);
-    rect(button2X, buttonY, buttonW, buttonH);
-    fill(0);
-    text("Yes", button1X + 5, buttonY + 20);
-    text("No", button2X + 5, buttonY + 20);
-  }
-  
-  else if (type.equals("roll")) {
-    button1X = xPos;
-    buttonY = yPos;
-    buttonW = 100;
-    buttonH = 50;
+    else if (type.equals("end_turn")) {
+      button1X = xPos;
+      buttonY = yPos;
+      buttonW = 100;
+      buttonH = 50;
 
-    fill(0, 150, 255);
-    rect(button1X, buttonY, buttonW, buttonH);
-    fill(255);
-    textAlign(CENTER, CENTER);
-    textSize(16);
-    text("Roll Dice", button1X + buttonW/2, buttonY + buttonH/2);
-  }
+      fill(0, 200, 10);
+      rect(button1X, buttonY, buttonW, buttonH);
+      fill(255);
+      textAlign(CENTER, CENTER);
+      textSize(16);
+      text("End Turn", button1X + buttonW/2, buttonY + buttonH/2);
+    }
   
    else if (type.equals("not_enough_money")) {
       w = 330;
@@ -82,7 +96,7 @@ public void displayButton(){
     }
     
     else if (type.equals("bankruptcy")){
-      w = 400; 
+      w = 300; 
       h = 150;
       
       fill(139, 0, 0);
@@ -109,7 +123,7 @@ public void displayButton(){
       String message = "";
       String eventType = "";
       if (type.equals("go")){
-        message = "Move to GO and collect $50";
+        message = "Move to GO and collect $100";
         eventType = "Chance Card";
       }
       else if (type.equals("irs")){ 
@@ -129,12 +143,19 @@ public void displayButton(){
         for(String s: parts){
           System.out.println(s);
         }
-        message = parts[1] + " payed $" + parts[2] + " to " + parts[3];
+        message = parts[1] + " " + parts[2] + " payed $" + parts[3] + " to " + parts[4] + " " + parts[5];
         eventType = "Pay Rent";
       }
-      else{ 
+      else if (type.equals("gojail")){
+        message = "Caught for fraud and sent in jail";
+        eventType = "Jail";
+      }
+      else if (type.equals("tax")){ 
         message = "Pay $100 in income tax to the state";
         eventType = "Tax";
+      }
+      else{
+        return;
       }
       
       w = 330;
@@ -173,8 +194,8 @@ public void displayButton(){
       fill(0);
       textAlign(CENTER, CENTER);
       text("Okay", button1X + buttonW / 2, buttonY + buttonH / 2);
+      }
     }
-  }
 
     public void setVisibility(boolean status){
       visible = status;
