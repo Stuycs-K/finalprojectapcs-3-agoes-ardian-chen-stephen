@@ -318,8 +318,6 @@ class GameManager {
       
       roll.setVisibility(false);
       showDice.setVisibility(true);
-      drawDieFace(diceRoll1, propertySide * 4 + boardStartX + 35,  (boardSideLength + boardStartY) / 2 + 80 );
-      drawDieFace(diceRoll2, propertySide * 4 + boardStartX + 125, (boardSideLength + boardStartY) / 2 + 80);
       maintainHistory(currentPlayer.getName() + " rolled a " + diceRoll1 + " and a " + diceRoll2);
   }
   
@@ -339,7 +337,6 @@ class GameManager {
     
     float[][] dots = new float[][]{
       {centerX, centerY},
-      {centerX - 15, centerY - 15, centerX + 15, centerY + 15},
       {centerX - 15, centerY - 15, centerX + 15, centerY + 15},
       {centerX - 15, centerY - 15, centerX, centerY, centerX + 15, centerY + 15},
       {centerX - 15, centerY - 15, centerX + 15, centerY - 15, centerX - 15, centerY + 15, centerX + 15, centerY + 15},
@@ -394,6 +391,10 @@ class GameManager {
     }
     if (showDice.isvisible()) {       
       showDice.displayButton();
+    }
+    if (manager.showDice.isvisible()) {
+      drawDieFace(diceRoll1, propertySide * 3 + boardStartX + 35, (boardSideLength + boardStartY) / 3 + 80);
+      drawDieFace(diceRoll2, propertySide * 3 + boardStartX + 125, (boardSideLength + boardStartY) / 3 + 80);
     }
     drawHistoryLog();
     drawBoard();

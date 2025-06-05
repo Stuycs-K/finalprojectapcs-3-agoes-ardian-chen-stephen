@@ -14,6 +14,7 @@ void draw() {
   if (override){
     text("Override: " + override, 750, 100);
   }
+  
   manager.update();    
   manager.display();   
 }
