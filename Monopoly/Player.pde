@@ -32,7 +32,7 @@ class Player{
   public void sentToJail(int jailIndex){
     System.out.println("sending to jail");
     inJail = true;
-    jailTurns = 3;
+    jailTurns = 4;
     setPos(jailIndex);
   }
   

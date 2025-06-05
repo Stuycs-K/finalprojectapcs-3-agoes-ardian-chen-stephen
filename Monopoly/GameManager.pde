@@ -422,10 +422,13 @@ class GameManager {
           currentPlayer.changeMoney(100);
           maintainHistory(currentPlayer.getName() + " gained $100");
         }
-      } else {
+      } else if (type.equals("tax")){
         eventMessage = "tax";
         currentPlayer.changeMoney(-100);
         maintainHistory(currentPlayer.getName() + " lost $100");
+      }
+      else{
+        return false;
       }
 
       eventButton = new Button(eventMessage, 200, 200);
