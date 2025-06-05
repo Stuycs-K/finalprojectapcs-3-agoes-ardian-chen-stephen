@@ -53,8 +53,8 @@ class Button{
       rect(xPos, yPos, w, h);
       fill(0);
       textSize(16);
-      text("Dice Roll", xPos + 80, yPos + 30);
-      text("You Rolled a 23", xPos + 60, yPos + 60);
+      text("Dice Roll", xPos + 115, yPos + 30);
+      text("You Rolled a 23", xPos + 110, yPos + 60);
 
       //rect(xPos + 35, yPos + 80, 60, 60);
       //rect(xPos + 125, yPos + 80, 60, 60);

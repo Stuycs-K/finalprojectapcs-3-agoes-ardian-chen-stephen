@@ -64,7 +64,7 @@ class GameManager {
     eventButton = new Button("go",  propertySide * 3.5, propertySide * 2.5);
     bankruptcy = new Button("bankruptcy",  propertySide * 3.5, propertySide * 2.5);
     endButton = new Button ("end_turn", propertySide * 4 + boardStartX, (boardSideLength + boardStartY) / 2);
-    showDice = new Button ("diceImage", propertySide * 4 + boardStartX, (boardSideLength + boardStartY) / 2);
+    showDice = new Button ("diceImage", propertySide * 3 + boardStartX, (boardSideLength + boardStartY) / 3);
     dice = new Dice();
     diceOverride = 0;
 
@@ -315,16 +315,16 @@ class GameManager {
       diceRoll2 = dice.getDice2();
       rolledDouble = dice.isDouble();
     }
-    
-     showDice.setVisibility(true);
+      
+      roll.setVisibility(false);
+      showDice.setVisibility(true);
       drawDieFace(diceRoll1, propertySide * 4 + boardStartX + 35,  (boardSideLength + boardStartY) / 2 + 80 );
       drawDieFace(diceRoll2, propertySide * 4 + boardStartX + 125, (boardSideLength + boardStartY) / 2 + 80);
       maintainHistory(currentPlayer.getName() + " rolled a " + diceRoll1 + " and a " + diceRoll2);
-    roll.setVisibility(false);
-
   }
   
   public void diceRollClick(){
+      roll.setVisibility(false);
       showDice.setVisibility(false);
       gameState = STATE_ROLLING;
   }
