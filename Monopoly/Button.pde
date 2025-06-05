@@ -44,6 +44,31 @@ class Button{
       text("Yes", button1X + 5, buttonY + 20);
       text("No", button2X + 5, buttonY + 20);
     }
+    
+    else if (type.equals("diceImage")){
+      w = 220; 
+      h = 210;
+      
+      fill(40, 60, 40);
+      rect(xPos, yPos, w, h);
+      fill(0);
+      textSize(16);
+      text("Dice Roll", xPos + 80, yPos + 30);
+      text("You Rolled a 23", xPos + 60, yPos + 60);
+
+      rect(xPos + 35, yPos + 80, 60, 60);
+      rect(xPos + 125, yPos + 80, 60, 60);
+
+      fill(255);
+      button1X = xPos + w / 2 - 40;
+      buttonY = yPos + 160;
+      buttonW = 80;
+      buttonH = 30;
+      rect(button1X, buttonY, buttonW, buttonH);
+      fill(0);
+      textAlign(CENTER, CENTER);
+      text("Okay", button1X + buttonW / 2, buttonY + buttonH / 2);
+    }
   
     else if (type.equals("roll")) {
       button1X = xPos;

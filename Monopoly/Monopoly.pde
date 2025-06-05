@@ -1,21 +1,25 @@
 private GameManager manager;
 boolean override;
 String overrideS;
+private Button button;
 
 void setup(){
   size(1280, 720);
-  manager = new GameManager(2);
-  override = false;
-  overrideS = "";
+  button = new Button("diceImage", 400, 400);
+  button.setVisibility(true);
+  button.displayButton();
+  //manager = new GameManager(2);
+  //override = false;
+  //overrideS = "";
 }
 
 void draw() {
-  background(255);
-  if (override){
-    text("Override: " + override, 750, 100);
-  }
-  manager.update();    
-  manager.display();   
+  //background(255);
+  //if (override){
+  //  text("Override: " + override, 750, 100);
+  //}
+  //manager.update();    
+  //manager.display();   
 }
 
 void keyPressed(){

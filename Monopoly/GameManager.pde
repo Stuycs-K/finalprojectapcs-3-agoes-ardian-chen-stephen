@@ -17,15 +17,6 @@ class GameManager {
   private int diceRoll2;
   private int diceOverride;
   
-  final int[][] dots = new int[][]{
-      {centerX, centerY},
-      {centerX - 15, centerY - 15, centerX + 15, centerY + 15},
-      {centerX - 15, centerY - 15, centerX + 15, centerY + 15},
-      {centerX - 15, centerY - 15, centerX, centerY, centerX + 15, centerY + 15},
-      {centerX - 15, centerY - 15, centerX + 15, centerY - 15, centerX - 15, centerY + 15, centerX + 15, centerY + 15},
-      {centerX - 15, centerY - 15, centerX + 15, centerY - 15, centerX, centerY, centerX - 15, centerY + 15, centerX + 15, centerY + 15},
-      {centerX - 15, centerY - 15, centerX + 15, centerY - 15, centerX - 15, centerY, centerX + 15, centerY, centerX - 15, centerY + 15, centerX + 15, centerY + 15}
-    };
     
   private int gameState;
   private boolean rolledDouble;
@@ -314,16 +305,23 @@ class GameManager {
       diceRoll1 = diceOverride / 2;
       diceRoll2 = diceOverride - diceRoll1;
       diceOverride = 0;
+          gameState = STATE_ROLLING;
     }
     else{
       dice.roll();
       diceRoll1 = dice.getDice1();
       diceRoll2 = dice.getDice2();
       rolledDouble = dice.isDouble();
+
       maintainHistory(currentPlayer.getName() + " rolled a " + diceRoll1 + " and a " + diceRoll2);
     }
     roll.setVisibility(false);
-    gameState = STATE_ROLLING;
+  }
+  
+  public void diceRollClick(){
+      drawDieFace(diceRoll1, 500, 500);
+      drawDieFace(diceRoll2, 600, 500);
+      gameState = STATE_ROLLING;
   }
 
   public void purchaseButtonClick(boolean purchase) {
@@ -333,10 +331,10 @@ class GameManager {
       } else {
         maintainHistory(currentPlayer.getName() + " did not buy " + board[currentPlayer.getIndex()].getName());
       }
-      if (!waitingForEvent) { // If notEnoughMoney dialog wasn't triggered
+      if (!waitingForEvent) { 
         if (rolledDouble) {
-          rolledDouble = false; // Consume the double
-          maintainHistory(currentPlayer.getName() + " rolled a double! Gets another turn.");
+          rolledDouble = false; 
+          maintainHistory(currentPlayer.getName() + " rolled a double. Gets another turn.");
           gameState = STATE_WAITING_TO_ROLL;
         } 
         else {
@@ -597,6 +595,16 @@ class GameManager {
     
     int centerX = x + 30;
     int centerY = y + 30;
+    
+    int[][] dots = new int[][]{
+      {centerX, centerY},
+      {centerX - 15, centerY - 15, centerX + 15, centerY + 15},
+      {centerX - 15, centerY - 15, centerX + 15, centerY + 15},
+      {centerX - 15, centerY - 15, centerX, centerY, centerX + 15, centerY + 15},
+      {centerX - 15, centerY - 15, centerX + 15, centerY - 15, centerX - 15, centerY + 15, centerX + 15, centerY + 15},
+      {centerX - 15, centerY - 15, centerX + 15, centerY - 15, centerX, centerY, centerX - 15, centerY + 15, centerX + 15, centerY + 15},
+      {centerX - 15, centerY - 15, centerX + 15, centerY - 15, centerX - 15, centerY, centerX + 15, centerY, centerX - 15, centerY + 15, centerX + 15, centerY + 15}
+    };
     
     for (int i = 0; i < dots[num - 1].length; i +=2){
         ellipse(dots[num - 1][i], dots[num - 1][i + 1], 5, 5);
