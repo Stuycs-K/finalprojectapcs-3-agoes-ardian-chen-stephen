@@ -8,6 +8,7 @@ class GameManager {
   private Button roll;
   private Button notEnoughMoney;
   private Button eventButton;
+  private Button showDice;
   private Button bankruptcy;
   private Button endButton;
   private Dice dice;
@@ -16,6 +17,8 @@ class GameManager {
   private int diceRoll1;
   private int diceRoll2;
   private int diceOverride;
+  
+    
   private int gameState;
   private boolean rolledDouble;
   private boolean waitingForEvent;
@@ -61,6 +64,7 @@ class GameManager {
     eventButton = new Button("go",  propertySide * 3.5, propertySide * 2.5);
     bankruptcy = new Button("bankruptcy",  propertySide * 3.5, propertySide * 2.5);
     endButton = new Button ("end_turn", propertySide * 4 + boardStartX, (boardSideLength + boardStartY) / 2);
+    showDice = new Button ("diceImage", propertySide * 3 + boardStartX, (boardSideLength + boardStartY) / 3);
     dice = new Dice();
     diceOverride = 0;
 
@@ -303,16 +307,47 @@ class GameManager {
       diceRoll1 = diceOverride / 2;
       diceRoll2 = diceOverride - diceRoll1;
       diceOverride = 0;
+          gameState = STATE_ROLLING;
     }
     else{
       dice.roll();
       diceRoll1 = dice.getDice1();
       diceRoll2 = dice.getDice2();
       rolledDouble = dice.isDouble();
-      maintainHistory(currentPlayer.getName() + " rolled a " + diceRoll1 + " and a " + diceRoll2);
     }
-    roll.setVisibility(false);
-    gameState = STATE_ROLLING;
+      
+      roll.setVisibility(false);
+      showDice.setVisibility(true);
+      maintainHistory(currentPlayer.getName() + " rolled a " + diceRoll1 + " and a " + diceRoll2);
+  }
+  
+  public void diceRollClick(){
+      roll.setVisibility(false);
+      showDice.setVisibility(false);
+      gameState = STATE_ROLLING;
+  }
+  
+  public void drawDieFace(int num, float x, float y){
+    fill(255);
+    rect(x, y, 60, 60);
+    fill(0);
+    
+    float centerX = x + 30;
+    float centerY = y + 30;
+    
+    float[][] dots = new float[][]{
+      {centerX, centerY},
+      {centerX - 15, centerY - 15, centerX + 15, centerY + 15},
+      {centerX - 15, centerY - 15, centerX, centerY, centerX + 15, centerY + 15},
+      {centerX - 15, centerY - 15, centerX + 15, centerY - 15, centerX - 15, centerY + 15, centerX + 15, centerY + 15},
+      {centerX - 15, centerY - 15, centerX + 15, centerY - 15, centerX, centerY, centerX - 15, centerY + 15, centerX + 15, centerY + 15},
+      {centerX - 15, centerY - 15, centerX + 15, centerY - 15, centerX - 15, centerY, centerX + 15, centerY, centerX - 15, centerY + 15, centerX + 15, centerY + 15}
+    };
+    
+    for (int i = 0; i < dots[num - 1].length; i +=2){
+        ellipse(dots[num - 1][i], dots[num - 1][i + 1], 5, 5);
+    }
+
   }
 
   public void purchaseButtonClick(boolean purchase) {
@@ -322,10 +357,10 @@ class GameManager {
       } else {
         maintainHistory(currentPlayer.getName() + " did not buy " + board[currentPlayer.getIndex()].getName());
       }
-      if (!waitingForEvent) { // If notEnoughMoney dialog wasn't triggered
+      if (!waitingForEvent) { 
         if (rolledDouble) {
-          rolledDouble = false; // Consume the double
-          maintainHistory(currentPlayer.getName() + " rolled a double! Gets another turn.");
+          rolledDouble = false; 
+          maintainHistory(currentPlayer.getName() + " rolled a double. Gets another turn.");
           gameState = STATE_WAITING_TO_ROLL;
         } 
         else {
@@ -353,7 +388,14 @@ class GameManager {
     }
     if (endButton.isvisible()) {       
       endButton.displayButton();
-  }
+    }
+    if (showDice.isvisible()) {       
+      showDice.displayButton();
+    }
+    if (manager.showDice.isvisible()) {
+      drawDieFace(diceRoll1, propertySide * 3 + boardStartX + 35, (boardSideLength + boardStartY) / 3 + 80);
+      drawDieFace(diceRoll2, propertySide * 3 + boardStartX + 125, (boardSideLength + boardStartY) / 3 + 80);
+    }
     drawHistoryLog();
     drawBoard();
     playerStatus();
@@ -578,6 +620,7 @@ class GameManager {
     diceOverride = override;
     rollButtonClick();
   }
+  
 
   private void drawHistoryLog() {
     int w = 380;

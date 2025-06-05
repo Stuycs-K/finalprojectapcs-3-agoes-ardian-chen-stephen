@@ -14,6 +14,7 @@ void draw() {
   if (override){
     text("Override: " + override, 750, 100);
   }
+  
   manager.update();    
   manager.display();   
 }
@@ -94,5 +95,8 @@ void mousePressed() {
   }
   if (manager.eventButton.isvisible() && manager.eventButton.isClicked() != -1){
     manager.eventButtonClick();
+  }
+  if (manager.showDice.isvisible() && manager.showDice.isClicked() != -1){
+    manager.diceRollClick();
   }
 }
