@@ -16,6 +16,17 @@ class GameManager {
   private int diceRoll1;
   private int diceRoll2;
   private int diceOverride;
+  
+  final int[][] dots = new int[][]{
+      {centerX, centerY},
+      {centerX - 15, centerY - 15, centerX + 15, centerY + 15},
+      {centerX - 15, centerY - 15, centerX + 15, centerY + 15},
+      {centerX - 15, centerY - 15, centerX, centerY, centerX + 15, centerY + 15},
+      {centerX - 15, centerY - 15, centerX + 15, centerY - 15, centerX - 15, centerY + 15, centerX + 15, centerY + 15},
+      {centerX - 15, centerY - 15, centerX + 15, centerY - 15, centerX, centerY, centerX - 15, centerY + 15, centerX + 15, centerY + 15},
+      {centerX - 15, centerY - 15, centerX + 15, centerY - 15, centerX - 15, centerY, centerX + 15, centerY, centerX - 15, centerY + 15, centerX + 15, centerY + 15}
+    };
+    
   private int gameState;
   private boolean rolledDouble;
   private boolean waitingForEvent;
@@ -577,6 +588,20 @@ class GameManager {
   public void overrideDice(int override){
     diceOverride = override;
     rollButtonClick();
+  }
+  
+  public void drawDieFace(int num, int x, int y){
+    fill(255);
+    rect(x, y, 60, 60);
+    fill(0);
+    
+    int centerX = x + 30;
+    int centerY = y + 30;
+    
+    for (int i = 0; i < dots[num - 1].length; i +=2){
+        ellipse(dots[num - 1][i], dots[num - 1][i + 1], 5, 5);
+    }
+
   }
 
   private void drawHistoryLog() {
