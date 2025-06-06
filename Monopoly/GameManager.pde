@@ -29,12 +29,13 @@ class GameManager {
   public final int STATE_WAITING_PURCHASE_DECISION = 4;
   public final int STATE_END_TURN = 5;
   public final int CAN_END_TURN = 6;
+  public final int STATE_SHOWING_DICE = 7;
   public final int STATE_GAME_OVER = 99;
 
   private int numPropEachSide = 7;
   private int totalBoardSpaces = (4 * numPropEachSide) + 4;
-  private float cornerSize = 70.0f;
-  private float propertySide = 70.0f;
+  private float cornerSize = 95.0f;
+  private float propertySide = 95.0f;
   private float boardSideLength = (2 * cornerSize) + (numPropEachSide * propertySide);
   private float boardStartX = 10.0f;
   private float boardStartY = 10.0f;
@@ -329,11 +330,18 @@ class GameManager {
   }
   
   public void rollButtonClick() {
-    if (diceOverride > 0){
-      diceRoll1 = diceOverride / 2;
-      diceRoll2 = diceOverride - diceRoll1;
-      diceOverride = 0;
-          gameState = STATE_ROLLING;
+    if (diceOverride > 0) {
+      int totalOverrideSteps = diceOverride;
+      diceOverride = 0; 
+    if (totalOverrideSteps < 2 || totalOverrideSteps > 12) {
+      totalOverrideSteps = 2; 
+    }
+    diceRoll1 = (int) ceil(totalOverrideSteps / 2.0f);
+    if (diceRoll1 > 6) diceRoll1 = 6;
+    diceRoll2 = totalOverrideSteps - diceRoll1;
+    if (diceRoll2 > 6) { diceRoll2 = 6; diceRoll1 = totalOverrideSteps - diceRoll2; }
+    if (diceRoll1 < 1) { diceRoll1 = 1; diceRoll2 = totalOverrideSteps - diceRoll1; }
+    maintainHistory("Dice Override: " + totalOverrideSteps + " (as " + diceRoll1 + "," + diceRoll2 + ")");
     }
     else{
       dice.roll();
@@ -341,9 +349,11 @@ class GameManager {
       diceRoll2 = dice.getDice2();
       rolledDouble = dice.isDouble();
     }
+      rolledDouble = (diceRoll1 == diceRoll2);
       roll.setVisibility(false);
       showDice.setVisibility(true);
       maintainHistory(currentPlayer.getName() + " rolled a " + diceRoll1 + " and a " + diceRoll2);
+      gameState = STATE_SHOWING_DICE;
   }
   
   public void diceRollClick(){
@@ -372,7 +382,6 @@ class GameManager {
     for (int i = 0; i < dots[num - 1].length; i +=2){
         ellipse(dots[num - 1][i], dots[num - 1][i + 1], 5, 5);
     }
-
   }
 
   public void purchaseButtonClick(boolean purchase) {
@@ -640,12 +649,6 @@ class GameManager {
       historyLog.remove(0);
     }
   }
-  
-  public void overrideDice(int override){
-    diceOverride = override;
-    rollButtonClick();
-  }
-  
 
   private void drawHistoryLog() {
     int w = 380;

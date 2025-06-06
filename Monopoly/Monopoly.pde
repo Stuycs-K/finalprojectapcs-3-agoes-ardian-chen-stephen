@@ -3,7 +3,7 @@ boolean override;
 String overrideS;
 
 void setup(){
-  size(1280, 720);
+  size(1600, 900);
   manager = new GameManager(2);
   override = false;
   overrideS = "";
@@ -65,6 +65,14 @@ void mousePressed() {
       if (choice != -1) return;
     }
     return;
+  }
+  if (manager.gameState == manager.STATE_SHOWING_DICE && manager.showDice.isvisible()) {
+    int choice = manager.showDice.isClicked(); 
+    if (choice == 1) { 
+      manager.diceRollClick(); 
+      return;
+    }
+    if (choice != -1) return; 
   }
   if (manager.gameState == manager.CAN_END_TURN && manager.endButton.isvisible()) {
     int choice = manager.endButton.isClicked();
