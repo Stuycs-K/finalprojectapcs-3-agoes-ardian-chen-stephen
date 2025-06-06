@@ -8,12 +8,19 @@ class Button{
   float buttonW;
   float buttonH;
   boolean visible;
+  int dice1;
+  int dice2;
       
   Button(String type, float xPos, float yPos){
     this.type = type;
     this.xPos = xPos;
     this.yPos = yPos;
     visible = false;
+  }
+  
+  public void setDice(int dice1, int dice2){
+    this.dice1 = dice1;
+    this.dice2 = dice2;
   }
 
   public void displayButton(){
@@ -54,7 +61,7 @@ class Button{
       fill(0);
       textSize(16);
       text("Dice Roll", xPos + 115, yPos + 30);
-      text("You Rolled a ", xPos + 110, yPos + 60);
+      text("You Rolled a " + dice1 + " and " + dice2, xPos + 110, yPos + 60);
 
       //rect(xPos + 35, yPos + 80, 60, 60);
       //rect(xPos + 125, yPos + 80, 60, 60);

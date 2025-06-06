@@ -3,7 +3,7 @@ boolean override;
 String overrideS;
 
 void setup(){
-  size(1600, 900);
+  size(1280, 720);
   manager = new GameManager(2);
   override = false;
   overrideS = "";
@@ -22,7 +22,7 @@ void keyPressed(){
   if (override){
     if (key == ENTER){
       int val = Integer.parseInt(overrideS);
-      if (val > 0){
+      if (val > 0 && val <= 12){
         manager.overrideDice(val);
       }
       override = false;
