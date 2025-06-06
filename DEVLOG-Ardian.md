@@ -37,3 +37,8 @@ Added colors and actual property names, prices, and rents.
 ### 2025-06-3 - Coding
 Added an end turn button and changed the player status ui
 
+### 2025-06-3 - Coding
+Added property sets
+
+### 2025-06-4 - Coding
+Fixed dice override bug and working on fixing rolling a dice and landing on go not giving an extra turn.

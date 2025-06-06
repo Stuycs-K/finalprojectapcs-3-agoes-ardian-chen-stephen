@@ -106,9 +106,9 @@ class GameManager {
             gameState = STATE_MOVING;
             moveStepsRemaining = diceRoll1 + diceRoll2;
           } else {
-                          System.out.println("jail end turn");
-            maintainHistory(currentPlayer.getName() + " failed to roll a double. Turn skipped.");
-            gameState = STATE_END_TURN;
+              System.out.println("jail end turn");
+              maintainHistory(currentPlayer.getName() + " failed to roll a double. Turn skipped.");
+              gameState = STATE_END_TURN;
           }
         }
       }
@@ -548,12 +548,7 @@ class GameManager {
       int choice = (int) (Math.random() * 2);
       String type = event.getType();
       String eventMessage = "";
-      if (type.equals("GO")) {
-          maintainHistory(currentPlayer.getName() + " went to go and collected $100");
-          gameState = CAN_END_TURN;
-          return false; 
-      }
-      else if (type.equals("gojail")){
+      if (type.equals("gojail")){
         currentPlayer.sentToJail(jail.getBoardIndex());
         eventMessage = "gojail";
         maintainHistory(currentPlayer.getName() + " got caught for fraud and is in jail");
