@@ -44,6 +44,31 @@ class Button{
       text("Yes", button1X + 5, buttonY + 20);
       text("No", button2X + 5, buttonY + 20);
     }
+    
+    else if (type.equals("diceImage")){
+      w = 220; 
+      h = 210;
+      
+      fill(40, 60, 40);
+      rect(xPos, yPos, w, h);
+      fill(0);
+      textSize(16);
+      text("Dice Roll", xPos + 115, yPos + 30);
+      text("You Rolled a ", xPos + 110, yPos + 60);
+
+      //rect(xPos + 35, yPos + 80, 60, 60);
+      //rect(xPos + 125, yPos + 80, 60, 60);
+
+      fill(255);
+      button1X = xPos + w / 2 - 40;
+      buttonY = yPos + 160;
+      buttonW = 80;
+      buttonH = 30;
+      rect(button1X, buttonY, buttonW, buttonH);
+      fill(0);
+      textAlign(CENTER, CENTER);
+      text("Okay", button1X + buttonW / 2, buttonY + buttonH / 2);
+    }
   
     else if (type.equals("roll")) {
       button1X = xPos;
@@ -143,12 +168,19 @@ class Button{
         for(String s: parts){
           System.out.println(s);
         }
-        message = parts[1] + " payed $" + parts[2] + " to " + parts[3];
+        message = parts[1] + " " + parts[2] + " payed $" + parts[3] + " to " + parts[4] + " " + parts[5];
         eventType = "Pay Rent";
       }
-      else{ 
+      else if (type.equals("gojail")){
+        message = "Caught for fraud and sent in jail";
+        eventType = "Jail";
+      }
+      else if (type.equals("tax")){ 
         message = "Pay $100 in income tax to the state";
         eventType = "Tax";
+      }
+      else{
+        return;
       }
       
       w = 330;
@@ -218,4 +250,3 @@ class Button{
         return -1; 
     }
   }
-}

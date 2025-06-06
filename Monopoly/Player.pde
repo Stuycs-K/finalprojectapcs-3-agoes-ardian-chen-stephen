@@ -6,6 +6,9 @@ class Player{
   color c;
   ArrayList<PropertySpace> ownedProperties;
   BoardSpace[] board;
+  
+  boolean inJail;
+  int jailTurns;
 
   Player(String name, int money, color c, BoardSpace[] board){
     this.name = name;
@@ -17,6 +20,33 @@ class Player{
     BoardSpace currentSpace = board[currentBoardIndex];
     this.x = currentSpace.getX() + (int)(currentSpace.getWidth() / 2.0f);
     this.y = currentSpace.getY() + (int)(currentSpace.getHeight() / 2.0f);
+    
+    inJail = false;
+    jailTurns = 0;
+  }
+  
+  public boolean isInJail(){
+    return inJail;
+  }
+  
+  public void sentToJail(int jailIndex){
+    System.out.println("sending to jail");
+    inJail = true;
+    jailTurns = 4;
+    setPos(jailIndex);
+  }
+  
+  public void changeJailTurns(){
+    jailTurns--;
+  }
+  
+  public void releaseJail(){
+    inJail = false;
+    jailTurns = 0;
+  }
+  
+  public int getJailTurns(){
+    return jailTurns;
   }
   
   public int getMoney(){

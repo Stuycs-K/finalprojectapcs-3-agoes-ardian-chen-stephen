@@ -24,3 +24,8 @@ This document must be updated daily every time you finish a work session.
 
 ### 2025-05-31 - Completed entire game logic 
 
+### 2025-06-02 - Working on jail system and added animation to player moving
+
+### 2025-06-03 - Adding jail to the actual board and fixed issues with player escaping jail early
+
+### 2025-06-04 - Adding dice image after each roll so user can more easily see their dice rolls

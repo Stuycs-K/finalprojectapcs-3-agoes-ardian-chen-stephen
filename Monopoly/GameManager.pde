@@ -8,6 +8,7 @@ class GameManager {
   private Button roll;
   private Button notEnoughMoney;
   private Button eventButton;
+  private Button showDice;
   private Button bankruptcy;
   private Button endButton;
   private Dice dice;
@@ -32,8 +33,8 @@ class GameManager {
 
   private int numPropEachSide = 7;
   private int totalBoardSpaces = (4 * numPropEachSide) + 4;
-  private float cornerSize = 95.0f;
-  private float propertySide = 95.0f;
+  private float cornerSize = 70.0f;
+  private float propertySide = 70.0f;
   private float boardSideLength = (2 * cornerSize) + (numPropEachSide * propertySide);
   private float boardStartX = 10.0f;
   private float boardStartY = 10.0f;
@@ -41,6 +42,8 @@ class GameManager {
   private int moveDelayCounter;
   private int moveStepsRemaining;
   public final int MOVE_DELAY_FRAMES = 10;
+  
+  BoardSpace jail;
 
   public GameManager(int numPlayers) {
     players = new Player[numPlayers];
@@ -59,12 +62,14 @@ class GameManager {
     eventButton = new Button("go",  propertySide * 3.5, propertySide * 2.5);
     bankruptcy = new Button("bankruptcy",  propertySide * 3.5, propertySide * 2.5);
     endButton = new Button ("end_turn", propertySide * 4 + boardStartX, (boardSideLength + boardStartY) / 2);
+    showDice = new Button ("diceImage", propertySide * 3 + boardStartX, (boardSideLength + boardStartY) / 3);
     dice = new Dice();
     diceOverride = 0;
 
     historyLog = new ArrayList<String>();
     rolledDouble = false;
     waitingForEvent = false;
+    
   }
 
   private void update() {
@@ -72,6 +77,41 @@ class GameManager {
       return;
     }
     currentPlayer = players[playerIndex];
+    
+    if (currentPlayer.isInJail()) {
+      if (gameState == STATE_WAITING_TO_ROLL) {
+      if (!purchase.isvisible() &&
+        !notEnoughMoney.isvisible() &&
+        !eventButton.isvisible() &&
+        !bankruptcy.isvisible()) {
+      roll.setVisibility(true);
+      } else {
+      roll.setVisibility(false);
+      purchase.setVisibility(false);
+    }}
+      if (gameState == STATE_ROLLING) {
+        if (diceRoll1 == diceRoll2){
+          maintainHistory(currentPlayer.getName() + " rolled a double and got out of jail.");
+          currentPlayer.releaseJail();
+          moveStepsRemaining = diceRoll1 + diceRoll2;
+          gameState = STATE_MOVING;
+        } 
+        else{
+          currentPlayer.changeJailTurns();
+          if (currentPlayer.getJailTurns() <= 0) {
+            maintainHistory(currentPlayer.getName() + " paid $50 to leave jail after 3 failed attempts.");
+            currentPlayer.changeMoney(-50);
+            currentPlayer.releaseJail();
+            gameState = STATE_MOVING;
+            moveStepsRemaining = diceRoll1 + diceRoll2;
+          } else {
+                          System.out.println("jail end turn");
+            maintainHistory(currentPlayer.getName() + " failed to roll a double. Turn skipped.");
+            gameState = STATE_END_TURN;
+          }
+        }
+      }
+    }
     if (gameState == STATE_WAITING_TO_ROLL) {
       if (!purchase.isvisible() &&
         !notEnoughMoney.isvisible() &&
@@ -82,12 +122,11 @@ class GameManager {
       } else {
       roll.setVisibility(false);
       purchase.setVisibility(false);
-    }} else if (gameState == STATE_ROLLING) {
-      maintainHistory(currentPlayer.getName() + " rolled a " + diceRoll1 + " and a " + diceRoll2);
+    }} else if (gameState == STATE_ROLLING && !currentPlayer.isInJail()) {
       moveStepsRemaining = diceRoll1 + diceRoll2;
       gameState = STATE_MOVING;
     } 
-     else if (gameState == STATE_MOVING){
+     else if (gameState == STATE_MOVING && !currentPlayer.isInJail()){
       if (moveDelayCounter <= 0){
         boolean passedGo = currentPlayer.moveOneStep();
         if (passedGo){
@@ -183,7 +222,8 @@ class GameManager {
     }
     currentX = boardStartX + cornerSize + (numPropEachSide * propertySide);
     currentY = boardStartY;
-    newBoard[space] = new EventSpace("CHANCE", space, "chance", (int)currentX, (int)currentY, cornerSize, cornerSize);
+    newBoard[space] = new EventSpace("JAIL", space, "jail", (int)currentX, (int)currentY, cornerSize, cornerSize);
+    jail = newBoard[space];
     space++;
     currentX = boardStartX + cornerSize + (numPropEachSide * propertySide) + (cornerSize - propertySide);
     for (int i = 0; i < numPropEachSide; i++) {
@@ -227,7 +267,7 @@ class GameManager {
     }
     currentX = boardStartX;
     currentY = boardStartY + cornerSize + (numPropEachSide * propertySide);
-    newBoard[space] = new EventSpace("TAXED", space, "tax", (int)currentX, (int)currentY, cornerSize, cornerSize);
+    newBoard[space] = new EventSpace("GO JAIL", space, "gojail", (int)currentX, (int)currentY, cornerSize, cornerSize);
     space++;
     currentX = boardStartX;
     for (int i = 0; i < numPropEachSide; i++) {
@@ -243,7 +283,7 @@ class GameManager {
          space++;
       }
       else {
-        newBoard[space] = new EventSpace("CHEST", space, "event", (int)currentX, (int)currentY, cornerSize, cornerSize);
+        newBoard[space] = new EventSpace("TAXED", space, "tax", (int)currentX, (int)currentY, cornerSize, cornerSize);
         space++;
       }
     }
@@ -289,36 +329,50 @@ class GameManager {
   }
   
   public void rollButtonClick() {
-    if (diceOverride >= 2 && diceOverride <= 12) { 
-      if (diceOverride <= 7) {
-        diceRoll1 = min(6, diceOverride - 1); 
-        if (diceRoll1 < 1) diceRoll1 = 1; 
-          diceRoll2 = diceOverride - diceRoll1;
-      } 
-      else { 
-        diceRoll1 = 6; 
-        diceRoll2 = diceOverride - 6;
-      }
-      if (diceRoll2 < 1) {
-        diceRoll2 = 1;
-        diceRoll1 = diceOverride - 1;
-        if (diceRoll1 > 6) diceRoll1 = 6; 
-      }
-     if (diceRoll1 < 1) { 
-        diceRoll1 = 1;
-        diceRoll2 = diceOverride - 1;
-      }
-      rolledDouble = (diceRoll1 == diceRoll2); 
-      diceOverride = 0; 
+    if (diceOverride > 0){
+      diceRoll1 = diceOverride / 2;
+      diceRoll2 = diceOverride - diceRoll1;
+      diceOverride = 0;
+          gameState = STATE_ROLLING;
     }
-    else {
+    else{
       dice.roll();
       diceRoll1 = dice.getDice1();
       diceRoll2 = dice.getDice2();
       rolledDouble = dice.isDouble();
-      roll.setVisibility(false);
-      gameState = STATE_ROLLING;
     }
+      roll.setVisibility(false);
+      showDice.setVisibility(true);
+      maintainHistory(currentPlayer.getName() + " rolled a " + diceRoll1 + " and a " + diceRoll2);
+  }
+  
+  public void diceRollClick(){
+      roll.setVisibility(false);
+      showDice.setVisibility(false);
+      gameState = STATE_ROLLING;
+  }
+  
+  public void drawDieFace(int num, float x, float y){
+    fill(255);
+    rect(x, y, 60, 60);
+    fill(0);
+    
+    float centerX = x + 30;
+    float centerY = y + 30;
+    
+    float[][] dots = new float[][]{
+      {centerX, centerY},
+      {centerX - 15, centerY - 15, centerX + 15, centerY + 15},
+      {centerX - 15, centerY - 15, centerX, centerY, centerX + 15, centerY + 15},
+      {centerX - 15, centerY - 15, centerX + 15, centerY - 15, centerX - 15, centerY + 15, centerX + 15, centerY + 15},
+      {centerX - 15, centerY - 15, centerX + 15, centerY - 15, centerX, centerY, centerX - 15, centerY + 15, centerX + 15, centerY + 15},
+      {centerX - 15, centerY - 15, centerX + 15, centerY - 15, centerX - 15, centerY, centerX + 15, centerY, centerX - 15, centerY + 15, centerX + 15, centerY + 15}
+    };
+    
+    for (int i = 0; i < dots[num - 1].length; i +=2){
+        ellipse(dots[num - 1][i], dots[num - 1][i + 1], 5, 5);
+    }
+
   }
 
   public void purchaseButtonClick(boolean purchase) {
@@ -359,7 +413,14 @@ class GameManager {
     }
     if (endButton.isvisible()) {       
       endButton.displayButton();
-  }
+    }
+    if (showDice.isvisible()) {       
+      showDice.displayButton();
+    }
+    if (manager.showDice.isvisible()) {
+      drawDieFace(diceRoll1, propertySide * 3 + boardStartX + 35, (boardSideLength + boardStartY) / 3 + 80);
+      drawDieFace(diceRoll2, propertySide * 3 + boardStartX + 125, (boardSideLength + boardStartY) / 3 + 80);
+    }
     drawHistoryLog();
     drawBoard();
     playerStatus();
@@ -465,6 +526,9 @@ class GameManager {
           maintainHistory(currentPlayer.getName() + " paid $" + prop.getCurrentRent(this) + " rent to " + prop.getOwner().getName());
           gameState = CAN_END_TURN;
           checkBankruptcy();
+          eventButton = new Button("rent " + currentPlayer.getName() + " " + prop.getCurrentRent(this) + " " + prop.getOwner().getName(), 200, 275);
+          eventButton.setVisibility(true);
+          waitingForEvent = true;
           return false;
         }
       }
@@ -476,9 +540,17 @@ class GameManager {
       String type = event.getType();
       String eventMessage = "";
       if (type.equals("GO")) {
-          maintainHistory(currentPlayer.getName() + " passed Go and got $100");
+          maintainHistory(currentPlayer.getName() + " went to go and collected $100");
           gameState = CAN_END_TURN;
           return false; 
+      }
+      else if (type.equals("gojail")){
+        currentPlayer.sentToJail(jail.getBoardIndex());
+        eventMessage = "gojail";
+        maintainHistory(currentPlayer.getName() + " got caught for fraud and is in jail");
+        diceRoll1 = 0;
+        diceRoll2 = 0;
+        gameState = STATE_END_TURN;
       }
       else if (type.equals("chance")) {
         if (choice == 0) {
@@ -500,11 +572,15 @@ class GameManager {
           currentPlayer.changeMoney(100);
           maintainHistory(currentPlayer.getName() + " gained $100");
         }
-      } else {
+      } else if (type.equals("tax")){
         eventMessage = "tax";
         currentPlayer.changeMoney(-100);
         maintainHistory(currentPlayer.getName() + " lost $100");
       }
+      else{
+        return false;
+      }
+
       eventButton = new Button(eventMessage, 200, 200);
       eventButton.setVisibility(true);
       waitingForEvent = true;
@@ -564,6 +640,12 @@ class GameManager {
       historyLog.remove(0);
     }
   }
+  
+  public void overrideDice(int override){
+    diceOverride = override;
+    rollButtonClick();
+  }
+  
 
   private void drawHistoryLog() {
     int w = 380;

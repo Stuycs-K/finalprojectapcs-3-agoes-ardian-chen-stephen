@@ -3,7 +3,7 @@ boolean override;
 String overrideS;
 
 void setup(){
-  size(1600, 900);
+  size(1280, 720);
   manager = new GameManager(2);
   override = false;
   overrideS = "";
@@ -29,7 +29,9 @@ void keyPressed(){
       overrideS = "";
     }
     else{
-      overrideS += key;
+      if (Character.isDigit(key)){
+        overrideS += key;
+      }
     }
   }
   if(key == 'o' && manager.roll.isvisible()){
@@ -92,5 +94,8 @@ void mousePressed() {
   }
   if (manager.eventButton.isvisible() && manager.eventButton.isClicked() != -1){
     manager.eventButtonClick();
+  }
+  if (manager.showDice.isvisible() && manager.showDice.isClicked() != -1){
+    manager.diceRollClick();
   }
 }
