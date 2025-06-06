@@ -58,7 +58,7 @@ class Player{
   }
   
   public boolean canAfford(int amount){
-    return money > amount;
+    return money >= amount;
   }
   
   public void addProperty(PropertySpace property){

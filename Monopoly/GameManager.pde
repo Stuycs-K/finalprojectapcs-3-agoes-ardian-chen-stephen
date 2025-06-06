@@ -17,8 +17,6 @@ class GameManager {
   private int diceRoll1;
   private int diceRoll2;
   private int diceOverride;
-  
-    
   private int gameState;
   private boolean rolledDouble;
   private boolean waitingForEvent;
@@ -31,12 +29,13 @@ class GameManager {
   public final int STATE_WAITING_PURCHASE_DECISION = 4;
   public final int STATE_END_TURN = 5;
   public final int CAN_END_TURN = 6;
+  public final int STATE_SHOWING_DICE = 7;
   public final int STATE_GAME_OVER = 99;
 
   private int numPropEachSide = 7;
   private int totalBoardSpaces = (4 * numPropEachSide) + 4;
-  private float cornerSize = 70.0f;
-  private float propertySide = 70.0f;
+  private float cornerSize = 95.0f;
+  private float propertySide = 95.0f;
   private float boardSideLength = (2 * cornerSize) + (numPropEachSide * propertySide);
   private float boardStartX = 10.0f;
   private float boardStartY = 10.0f;
@@ -301,13 +300,48 @@ class GameManager {
     }
     return properties;
   }
+  
+  public boolean playerOwnsFullSet(Player player, String colorGroup) {
+    if (player == null || colorGroup == null || colorGroup.isEmpty() || board == null) {
+      return false;
+    }
+    int propertiesInThisGroupOwnedByPlayer = 0;
+    int totalPropertiesInThisColorGroup = 0;
+    for (BoardSpace space : board) {
+      if (space instanceof PropertySpace) {
+        PropertySpace prop = (PropertySpace) space;
+        if (colorGroup.equals(prop.getType())) {
+          totalPropertiesInThisColorGroup++;
+          if (prop.getOwner() == player) {
+            propertiesInThisGroupOwnedByPlayer++;
+          }
+        }
+      }
+    }
+    if (totalPropertiesInThisColorGroup == 3 && propertiesInThisGroupOwnedByPlayer == 3) {
+      return true;
+    }
+  return false;
+  }
 
+  public void overrideDice(int override){
+    diceOverride = override;
+    rollButtonClick();
+  }
+  
   public void rollButtonClick() {
-    if (diceOverride > 0){
-      diceRoll1 = diceOverride / 2;
-      diceRoll2 = diceOverride - diceRoll1;
-      diceOverride = 0;
-          gameState = STATE_ROLLING;
+    if (diceOverride > 0) {
+      int totalOverrideSteps = diceOverride;
+      diceOverride = 0; 
+    if (totalOverrideSteps < 2 || totalOverrideSteps > 12) {
+      totalOverrideSteps = 2; 
+    }
+    diceRoll1 = (int) ceil(totalOverrideSteps / 2.0f);
+    if (diceRoll1 > 6) diceRoll1 = 6;
+    diceRoll2 = totalOverrideSteps - diceRoll1;
+    if (diceRoll2 > 6) { diceRoll2 = 6; diceRoll1 = totalOverrideSteps - diceRoll2; }
+    if (diceRoll1 < 1) { diceRoll1 = 1; diceRoll2 = totalOverrideSteps - diceRoll1; }
+    maintainHistory("Dice Override: " + totalOverrideSteps + " (as " + diceRoll1 + "," + diceRoll2 + ")");
     }
     else{
       dice.roll();
@@ -315,10 +349,11 @@ class GameManager {
       diceRoll2 = dice.getDice2();
       rolledDouble = dice.isDouble();
     }
-      
+      rolledDouble = (diceRoll1 == diceRoll2);
       roll.setVisibility(false);
       showDice.setVisibility(true);
       maintainHistory(currentPlayer.getName() + " rolled a " + diceRoll1 + " and a " + diceRoll2);
+      gameState = STATE_SHOWING_DICE;
   }
   
   public void diceRollClick(){
@@ -347,7 +382,6 @@ class GameManager {
     for (int i = 0; i < dots[num - 1].length; i +=2){
         ellipse(dots[num - 1][i], dots[num - 1][i + 1], 5, 5);
     }
-
   }
 
   public void purchaseButtonClick(boolean purchase) {
@@ -360,7 +394,7 @@ class GameManager {
       if (!waitingForEvent) { 
         if (rolledDouble) {
           rolledDouble = false; 
-          maintainHistory(currentPlayer.getName() + " rolled a double. Gets another turn.");
+          maintainHistory(currentPlayer.getName() + " rolled a double! Gets another turn.");
           gameState = STATE_WAITING_TO_ROLL;
         } 
         else {
@@ -494,18 +528,18 @@ class GameManager {
         maintainHistory(currentPlayer.getName() + " landed on their own property: " + prop.getName() + ".");
         gameState = CAN_END_TURN;
         return false;
-      } else {
-        prop.getOwner().changeMoney(prop.getRent());
-        currentPlayer.changeMoney(-prop.getRent());
-        maintainHistory(currentPlayer.getName() + " paid $" + prop.getRent() + " rent to " + prop.getOwner().getName());
-        gameState = CAN_END_TURN;
-        checkBankruptcy();
-        
-        eventButton = new Button("rent " + currentPlayer.getName() + " " + prop.getRent() + " " + prop.getOwner().getName(), 200, 275);
-        eventButton.setVisibility(true);
-        waitingForEvent = true;
-        return false;
-      }
+        } 
+        else {
+          prop.getOwner().changeMoney(prop.getCurrentRent(this));
+          currentPlayer.changeMoney(prop.getCurrentRent(this));
+          maintainHistory(currentPlayer.getName() + " paid $" + prop.getCurrentRent(this) + " rent to " + prop.getOwner().getName());
+          gameState = CAN_END_TURN;
+          checkBankruptcy();
+          eventButton = new Button("rent " + currentPlayer.getName() + " " + prop.getCurrentRent(this) + " " + prop.getOwner().getName(), 200, 275);
+          eventButton.setVisibility(true);
+          waitingForEvent = true;
+          return false;
+        }
       }
       return true;
     } else {
@@ -615,12 +649,6 @@ class GameManager {
       historyLog.remove(0);
     }
   }
-  
-  public void overrideDice(int override){
-    diceOverride = override;
-    rollButtonClick();
-  }
-  
 
   private void drawHistoryLog() {
     int w = 380;
@@ -644,4 +672,5 @@ class GameManager {
       }
     }
   }
+
 }
