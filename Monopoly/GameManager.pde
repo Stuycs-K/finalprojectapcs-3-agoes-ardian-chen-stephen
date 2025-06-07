@@ -31,7 +31,6 @@ class GameManager {
   public final int STATE_END_TURN = 5;
   public final int CAN_END_TURN = 6;
   public final int STATE_SHOWING_DICE = 7;
-  public final int STATE_LIQUIDATE = 8;
   public final int STATE_GAME_OVER = 99;
 
   private int numPropEachSide = 7;
@@ -652,7 +651,6 @@ class GameManager {
         else{
           liquidate = new Button("sell", propertySide * 4 + boardStartX, (boardSideLength + boardStartY) / 2);
         }
-        gameState = STATE_LIQUIDATE;
         liquidate.setVisibility(true);
       }
       else{
@@ -661,6 +659,13 @@ class GameManager {
       gameState = STATE_GAME_OVER;
       bankruptcy.setVisibility(true);
       }
+    }
+  }
+  
+  public void liquidateButtonClick(){
+    if (currentPlayer.getMoney() >= 0){
+      gameState = CAN_END_TURN;
+      liquidate.setVisibility(false);
     }
   }
   
