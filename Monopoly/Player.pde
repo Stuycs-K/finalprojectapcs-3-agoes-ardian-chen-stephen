@@ -105,14 +105,28 @@ class Player{
       if (sum > debt){
          return 0; //can sell;
       }
-      else {
-        return -1;
-      }  
+
     }
+    }
+    return -1;
+  }
+  
+  public void mortgageProperty(PropertySpace p) {
+  if (ownedProperties.contains(p) && !p.getMortgagedStatus()) {
+    p.setMortgaged(true);
+    changeMoney(p.getMortgagePrice());
     }
   }
   
-  
+  public boolean unmortgageProperty(PropertySpace p) {
+  int unmortgageCost = (int)(p.getMortgagePrice() * 1.1); 
+  if (ownedProperties.contains(p) && p.getMortgagedStatus() && canAfford(unmortgageCost)) {
+    p.setMortgaged(false);
+    changeMoney(-unmortgageCost);
+    return true;
+  }
+  return false;
+}
   
   public boolean move(int stepsToMove){
     boolean passedGo = false;

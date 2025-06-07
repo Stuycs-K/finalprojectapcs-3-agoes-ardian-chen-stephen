@@ -68,7 +68,7 @@
   }
   
   public int getMortgagePrice(){
-    return mortgagePrice;
+    return mortgageValue;
   }
   
   @Override

@@ -431,6 +431,9 @@ class GameManager {
     if (showDice.isvisible()) {       
       showDice.displayButton();
     }
+    if (liquidate.isvisible()){
+      liquidate.displayButton();
+    }
     if (manager.showDice.isvisible()) {
       drawDieFace(diceRoll1, propertySide * 3 + boardStartX + 35, (boardSideLength + boardStartY) / 3 + 80);
       drawDieFace(diceRoll2, propertySide * 3 + boardStartX + 125, (boardSideLength + boardStartY) / 3 + 80);
