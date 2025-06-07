@@ -85,6 +85,9 @@ class Player{
     return ownedProperties;
   }
     
+  public boolean hasAssets(){
+    return ownedProperties.size() > 0;
+  }
   public boolean move(int stepsToMove){
     boolean passedGo = false;
     if (currentBoardIndex + stepsToMove >= board.length){

@@ -645,7 +645,7 @@ class GameManager {
       bankruptcy.setVisibility(true); 
     }
   }
-
+  
   private void maintainHistory(String entry) {
     historyLog.add(entry);
     if (historyLog.size() > 10) {
