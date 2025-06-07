@@ -643,14 +643,8 @@ class GameManager {
 
   private void checkBankruptcy() {
     if (currentPlayer.getMoney() < 0) {
-      int choice = currentPlayer.canLiquidate(currentPlayer.getMoney());
-      if (choice > -1){
-        if (choice == 0){
-          liquidate = new Button("liquidate_sell", propertySide * 4 + boardStartX, (boardSideLength + boardStartY) / 2);
-        }
-        else{
-          liquidate = new Button("sell", propertySide * 4 + boardStartX, (boardSideLength + boardStartY) / 2);
-        }
+      if (currentPlayer.canLiquidate(currentPlayer.getMoney())){
+        liquidate = new Button("liquidate", propertySide * 4 + boardStartX, (boardSideLength + boardStartY) / 2);
         liquidate.setVisibility(true);
       }
       else{
@@ -667,6 +661,8 @@ class GameManager {
       gameState = CAN_END_TURN;
       liquidate.setVisibility(false);
     }
+    
+    
   }
   
   private void maintainHistory(String entry) {
