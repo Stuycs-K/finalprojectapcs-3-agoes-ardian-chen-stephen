@@ -32,6 +32,7 @@ class GameManager {
   public final int STATE_END_TURN = 5;
   public final int CAN_END_TURN = 6;
   public final int STATE_SHOWING_DICE = 7;
+  public final int STATE_LIQUIDATE = 8;
   public final int STATE_GAME_OVER = 99;
 
   private int numPropEachSide = 7;
@@ -67,6 +68,8 @@ class GameManager {
     bankruptcy = new Button("bankruptcy",  propertySide * 3.5, propertySide * 2.5);
     endButton = new Button ("end_turn", propertySide * 4 + boardStartX, (boardSideLength + boardStartY) / 2);
     showDice = new Button ("diceImage", propertySide * 3 + boardStartX, (boardSideLength + boardStartY) / 3);
+    liquidate = new Button ("liquidate", propertySide * 2, propertySide * 2);
+    showList = new Button ("showList", propertySide * 4 + boardStartX, (boardSideLength + boardStartY) / 2);
     dice = new Dice();
     diceOverride = 0;
 
@@ -647,6 +650,7 @@ class GameManager {
       if (currentPlayer.canLiquidate(currentPlayer.getMoney())){
         liquidate = new Button("liquidate", propertySide * 4 + boardStartX, (boardSideLength + boardStartY) / 2);
         liquidate.setVisibility(true);
+        gameState = STATE_LIQUIDATE;
       }
       else{
       maintainHistory(currentPlayer.getName() + " has gone bankrupt");
@@ -659,7 +663,7 @@ class GameManager {
   
   public void liquidateButtonClick(){
     liquidate.setVisibility(false);
-    //showList = new Button();
+    showList = new Button(currentPlayer, propertySide * 2, propertySide * 2);
     showList.setVisibility(true);
   }
   

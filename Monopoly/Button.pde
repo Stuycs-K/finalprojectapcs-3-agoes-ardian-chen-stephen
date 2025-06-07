@@ -119,6 +119,9 @@ class Button{
       text("End Turn", button1X + buttonW/2, buttonY + buttonH/2);
     }
    else if (type.equals("showList")){
+      mortgageButtons = new ArrayList<>();
+    sellButtons = new ArrayList<>();
+     
      int rowHeight = 50;
      int buttonW = 80;
      int buttonH = 30;
