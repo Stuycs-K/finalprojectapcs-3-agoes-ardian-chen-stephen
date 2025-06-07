@@ -11,6 +11,9 @@ class Button{
   int dice1;
   int dice2;
   Player player;
+  
+  ArrayList<float[]> mortgageButtons;
+  ArrayList<float[]> sellButtons;
       
   Button(String type, float xPos, float yPos){
     this.type = type;
@@ -25,6 +28,9 @@ class Button{
     this.xPos = xPos;
     this.yPos = yPos;
     visible = false;
+    
+    mortgageButtons = new ArrayList<>();
+    sellButtons = new ArrayList<>();
   }
   
   public void setDice(int dice1, int dice2){
@@ -140,11 +146,13 @@ class Button{
           rect(xPos + 250, itemY, buttonW, buttonH);
           fill(0);
           text("Mortgage", xPos + 255, itemY + 8);
+          mortgageButtons.add(new float[]{xPos + 250, itemY, buttonW, buttonH});
           
           fill(255);
           rect(xPos + 350, itemY, buttonW, buttonH);
           fill(0);
           text("Sell", xPos + 365, itemY + 8);
+          sellButtons.add(new float[]{xPos + 350, itemY, buttonW, buttonH});
         }
      }
  
