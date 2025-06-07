@@ -116,12 +116,39 @@ class Button{
      int rowHeight = 50;
      int buttonW = 80;
      int buttonH = 30;
-     int padding = 10;
      int index = 0;
 
      fill(139, 0, 0);
-     //rect(xPos, yPos, 600, 50 + currentPlayer.getProperties().size() * rowHeight);
-   }
+     rect(xPos, yPos, 600, 50 + player.getProperties().size() * rowHeight);
+     
+     fill(255);
+     textSize(16);
+     textAlign(LEFT, TOP);
+     text("Choose properties to sell or mortgage:", xPos + 10, yPos + 10);
+     
+     for(PropertySpace prop : player.getProperties()){
+        float itemY = yPos + 40 + index * rowHeight;
+        
+        fill(255);
+        text(prop.getName() + " - $" + prop.getPrice(), xPos + 10, itemY + 10);
+        
+        if (prop.getMortgagedStatus()){
+            text("Mortgaged", xPos + 255, itemY + 8);
+        }
+        else{
+          fill(255);
+          rect(xPos + 250, itemY, buttonW, buttonH);
+          fill(0);
+          text("Mortgage", xPos + 255, itemY + 8);
+          
+          fill(255);
+          rect(xPos + 350, itemY, buttonW, buttonH);
+          fill(0);
+          text("Sell", xPos + 365, itemY + 8);
+        }
+     }
+ 
+ }
    else if (type.equals("not_enough_money")) {
       w = 330;
       h = 100;
