@@ -10,9 +10,18 @@ class Button{
   boolean visible;
   int dice1;
   int dice2;
+  Player player;
       
   Button(String type, float xPos, float yPos){
     this.type = type;
+    this.xPos = xPos;
+    this.yPos = yPos;
+    visible = false;
+  }
+  
+  Button(Player player, float xPos, float yPos){
+    this.player = player;
+    this.type = "showList";
     this.xPos = xPos;
     this.yPos = yPos;
     visible = false;
@@ -51,7 +60,6 @@ class Button{
       text("Yes", button1X + 5, buttonY + 20);
       text("No", button2X + 5, buttonY + 20);
     }
-    
     else if (type.equals("diceImage")){
       w = 220; 
       h = 210;
@@ -104,7 +112,16 @@ class Button{
       textSize(16);
       text("End Turn", button1X + buttonW/2, buttonY + buttonH/2);
     }
-  
+   else if (type.equals("showList")){
+     int rowHeight = 50;
+     int buttonW = 80;
+     int buttonH = 30;
+     int padding = 10;
+     int index = 0;
+
+     fill(139, 0, 0);
+     //rect(xPos, yPos, 600, 50 + currentPlayer.getProperties().size() * rowHeight);
+   }
    else if (type.equals("not_enough_money")) {
       w = 330;
       h = 100;
@@ -185,6 +202,10 @@ class Button{
       else if (type.equals("tax")){ 
         message = "Pay $100 in income tax to the state";
         eventType = "Tax";
+      }
+      else if (type.equals("liquidate")){ 
+        message = "You went bankrupt. Mortgage or sell to continue";
+        eventType = "Broke";
       }
       else{
         return;

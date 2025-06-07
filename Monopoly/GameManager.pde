@@ -668,12 +668,15 @@ class GameManager {
       currentPlayer.mortgageProperty(space);
     }
     else{
-      
+      currentPlayer.sellProperty(space);
     }
 
     if (currentPlayer.getMoney() > 0){
       liquidPropList.setVisibility(false);
       gameState = CAN_END_TURN;
+    }
+    else{
+      //liquidPropList = new Button();
     }
   }
   
