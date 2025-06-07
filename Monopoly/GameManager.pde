@@ -11,6 +11,7 @@ class GameManager {
   private Button showDice;
   private Button bankruptcy;
   private Button endButton;
+  private Button liquidate;
   private Dice dice;
   private ArrayList<String> historyLog;
 
@@ -640,9 +641,16 @@ class GameManager {
 
   private void checkBankruptcy() {
     if (currentPlayer.getMoney() < 0) {
-      int debt = currentPlayer.getMoney();
-      if (currentPlayer.canMortgage(debt)){
+      int choice = currentPlayer.canLiquidate(currentPlayer.getMoney());
+      if (choice > -1){
+        if (choice == 0){
+          liquidate = new Button("liquidate_sell", propertySide * 4 + boardStartX, (boardSideLength + boardStartY) / 2);
+        }
+        else{
+          liquidate = new Button("sell", propertySide * 4 + boardStartX, (boardSideLength + boardStartY) / 2);
+        }
         gameState = STATE_LIQUIDATE;
+        liquidate.setVisibility(true);
       }
       else{
       maintainHistory(currentPlayer.getName() + " has gone bankrupt");
