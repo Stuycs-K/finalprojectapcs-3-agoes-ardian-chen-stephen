@@ -43,6 +43,7 @@ class GameManager {
   private int moveDelayCounter;
   private int moveStepsRemaining;
   public final int MOVE_DELAY_FRAMES = 10;
+  boolean sentToJailThisTurn;
   
   BoardSpace jail;
 
@@ -170,6 +171,7 @@ class GameManager {
       }
       if (rolledDouble && !currentPlayer.isInJail()) {
         rolledDouble = false;
+
         maintainHistory(currentPlayer.getName() + " rolled a double! Gets another turn.");
         gameState = STATE_WAITING_TO_ROLL;
       } else {
@@ -393,7 +395,7 @@ class GameManager {
         maintainHistory(currentPlayer.getName() + " did not buy " + board[currentPlayer.getIndex()].getName());
       }
       if (!waitingForEvent) { 
-        if (rolledDouble) {
+        if (rolledDouble && !currentPlayer.isInJail()) {
           rolledDouble = false; 
           maintainHistory(currentPlayer.getName() + " rolled a double! Gets another turn.");
           gameState = STATE_WAITING_TO_ROLL;
@@ -556,8 +558,8 @@ class GameManager {
       }
       else if (type.equals("gojail")){
         currentPlayer.sentToJail(jail.getBoardIndex());
+        sentToJailThisTurn = true;
         eventMessage = "gojail";
-        maintainHistory(currentPlayer.getName() + " got caught for fraud and is in jail");
         diceRoll1 = 0;
         diceRoll2 = 0;
         gameState = STATE_END_TURN;
@@ -605,7 +607,7 @@ class GameManager {
     } 
     else {
        if (!gameOver) { 
-        if (rolledDouble) {
+        if (rolledDouble && !currentPlayer.isInJail()) {
           rolledDouble = false; 
           maintainHistory(currentPlayer.getName() + " rolled a double! Gets another turn.");
           gameState = STATE_WAITING_TO_ROLL;
