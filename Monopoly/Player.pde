@@ -85,15 +85,33 @@ class Player{
     return ownedProperties;
   }
     
-  public boolean canMortgage(int debt){
+  public int canLiquidate(int debt){
     int sum = 0;
     for (PropertySpace p : ownedProperties){
       if (!p.getMortgagedStatus()){
         sum += p.getMortgagePrice();
       }
     }
-    return sum > debt;
+    
+    if (sum > debt){
+     return 1; //can mortgage and sell;
+    }
+    else{
+      sum = 0;
+      for (PropertySpace p : ownedProperties){
+      if (!p.getMortgagedStatus()){
+        sum += p.getPrice();
+      }
+      if (sum > debt){
+         return 0; //can sell;
+      }
+      else {
+        return -1;
+      }  
+    }
+    }
   }
+  
   
   
   public boolean move(int stepsToMove){

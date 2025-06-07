@@ -30,6 +30,7 @@ class GameManager {
   public final int STATE_END_TURN = 5;
   public final int CAN_END_TURN = 6;
   public final int STATE_SHOWING_DICE = 7;
+  public final int STATE_LIQUIDATE = 8;
   public final int STATE_GAME_OVER = 99;
 
   private int numPropEachSide = 7;
@@ -639,10 +640,16 @@ class GameManager {
 
   private void checkBankruptcy() {
     if (currentPlayer.getMoney() < 0) {
+      int debt = currentPlayer.getMoney();
+      if (currentPlayer.canMortgage(debt)){
+        gameState = STATE_LIQUIDATE;
+      }
+      else{
       maintainHistory(currentPlayer.getName() + " has gone bankrupt");
       gameOver = true;
       gameState = STATE_GAME_OVER;
-      bankruptcy.setVisibility(true); 
+      bankruptcy.setVisibility(true);
+      }
     }
   }
   
