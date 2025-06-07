@@ -663,7 +663,14 @@ class GameManager {
     liquidPropList.setVisibility(true);
   }
   
-  public void liquidPropListClick(){
+  public void liquidPropListClick(PropertySpace space, int choice){
+    if (choice == 0){
+      currentPlayer.mortgageProperty(space);
+    }
+    else{
+      
+    }
+
     if (currentPlayer.getMoney() > 0){
       liquidPropList.setVisibility(false);
       gameState = CAN_END_TURN;

@@ -103,6 +103,15 @@ class Player{
     }
   }
   
+  public void sellProperty(PropertySpace p) {
+  if (ownedProperties.contains(p) && !p.getMortgagedStatus()) {
+    ownedProperties.remove(p);
+    p.setOwner(null);
+    int salePrice = (int)(p.getPrice() * 0.75);
+    changeMoney(salePrice);
+  }
+}
+  
   public boolean unmortgageProperty(PropertySpace p) {
   int unmortgageCost = (int)(p.getMortgagePrice() * 1.1); 
   if (ownedProperties.contains(p) && p.getMortgagedStatus() && canAfford(unmortgageCost)) {
