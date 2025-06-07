@@ -168,7 +168,7 @@ class GameManager {
       else {
         return;
       }
-      if (rolledDouble) {
+      if (rolledDouble && !currentPlayer.isInJail()) {
         rolledDouble = false;
         maintainHistory(currentPlayer.getName() + " rolled a double! Gets another turn.");
         gameState = STATE_WAITING_TO_ROLL;
