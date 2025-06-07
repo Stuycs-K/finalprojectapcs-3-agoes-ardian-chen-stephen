@@ -85,8 +85,14 @@ class Player{
     return ownedProperties;
   }
     
-  public boolean hasAssets(){
-    return ownedProperties.size() > 0;
+  public boolean canMortgage(int debt){
+    int sum = 0;
+    for (PropertySpace p : ownedProperties){
+      if (!p.getMortgagedStatus()){
+        sum += p.getMortgagePrice();
+      }
+    }
+    return sum > debt;
   }
   
   
