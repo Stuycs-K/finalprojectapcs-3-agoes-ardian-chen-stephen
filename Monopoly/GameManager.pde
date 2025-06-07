@@ -12,7 +12,7 @@ class GameManager {
   private Button bankruptcy;
   private Button endButton;
   private Button liquidate;
-  private Button liquidPropList;
+  private Button showList;
   private Dice dice;
   private ArrayList<String> historyLog;
 
@@ -659,24 +659,14 @@ class GameManager {
   
   public void liquidateButtonClick(){
     liquidate.setVisibility(false);
-    //liquidPropList = new Button();
-    liquidPropList.setVisibility(true);
+    //showList = new Button();
+    showList.setVisibility(true);
   }
   
-  public void liquidPropListClick(PropertySpace space, int choice){
-    if (choice == 0){
-      currentPlayer.mortgageProperty(space);
-    }
-    else{
-      currentPlayer.sellProperty(space);
-    }
-
+  public void showListClick(){
     if (currentPlayer.getMoney() > 0){
-      liquidPropList.setVisibility(false);
+      showList.setVisibility(false);
       gameState = CAN_END_TURN;
-    }
-    else{
-      //liquidPropList = new Button();
     }
   }
   

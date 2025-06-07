@@ -131,6 +131,7 @@ class Button{
      textSize(16);
      textAlign(LEFT, TOP);
      text("Choose properties to sell or mortgage:", xPos + 10, yPos + 10);
+     text("Debt: $" + player.getMoney(), xPos + 10, yPos + 10);
      
      for(PropertySpace prop : player.getProperties()){
         float itemY = yPos + 40 + index * rowHeight;
@@ -154,8 +155,8 @@ class Button{
           text("Sell", xPos + 365, itemY + 8);
           sellButtons.add(new float[]{xPos + 350, itemY, buttonW, buttonH});
         }
+        index++;
      }
- 
  }
    else if (type.equals("not_enough_money")) {
       w = 330;
@@ -178,7 +179,6 @@ class Button{
       textAlign(CENTER, CENTER);
       text("Okay", button1X + buttonW / 2, buttonY + buttonH / 2);
     }
-    
     else if (type.equals("bankruptcy")){
       w = 300; 
       h = 150;
@@ -302,6 +302,28 @@ class Button{
       else if (mouseX > button2X && mouseX < button2X + buttonW && mouseY > buttonY && mouseY < buttonY + buttonH) {
         visible = false;
         return 0;
+      }
+      return -1;
+    }
+    else if (type.equals("showList")){
+      for (int i = 0; i < mortgageButtons.size(); i++) {
+        float[] btn = mortgageButtons.get(i);
+        if (mouseX >= btn[0] && mouseX <= btn[0] + btn[2] &&
+          mouseY >= btn[1] && mouseY <= btn[1] + btn[3]) {
+           PropertySpace prop = player.getProperties().get(i);
+           player.mortgageProperty(prop); 
+           return 1;
+        }
+      }
+      
+      for (int i = 0; i < sellButtons.size(); i++) {
+        float[] btn = sellButtons.get(i);
+          if (mouseX >= btn[0] && mouseX <= btn[0] + btn[2] &&
+            mouseY >= btn[1] && mouseY <= btn[1] + btn[3]) {
+             PropertySpace prop = player.getProperties().get(i);
+             player.sellProperty(prop); 
+             return 1;             
+          }
       }
       return -1;
     }
