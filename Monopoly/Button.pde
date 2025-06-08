@@ -124,21 +124,23 @@ class Button{
       sellButtons = new ArrayList<>();
      
      int rowHeight = 30;
-     int buttonW = 80;
+     int buttonW = 110;
      int buttonH = 30;
      int index = 0;
 
      fill(139, 0, 0);
-     rect(xPos, yPos, 350, 60 + player.getProperties().size() * rowHeight);
+     rect(xPos, yPos, 430, 160 + player.getProperties().size() * rowHeight);
      
      fill(255);
-     textSize(14);
+     textSize(12);
      textAlign(LEFT, TOP);
      text("Choose properties to sell or mortgage:", xPos + 10, yPos + 10);
-     text("Debt: $" + player.getMoney(), xPos + 10, yPos + 35);
+     text("Please select carefully. If you mortgage and sell incorrectly and the sum doesn't ", xPos + 10, yPos + 35);
+     text("exceed debt, you'll get locked and break the game (only happens in rare occassions)", xPos + 10, yPos + 60);
+     text("Debt: $" + player.getMoney(), xPos + 10, yPos + 85);
      
      for(PropertySpace prop : player.getProperties()){
-        float itemY = yPos + 50 + index * rowHeight;
+        float itemY = yPos + 110 + index * rowHeight;
         
         fill(255);
         text(prop.getName() + " - $" + prop.getPrice(), xPos + 10, itemY + 10);
@@ -150,13 +152,13 @@ class Button{
           fill(255);
           rect(xPos + 150, itemY, buttonW, buttonH);
           fill(0);
-          text("Mortgage", xPos + 155, itemY + 8);
+          text("Mortgage - $" + prop.getMortgagePrice(), xPos + 155, itemY + 8);
           mortgageButtons.add(new Object[]{xPos + 150, itemY, buttonW, buttonH, prop});
                     
           fill(255);
-          rect(xPos + 250, itemY, buttonW, buttonH);
+          rect(xPos + 270, itemY, buttonW, buttonH);
           fill(0);
-          text("Sell", xPos + 255, itemY + 8);
+          text("Sell - $" + prop.getPrice(), xPos + 275, itemY + 8);
           sellButtons.add(new Object []{xPos + 250, itemY, buttonW, buttonH, prop});
         }
         index++;
@@ -191,7 +193,7 @@ class Button{
       rect(xPos, yPos, w, h);
       fill(0);
       textSize(20);
-      text("Game Over", xPos + 150, yPos + 30);
+      text("Game Over - Bankrupt", xPos + 140, yPos + 30);
       text("Do you want to play again?", xPos + 150, yPos + 50);
       
       fill(255);
@@ -307,7 +309,6 @@ class Button{
       return -1;
     }
     else if (type.equals("showList")){
-      System.out.println("mortgage " + mortgageButtons.size());
       for (int i = 0; i < mortgageButtons.size(); i++) {
         Object [] btn = mortgageButtons.get(i);
         if (mouseX >= (float) btn[0] && mouseX <= (float)btn[0] + (int)btn[2] &&
@@ -317,7 +318,6 @@ class Button{
            return 1;
         }
       }
-            System.out.println("sell " +sellButtons.size());
 
       for (int i = 0; i < sellButtons.size(); i++) {
         Object [] btn = sellButtons.get(i);

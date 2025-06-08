@@ -92,7 +92,9 @@ class Player{
       }
     }
     
-    return sum > debt;
+    System.out.println(sum);
+    
+    return sum > -debt;
   }
   
   public void mortgageProperty(PropertySpace p) {

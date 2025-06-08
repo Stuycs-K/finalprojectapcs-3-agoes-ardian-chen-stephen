@@ -651,6 +651,8 @@ class GameManager {
 
   private void checkBankruptcy() {
     if (currentPlayer.getMoney() < 0) {
+      System.out.println(currentPlayer.getMoney());
+      System.out.println(currentPlayer.canLiquidate(currentPlayer.getMoney()));
       if (currentPlayer.canLiquidate(currentPlayer.getMoney())){
         liquidate = new Button("liquidate", propertySide * 4 + boardStartX, (boardSideLength + boardStartY) / 2);
         liquidate.setVisibility(true);
@@ -667,7 +669,7 @@ class GameManager {
   
   public void liquidateButtonClick(){
     liquidate.setVisibility(false);
-    showList = new Button(currentPlayer, propertySide * 2, propertySide * 2);
+    showList = new Button(currentPlayer, propertySide * 1.5, propertySide * 2);
     showList.setVisibility(true);
   }
   
