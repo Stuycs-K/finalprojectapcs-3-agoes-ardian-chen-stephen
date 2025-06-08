@@ -372,6 +372,18 @@ class Button{
       }
       return -1;
     }
+    else if (type.equals("unmortgageList")){
+      for (int i = 0; i < unmortgageButtons.size(); i++) {
+        Object [] btn = unmortgageButtons.get(i);
+          if (mouseX >= (float) btn[0] && mouseX <= (float)btn[0] + (int)btn[2] &&
+          mouseY >= (float)btn[1] && mouseY <=(float) btn[1] + (int)btn[3]) {
+             PropertySpace prop = (PropertySpace) btn[4];
+             player.unmortgageProperty(prop); 
+             return 0;             
+          }
+      }
+      return -1;
+    }
     else {
       if (mouseX > button1X && mouseX < button1X + buttonW && mouseY > buttonY && mouseY < buttonY + buttonH) {
           visible = false;
