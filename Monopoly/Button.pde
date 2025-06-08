@@ -170,8 +170,41 @@ class Button{
         }
      }
    }
-   else if (type.equals("unmortgage")){
-   
+   else if (type.equals("unmortgageList")){
+     unmortgageButtons = new ArrayList<>();
+     int rowHeight = 30;
+     int buttonW = 110;
+     int buttonH = 30;
+     int index = 0;
+     
+     fill(139, 0, 0);
+     rect(xPos, yPos, 350, 60 + min(8, player.getProperties().size()) * rowHeight);
+     
+     fill(255);
+     textSize(12);
+     text("Choose properties to unmortgage:", xPos + 10, yPos + 25);
+     
+     int displayed = 0;
+     
+     for (PropertySpace prop : player.getProperties()) {
+      if (prop.getMortgagedStatus()) {
+        if (displayed >= 8) break;
+        float itemY = yPos + 50 + index * rowHeight;
+        int price = (int)(prop.getMortgagePrice() * 1.1);
+        
+        fill(255);
+        text(prop.getName() + " - $" + price, xPos + 10, itemY + 10);
+        
+        fill(255);
+        rect(xPos + 250, itemY, buttonW, buttonH);
+        fill(0);
+        text("Unmortgage - $" + price, xPos + 255, itemY + 8);
+        unmortgageButtons.add(new Object[]{xPos + 250, itemY, buttonW, buttonH, prop, price});
+        
+        index++;
+        displayed++;
+      }
+    }
    }
    else if (type.equals("not_enough_money")) {
       w = 330;
