@@ -698,7 +698,7 @@ class GameManager {
   }
   
   public void showListClick(){
-    if (currentPlayer.getMoney() > 0){
+    if (currentPlayer.getMoney() >= 0){
       showList.setVisibility(false);
       gameState = STATE_END_TURN;
     }

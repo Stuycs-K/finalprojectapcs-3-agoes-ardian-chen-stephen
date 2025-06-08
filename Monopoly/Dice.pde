@@ -1,4 +1,4 @@
-sclass Dice{
+class Dice{
  private int die1, die2;
   
   

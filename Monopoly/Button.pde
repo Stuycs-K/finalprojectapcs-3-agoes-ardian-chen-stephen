@@ -73,7 +73,7 @@ class Button{
       w = 220; 
       h = 80;
       
-      fill(240, 10, 0);
+      fill(144, 238, 144);
       rect(xPos, yPos, w, h);
       fill(0);
       textSize(20);
