@@ -14,6 +14,7 @@ class Button{
   
   ArrayList<Object []> mortgageButtons;
   ArrayList<Object []> sellButtons;
+  ArrayList<Object []> unmortgageButtons;
       
   Button(String type, float xPos, float yPos){
     this.type = type;
@@ -22,15 +23,16 @@ class Button{
     visible = false;
   }
   
-  Button(Player player, float xPos, float yPos){
+  Button(Player player, String type, float xPos, float yPos){
     this.player = player;
-    this.type = "showList";
+    this.type = type;
     this.xPos = xPos;
     this.yPos = yPos;
     visible = false;
     
     mortgageButtons = new ArrayList<>();
     sellButtons = new ArrayList<>();
+    unmortgageButtons = new ArrayList<>();
   }
   
   public void setDice(int dice1, int dice2){
@@ -167,7 +169,10 @@ class Button{
         displayed++;
         }
      }
- }
+   }
+   else if (type.equals("unmortgage")){
+   
+   }
    else if (type.equals("not_enough_money")) {
       w = 330;
       h = 100;

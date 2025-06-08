@@ -169,7 +169,7 @@ class GameManager {
         eventButton.setVisibility(false);
         
         if (currentPlayer.hasMortgaged()){
-          unmortgage = new Button("Unmortgage", propertySide * 4 + boardStartX, (boardSideLength + boardStartY) / 2);
+          unmortgage = new Button(currentPlayer, "unmortgage", propertySide * 4 + boardStartX, (boardSideLength + boardStartY) / 2);
           unmortgage.setVisibility(true);
         }
         endButton.setVisibility(true); 
@@ -683,7 +683,7 @@ class GameManager {
   
   public void liquidateButtonClick(){
     liquidate.setVisibility(false);
-    showList = new Button(currentPlayer, propertySide * 1.5, propertySide * 2);
+    showList = new Button(currentPlayer, "showList", propertySide * 1.5, propertySide * 2);
     showList.setVisibility(true);
   }
   
