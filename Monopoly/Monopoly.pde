@@ -110,7 +110,15 @@ void mousePressed() {
   if (manager.liquidate.isvisible() && manager.liquidate.isClicked() != -1){
     manager.liquidateButtonClick();
   }
-  if (manager.showList.isvisible() && manager.showList.isClicked() != -1){
-    manager.showListClick();
+  if (manager.showList.isvisible()){
+    int choice = manager.showList.isClicked();
+    if (choice == 1){
+      manager.maintainHistory(manager.currentPlayer.getName() + " mortgaged a property");
+      manager.showListClick();
+    }
+    else if (choice == 0){
+      manager.maintainHistory(manager.currentPlayer.getName() + " sold a property");
+      manager.showListClick();
+    }
   }
 }

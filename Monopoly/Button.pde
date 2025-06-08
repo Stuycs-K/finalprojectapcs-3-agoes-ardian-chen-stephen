@@ -325,7 +325,7 @@ class Button{
           mouseY >= (float)btn[1] && mouseY <=(float) btn[1] + (int)btn[3]) {
              PropertySpace prop = (PropertySpace) btn[4];
              player.sellProperty(prop); 
-             return 1;             
+             return 0;             
           }
       }
       return -1;
