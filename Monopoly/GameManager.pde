@@ -189,6 +189,7 @@ class GameManager {
         maintainHistory(currentPlayer.getName() + " rolled a double! Gets another turn.");
         gameState = STATE_WAITING_TO_ROLL;
       } else {
+        
         gameState = CAN_END_TURN;
       }
     }
@@ -703,9 +704,15 @@ class GameManager {
   }
   
   public void unmortgageClick(){
+    endButton.setVisibility(false);
     unmortgage.setVisibility(false);
     unmortgageList = new Button(currentPlayer, "unmortgageList", propertySide * 1.5, propertySide * 2);
     unmortgageList.setVisibility(true);
+  }
+  
+  public void unmortgageListClick(){
+    endButton.setVisibility(true);
+    unmortgageList.setVisibility(false);
   }
   
   private void maintainHistory(String entry) {

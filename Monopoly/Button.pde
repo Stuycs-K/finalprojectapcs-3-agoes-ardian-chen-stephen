@@ -178,19 +178,19 @@ class Button{
      int index = 0;
      
      fill(139, 0, 0);
-     rect(xPos, yPos, 350, 60 + min(8, player.getProperties().size()) * rowHeight);
+     rect(xPos, yPos, 350, 120 + min(8, player.getProperties().size()) * rowHeight);
      
      fill(255);
      textSize(12);
-     text("Choose properties to unmortgage:", xPos + 10, yPos + 25);
+     text("Properties that you can afford to unmortgage:", xPos + 10, yPos + 25);
      
      int displayed = 0;
      
      for (PropertySpace prop : player.getProperties()) {
-      if (prop.getMortgagedStatus()) {
+      int price = (int)(prop.getMortgagePrice() * 1.1);
+      if (prop.getMortgagedStatus() && player.getMoney() > price ) {
         if (displayed >= 8) break;
         float itemY = yPos + 50 + index * rowHeight;
-        int price = (int)(prop.getMortgagePrice() * 1.1);
         
         fill(255);
         text(prop.getName() + " - $" + price, xPos + 10, itemY + 10);
@@ -205,6 +205,16 @@ class Button{
         displayed++;
       }
     }
+    
+      fill(255);
+      button1X = xPos + 350 / 2 - 40;
+      buttonY = yPos + 320 ;
+      buttonW = 80;
+      buttonH = 30;
+      rect(button1X, buttonY, buttonW, buttonH);
+      fill(0);
+      textAlign(CENTER, CENTER);
+      text("Done", button1X + buttonW / 2, buttonY + buttonH / 2);
    }
    else if (type.equals("not_enough_money")) {
       w = 330;
@@ -383,8 +393,12 @@ class Button{
           mouseY >= (float)btn[1] && mouseY <=(float) btn[1] + (int)btn[3]) {
              PropertySpace prop = (PropertySpace) btn[4];
              player.unmortgageProperty(prop); 
-             return 0;             
+             return 1;             
           }
+      }
+      if (mouseX > button1X && mouseX < button1X + buttonW && mouseY > buttonY && mouseY < buttonY + buttonH) {
+          visible = false;
+          return 0;
       }
       return -1;
     }
