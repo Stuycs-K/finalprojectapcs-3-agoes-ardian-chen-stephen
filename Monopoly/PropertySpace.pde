@@ -1,15 +1,19 @@
   class PropertySpace extends BoardSpace {
   private int price;
-  private int rent;
+  private int baseRent;
   private Player owner;
   private String propertyType;
+  private boolean isMortgaged;
+  private int mortgageValue;
   
   public PropertySpace(String name, int index, String propertyType, int x, int y, float w, float h, int price, int rent, color c) {
     super(name, index, x, y, w, h, c);
     this.propertyType = propertyType;
     this.price = price;
-    this.rent = rent;
+    this.mortgageValue = price/2;
+    this.baseRent = rent;
     this.owner = null;
+    isMortgaged = false;
   }
   
    public PropertySpace(String name, int index, String propertyType, int x, int y, float w, float h, int price, int rent) {
@@ -24,8 +28,19 @@
      return this.price;
   }
   
-  public int getRent(){
-     return this.rent;
+  public int getBaseRent(){
+     return this.baseRent;
+  }
+  
+  public int getCurrentRent(GameManager gameManager) {
+    if (owner == null) {
+      return 0;
+    }
+    int currentRentValue = this.baseRent;
+    if (gameManager.playerOwnsFullSet(this.owner, this.propertyType)) {
+      currentRentValue = (int) (this.baseRent * 1.25f);
+    }
+    return currentRentValue;
   }
   
   public Player getOwner() {
@@ -42,6 +57,18 @@
   
   public String getType(){
     return this.propertyType;
+  }
+  
+  public void setMortgaged(boolean status){
+    isMortgaged = status;
+  }
+  
+  public boolean getMortgagedStatus(){
+    return isMortgaged;
+  }
+  
+  public int getMortgagePrice(){
+    return mortgageValue;
   }
   
   @Override

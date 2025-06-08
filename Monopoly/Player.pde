@@ -30,7 +30,6 @@ class Player{
   }
   
   public void sentToJail(int jailIndex){
-    System.out.println("sending to jail");
     inJail = true;
     jailTurns = 4;
     setPos(jailIndex);
@@ -58,7 +57,7 @@ class Player{
   }
   
   public boolean canAfford(int amount){
-    return money > amount;
+    return money >= amount;
   }
   
   public void addProperty(PropertySpace property){
@@ -85,6 +84,52 @@ class Player{
     return ownedProperties;
   }
     
+  public boolean canLiquidate(int debt){
+    int sum = 0;
+    for (PropertySpace p : ownedProperties){
+      if (!p.getMortgagedStatus()){
+        sum += p.getPrice();
+      }
+    }
+        
+    return sum > -debt;
+  }
+  
+  public void mortgageProperty(PropertySpace p) {
+  if (ownedProperties.contains(p) && !p.getMortgagedStatus()) {
+      p.setMortgaged(true);
+      changeMoney(p.getMortgagePrice());
+    }
+  }
+  
+  public boolean hasMortgaged(){
+    for (PropertySpace p : ownedProperties) {
+      if (p.getMortgagedStatus() && p.getMortgagePrice() * 1.1 < money) {
+        return true;
+      }
+    }
+    return false;
+  }
+  
+  public void sellProperty(PropertySpace p) {
+  if (ownedProperties.contains(p) && !p.getMortgagedStatus()) {
+      ownedProperties.remove(p);
+      p.setOwner(null);
+      int salePrice = (int)(p.getPrice());
+      changeMoney(salePrice);
+    }
+  }
+  
+  public boolean unmortgageProperty(PropertySpace p) {
+  int unmortgageCost = (int)(p.getMortgagePrice() * 1.1); 
+  if (ownedProperties.contains(p) && p.getMortgagedStatus() && canAfford(unmortgageCost)) {
+    p.setMortgaged(false);
+    changeMoney(-unmortgageCost);
+    return true;
+  }
+  return false;
+}
+  
   public boolean move(int stepsToMove){
     boolean passedGo = false;
     if (currentBoardIndex + stepsToMove >= board.length){

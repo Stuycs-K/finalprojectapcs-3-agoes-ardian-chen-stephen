@@ -1,6 +1,7 @@
 private GameManager manager;
 boolean override;
 String overrideS;
+Button button;
 
 void setup(){
   size(1280, 720);
@@ -12,18 +13,17 @@ void setup(){
 void draw() {
   background(255);
   if (override){
-    text("Override: " + override, 750, 100);
+    text("Override: " + override, 1200, 100);
   }
-  
   manager.update();    
   manager.display();   
 }
 
 void keyPressed(){
   if (override){
-    if (key == ENTER){
+    if (key == ENTER && !overrideS.isEmpty()){
       int val = Integer.parseInt(overrideS);
-      if (val > 0){
+      if (val > 0 && val <= 12){
         manager.overrideDice(val);
       }
       override = false;
@@ -67,6 +67,14 @@ void mousePressed() {
     }
     return;
   }
+  if (manager.gameState == manager.STATE_SHOWING_DICE && manager.showDice.isvisible()) {
+    int choice = manager.showDice.isClicked(); 
+    if (choice == 1) { 
+      manager.diceRollClick(); 
+      return;
+    }
+    if (choice != -1) return; 
+  }
   if (manager.gameState == manager.CAN_END_TURN && manager.endButton.isvisible()) {
     int choice = manager.endButton.isClicked();
     if (choice == 1) { 
@@ -98,5 +106,34 @@ void mousePressed() {
   }
   if (manager.showDice.isvisible() && manager.showDice.isClicked() != -1){
     manager.diceRollClick();
+  }
+  if (manager.liquidate.isvisible() && manager.liquidate.isClicked() != -1){
+    manager.liquidateButtonClick();
+  }
+  if (manager.showList.isvisible()){
+    int choice = manager.showList.isClicked();
+    if (choice == 1){
+      manager.maintainHistory(manager.currentPlayer.getName() + " mortgaged a property");
+      manager.showListClick();
+    }
+    else if (choice == 0){
+      manager.maintainHistory(manager.currentPlayer.getName() + " sold a property");
+      manager.showListClick();
+    }
+  }
+  if (manager.unmortgage.isvisible() && manager.unmortgage.isClicked() == 1){
+    manager.unmortgageClick(true);
+  }
+  if (manager.unmortgage.isvisible() && manager.unmortgage.isClicked() == 0){
+    manager.unmortgageClick(false);
+  }
+  if (manager.unmortgageList.isvisible()){
+    int choice = manager.unmortgageList.isClicked();
+    if (choice == 1){
+      manager.maintainHistory(manager.currentPlayer.getName() + " bought back a property");
+    }
+    else if (choice == 0){
+      manager.unmortgageListClick();
+    }
   }
 }

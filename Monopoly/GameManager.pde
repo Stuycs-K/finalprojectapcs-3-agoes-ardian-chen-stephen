@@ -11,14 +11,16 @@ class GameManager {
   private Button showDice;
   private Button bankruptcy;
   private Button endButton;
+  private Button liquidate;
+  private Button unmortgage;
+  private Button unmortgageList;
+  private Button showList;
   private Dice dice;
   private ArrayList<String> historyLog;
 
   private int diceRoll1;
   private int diceRoll2;
   private int diceOverride;
-  
-    
   private int gameState;
   private boolean rolledDouble;
   private boolean waitingForEvent;
@@ -31,6 +33,8 @@ class GameManager {
   public final int STATE_WAITING_PURCHASE_DECISION = 4;
   public final int STATE_END_TURN = 5;
   public final int CAN_END_TURN = 6;
+  public final int STATE_SHOWING_DICE = 7;
+  public final int STATE_LIQUIDATE = 8;
   public final int STATE_GAME_OVER = 99;
 
   private int numPropEachSide = 7;
@@ -44,6 +48,7 @@ class GameManager {
   private int moveDelayCounter;
   private int moveStepsRemaining;
   public final int MOVE_DELAY_FRAMES = 10;
+  boolean sentToJailThisTurn;
   
   BoardSpace jail;
 
@@ -65,6 +70,10 @@ class GameManager {
     bankruptcy = new Button("bankruptcy",  propertySide * 3.5, propertySide * 2.5);
     endButton = new Button ("end_turn", propertySide * 4 + boardStartX, (boardSideLength + boardStartY) / 2);
     showDice = new Button ("diceImage", propertySide * 3 + boardStartX, (boardSideLength + boardStartY) / 3);
+    liquidate = new Button ("liquidate",  propertySide * 2.5 + boardStartX, (boardSideLength + boardStartY) / 3);
+    showList = new Button ("showList", propertySide * 4 + boardStartX, (boardSideLength + boardStartY) / 2);
+    unmortgage = new Button ("unmortgage", propertySide * 4 + boardStartX, (boardSideLength + boardStartY) / 1.5);
+    unmortgageList = new Button("unmortgageList", propertySide * 4 + boardStartX, (boardSideLength + boardStartY) / 2);
     dice = new Dice();
     diceOverride = 0;
 
@@ -107,7 +116,6 @@ class GameManager {
             gameState = STATE_MOVING;
             moveStepsRemaining = diceRoll1 + diceRoll2;
           } else {
-                          System.out.println("jail end turn");
             maintainHistory(currentPlayer.getName() + " failed to roll a double. Turn skipped.");
             gameState = STATE_END_TURN;
           }
@@ -161,6 +169,7 @@ class GameManager {
         purchase.setVisibility(false);
         notEnoughMoney.setVisibility(false);
         eventButton.setVisibility(false);
+        unmortgage.setVisibility(false);
         endButton.setVisibility(true); 
     } 
     else if (gameState == STATE_END_TURN) {
@@ -170,12 +179,19 @@ class GameManager {
       else {
         return;
       }
-      if (rolledDouble) {
+      if (rolledDouble && !currentPlayer.isInJail()) {
         rolledDouble = false;
+
         maintainHistory(currentPlayer.getName() + " rolled a double! Gets another turn.");
         gameState = STATE_WAITING_TO_ROLL;
       } else {
-        gameState = CAN_END_TURN;
+        if (currentPlayer.hasMortgaged()){
+          unmortgage = new Button(currentPlayer, "unmortgage", propertySide * 3 + boardStartX, (boardSideLength + boardStartY) / 2);
+          unmortgage.setVisibility(true);
+        }
+        else{
+          gameState = CAN_END_TURN;
+        }
       }
     }
   }
@@ -301,24 +317,62 @@ class GameManager {
     }
     return properties;
   }
+  
+  public boolean playerOwnsFullSet(Player player, String colorGroup) {
+    if (player == null || colorGroup == null || colorGroup.isEmpty() || board == null) {
+      return false;
+    }
+    int propertiesInThisGroupOwnedByPlayer = 0;
+    int totalPropertiesInThisColorGroup = 0;
+    for (BoardSpace space : board) {
+      if (space instanceof PropertySpace) {
+        PropertySpace prop = (PropertySpace) space;
+        if (colorGroup.equals(prop.getType())) {
+          totalPropertiesInThisColorGroup++;
+          if (prop.getOwner() == player) {
+            propertiesInThisGroupOwnedByPlayer++;
+          }
+        }
+      }
+    }
+    if (totalPropertiesInThisColorGroup == 3 && propertiesInThisGroupOwnedByPlayer == 3) {
+      return true;
+    }
+  return false;
+  }
 
+  public void overrideDice(int override){
+    diceOverride = override;
+    rollButtonClick();
+  }
+  
   public void rollButtonClick() {
-    if (diceOverride > 0){
-      diceRoll1 = diceOverride / 2;
-      diceRoll2 = diceOverride - diceRoll1;
-      diceOverride = 0;
-          gameState = STATE_ROLLING;
+    if (diceOverride > 0) {
+      int totalOverrideSteps = diceOverride;
+      diceOverride = 0; 
+    if (totalOverrideSteps < 2 || totalOverrideSteps > 12) {
+      totalOverrideSteps = 2; 
+    }
+    diceRoll1 = (int) ceil(totalOverrideSteps / 2.0f);
+    if (diceRoll1 > 6) diceRoll1 = 6;
+    diceRoll2 = totalOverrideSteps - diceRoll1;
+    if (diceRoll2 > 6) { diceRoll2 = 6; diceRoll1 = totalOverrideSteps - diceRoll2; }
+    if (diceRoll1 < 1) { diceRoll1 = 1; diceRoll2 = totalOverrideSteps - diceRoll1; }
+    showDice.setDice(diceRoll1, diceRoll2);
+    maintainHistory("Dice Override: " + totalOverrideSteps + " (as " + diceRoll1 + "," + diceRoll2 + ")");
     }
     else{
       dice.roll();
       diceRoll1 = dice.getDice1();
       diceRoll2 = dice.getDice2();
+      showDice.setDice(diceRoll1, diceRoll2);
       rolledDouble = dice.isDouble();
     }
-      
+      rolledDouble = (diceRoll1 == diceRoll2);
       roll.setVisibility(false);
       showDice.setVisibility(true);
       maintainHistory(currentPlayer.getName() + " rolled a " + diceRoll1 + " and a " + diceRoll2);
+      gameState = STATE_SHOWING_DICE;
   }
   
   public void diceRollClick(){
@@ -347,7 +401,6 @@ class GameManager {
     for (int i = 0; i < dots[num - 1].length; i +=2){
         ellipse(dots[num - 1][i], dots[num - 1][i + 1], 5, 5);
     }
-
   }
 
   public void purchaseButtonClick(boolean purchase) {
@@ -358,19 +411,20 @@ class GameManager {
         maintainHistory(currentPlayer.getName() + " did not buy " + board[currentPlayer.getIndex()].getName());
       }
       if (!waitingForEvent) { 
-        if (rolledDouble) {
+        if (rolledDouble && !currentPlayer.isInJail()) {
           rolledDouble = false; 
-          maintainHistory(currentPlayer.getName() + " rolled a double. Gets another turn.");
+          maintainHistory(currentPlayer.getName() + " rolled a double! Gets another turn.");
           gameState = STATE_WAITING_TO_ROLL;
         } 
         else {
-          gameState = CAN_END_TURN;
+          gameState = STATE_END_TURN;
         }
       }    
     }
   }
 
   public void display() {
+
     if (roll.isvisible()) {
       roll.displayButton();
     }
@@ -389,8 +443,20 @@ class GameManager {
     if (endButton.isvisible()) {       
       endButton.displayButton();
     }
-    if (showDice.isvisible()) {       
+    if (showDice.isvisible()) {     
       showDice.displayButton();
+    }
+    if (liquidate.isvisible()){
+      liquidate.displayButton();
+    }
+    if (showList.isvisible()) {     
+      showList.displayButton();
+    }
+    if (unmortgage.isvisible()){
+      unmortgage.displayButton();
+    }
+    if (unmortgageList.isvisible()) {     
+      unmortgageList.displayButton();
     }
     if (manager.showDice.isvisible()) {
       drawDieFace(diceRoll1, propertySide * 3 + boardStartX + 35, (boardSideLength + boardStartY) / 3 + 80);
@@ -468,7 +534,11 @@ class GameManager {
       textSize(propertyTextSize);
       for (int i = 0; i < numPropsToDisplay; i++) {
         PropertySpace prop = props.get(i);
-        if (prop != null) {
+        if (prop != null && prop.getMortgagedStatus()){
+          text("- " + prop.getName() + " (Mortgaged)", boxX + padding + 10, currentTextY); 
+          currentTextY += propertyLineHeight;
+        }
+        else if (prop != null) {
           text("- " + prop.getName(), boxX + padding + 10, currentTextY); 
           currentTextY += propertyLineHeight;
         }
@@ -492,20 +562,26 @@ class GameManager {
       if (prop.getOwned()) {
         if (prop.getOwner() == currentPlayer) {
         maintainHistory(currentPlayer.getName() + " landed on their own property: " + prop.getName() + ".");
-        gameState = CAN_END_TURN;
+        gameState = STATE_END_TURN;
         return false;
-      } else {
-        prop.getOwner().changeMoney(prop.getRent());
-        currentPlayer.changeMoney(-prop.getRent());
-        maintainHistory(currentPlayer.getName() + " paid $" + prop.getRent() + " rent to " + prop.getOwner().getName());
-        gameState = CAN_END_TURN;
-        checkBankruptcy();
-        
-        eventButton = new Button("rent " + currentPlayer.getName() + " " + prop.getRent() + " " + prop.getOwner().getName(), 200, 275);
-        eventButton.setVisibility(true);
-        waitingForEvent = true;
-        return false;
-      }
+        } 
+        else {
+          if (prop.getMortgagedStatus()){
+            maintainHistory("This property has been mortgaged. " +  prop.getOwner().getName() + " gets no rent");
+            return false;
+          }
+          else{
+            prop.getOwner().changeMoney(prop.getCurrentRent(this));
+            currentPlayer.changeMoney(prop.getCurrentRent(this));
+            maintainHistory(currentPlayer.getName() + " paid $" + prop.getCurrentRent(this) + " rent to " + prop.getOwner().getName());
+            gameState = STATE_END_TURN;
+            checkBankruptcy();
+            eventButton = new Button("rent " + currentPlayer.getName() + " " + prop.getCurrentRent(this) + " " + prop.getOwner().getName(), 200, 275);
+            eventButton.setVisibility(true);
+            waitingForEvent = true;
+            return false;
+          }
+        }
       }
       return true;
     } else {
@@ -516,13 +592,13 @@ class GameManager {
       String eventMessage = "";
       if (type.equals("GO")) {
           maintainHistory(currentPlayer.getName() + " went to go and collected $100");
-          gameState = CAN_END_TURN;
+          gameState = STATE_END_TURN;
           return false; 
       }
       else if (type.equals("gojail")){
         currentPlayer.sentToJail(jail.getBoardIndex());
+        sentToJailThisTurn = true;
         eventMessage = "gojail";
-        maintainHistory(currentPlayer.getName() + " got caught for fraud and is in jail");
         diceRoll1 = 0;
         diceRoll2 = 0;
         gameState = STATE_END_TURN;
@@ -549,7 +625,7 @@ class GameManager {
         }
       } else if (type.equals("tax")){
         eventMessage = "tax";
-        currentPlayer.changeMoney(-100);
+        currentPlayer.changeMoney(-300);
         maintainHistory(currentPlayer.getName() + " lost $100");
       }
       else{
@@ -570,13 +646,13 @@ class GameManager {
     } 
     else {
        if (!gameOver) { 
-        if (rolledDouble) {
+        if (rolledDouble && !currentPlayer.isInJail()) {
           rolledDouble = false; 
           maintainHistory(currentPlayer.getName() + " rolled a double! Gets another turn.");
           gameState = STATE_WAITING_TO_ROLL;
         } 
         else {
-          gameState = CAN_END_TURN;
+          gameState = STATE_END_TURN;
         }
       }
     }
@@ -602,25 +678,54 @@ class GameManager {
 
   private void checkBankruptcy() {
     if (currentPlayer.getMoney() < 0) {
+      if (currentPlayer.canLiquidate(currentPlayer.getMoney())){
+        liquidate.setVisibility(true);
+        gameState = STATE_LIQUIDATE;
+      }
+      else{
       maintainHistory(currentPlayer.getName() + " has gone bankrupt");
       gameOver = true;
       gameState = STATE_GAME_OVER;
-      bankruptcy.setVisibility(true); 
+      bankruptcy.setVisibility(true);
+      }
     }
   }
+  
+  public void liquidateButtonClick(){
+    liquidate.setVisibility(false);
+    showList = new Button(currentPlayer, "showList", propertySide * 1.5, propertySide * 2);
+    showList.setVisibility(true);
+  }
+  
+  public void showListClick(){
+    if (currentPlayer.getMoney() >= 0){
+      showList.setVisibility(false);
+      gameState = STATE_END_TURN;
+    }
+  }
+  
+  public void unmortgageClick(boolean status){
+      gameState = CAN_END_TURN;
+      endButton.setVisibility(false);
 
+     if (status){
+      unmortgageList = new Button(currentPlayer, "unmortgageList", propertySide * 1.5, propertySide * 2);
+      unmortgageList.setVisibility(true);
+    }
+  }
+  
+  public void unmortgageListClick(){
+    unmortgageList.setVisibility(false);
+    endButton.setVisibility(true);
+    gameState = CAN_END_TURN;
+  }
+  
   private void maintainHistory(String entry) {
     historyLog.add(entry);
     if (historyLog.size() > 10) {
       historyLog.remove(0);
     }
   }
-  
-  public void overrideDice(int override){
-    diceOverride = override;
-    rollButtonClick();
-  }
-  
 
   private void drawHistoryLog() {
     int w = 380;
@@ -644,4 +749,5 @@ class GameManager {
       }
     }
   }
+
 }
