@@ -169,11 +169,7 @@ class GameManager {
         purchase.setVisibility(false);
         notEnoughMoney.setVisibility(false);
         eventButton.setVisibility(false);
-        
-        if (currentPlayer.hasMortgaged()){
-          unmortgage = new Button(currentPlayer, "unmortgage", propertySide * 3 + boardStartX, (boardSideLength + boardStartY) / 2);
-          unmortgage.setVisibility(true);
-        }
+        unmortgage.setVisibility(false);
         endButton.setVisibility(true); 
     } 
     else if (gameState == STATE_END_TURN) {
@@ -189,8 +185,13 @@ class GameManager {
         maintainHistory(currentPlayer.getName() + " rolled a double! Gets another turn.");
         gameState = STATE_WAITING_TO_ROLL;
       } else {
-        
-        gameState = CAN_END_TURN;
+        if (currentPlayer.hasMortgaged()){
+          unmortgage = new Button(currentPlayer, "unmortgage", propertySide * 3 + boardStartX, (boardSideLength + boardStartY) / 2);
+          unmortgage.setVisibility(true);
+        }
+        else{
+          gameState = CAN_END_TURN;
+        }
       }
     }
   }
@@ -416,7 +417,7 @@ class GameManager {
           gameState = STATE_WAITING_TO_ROLL;
         } 
         else {
-          gameState = CAN_END_TURN;
+          gameState = STATE_END_TURN;
         }
       }    
     }
@@ -561,7 +562,7 @@ class GameManager {
       if (prop.getOwned()) {
         if (prop.getOwner() == currentPlayer) {
         maintainHistory(currentPlayer.getName() + " landed on their own property: " + prop.getName() + ".");
-        gameState = CAN_END_TURN;
+        gameState = STATE_END_TURN;
         return false;
         } 
         else {
@@ -573,7 +574,7 @@ class GameManager {
             prop.getOwner().changeMoney(prop.getCurrentRent(this));
             currentPlayer.changeMoney(prop.getCurrentRent(this));
             maintainHistory(currentPlayer.getName() + " paid $" + prop.getCurrentRent(this) + " rent to " + prop.getOwner().getName());
-            gameState = CAN_END_TURN;
+            gameState = STATE_END_TURN;
             checkBankruptcy();
             eventButton = new Button("rent " + currentPlayer.getName() + " " + prop.getCurrentRent(this) + " " + prop.getOwner().getName(), 200, 275);
             eventButton.setVisibility(true);
@@ -591,7 +592,7 @@ class GameManager {
       String eventMessage = "";
       if (type.equals("GO")) {
           maintainHistory(currentPlayer.getName() + " went to go and collected $100");
-          gameState = CAN_END_TURN;
+          gameState = STATE_END_TURN;
           return false; 
       }
       else if (type.equals("gojail")){
@@ -651,7 +652,7 @@ class GameManager {
           gameState = STATE_WAITING_TO_ROLL;
         } 
         else {
-          gameState = CAN_END_TURN;
+          gameState = STATE_END_TURN;
         }
       }
     }
@@ -699,15 +700,18 @@ class GameManager {
   public void showListClick(){
     if (currentPlayer.getMoney() > 0){
       showList.setVisibility(false);
-      gameState = CAN_END_TURN;
+      gameState = STATE_END_TURN;
     }
   }
   
-  public void unmortgageClick(){
-    endButton.setVisibility(false);
-    unmortgage.setVisibility(false);
-    unmortgageList = new Button(currentPlayer, "unmortgageList", propertySide * 1.5, propertySide * 2);
-    unmortgageList.setVisibility(true);
+  public void unmortgageClick(boolean status){
+      gameState = CAN_END_TURN;
+      endButton.setVisibility(false);
+
+     if (status){
+      unmortgageList = new Button(currentPlayer, "unmortgageList", propertySide * 1.5, propertySide * 2);
+      unmortgageList.setVisibility(true);
+    }
   }
   
   public void unmortgageListClick(){

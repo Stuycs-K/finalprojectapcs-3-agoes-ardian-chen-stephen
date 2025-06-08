@@ -122,10 +122,10 @@ void mousePressed() {
     }
   }
   if (manager.unmortgage.isvisible() && manager.unmortgage.isClicked() == 1){
-    manager.unmortgageClick();
+    manager.unmortgageClick(true);
   }
   if (manager.unmortgage.isvisible() && manager.unmortgage.isClicked() == 0){
-    manager.unmortgageClick();
+    manager.unmortgageClick(false);
   }
   if (manager.unmortgageList.isvisible()){
     int choice = manager.showList.isClicked();
