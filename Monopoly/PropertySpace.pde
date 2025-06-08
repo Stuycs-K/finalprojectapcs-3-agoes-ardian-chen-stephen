@@ -13,7 +13,7 @@
     this.mortgageValue = price/2;
     this.baseRent = rent;
     this.owner = null;
-    isMortgaged = true;
+    isMortgaged = false;
   }
   
    public PropertySpace(String name, int index, String propertyType, int x, int y, float w, float h, int price, int rent) {

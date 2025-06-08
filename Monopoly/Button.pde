@@ -31,6 +31,7 @@ class Button{
     
     mortgageButtons = new ArrayList<>();
     sellButtons = new ArrayList<>();
+    System.out.println("creating button");
   }
   
   public void setDice(int dice1, int dice2){
@@ -39,7 +40,10 @@ class Button{
   }
 
   public void displayButton(){
+    System.out.println("bad");
     if (!visible) return; 
+        System.out.println("good");
+
     int w = 0;
     int h = 0;
    
@@ -120,43 +124,43 @@ class Button{
     }
    else if (type.equals("showList")){
       mortgageButtons = new ArrayList<>();
-    sellButtons = new ArrayList<>();
+      sellButtons = new ArrayList<>();
      
-     int rowHeight = 50;
+     int rowHeight = 30;
      int buttonW = 80;
      int buttonH = 30;
      int index = 0;
 
      fill(139, 0, 0);
-     rect(xPos, yPos, 600, 50 + player.getProperties().size() * rowHeight);
+     rect(xPos, yPos, 350, 60 + player.getProperties().size() * rowHeight);
      
      fill(255);
-     textSize(16);
+     textSize(14);
      textAlign(LEFT, TOP);
      text("Choose properties to sell or mortgage:", xPos + 10, yPos + 10);
-     text("Debt: $" + player.getMoney(), xPos + 10, yPos + 10);
+     text("Debt: $" + player.getMoney(), xPos + 10, yPos + 35);
      
      for(PropertySpace prop : player.getProperties()){
-        float itemY = yPos + 40 + index * rowHeight;
+        float itemY = yPos + 50 + index * rowHeight;
         
         fill(255);
         text(prop.getName() + " - $" + prop.getPrice(), xPos + 10, itemY + 10);
         
         if (prop.getMortgagedStatus()){
-            text("Mortgaged", xPos + 255, itemY + 8);
+            text("Mortgaged", xPos + 155, itemY + 8);
         }
         else{
           fill(255);
-          rect(xPos + 250, itemY, buttonW, buttonH);
+          rect(xPos + 150, itemY, buttonW, buttonH);
           fill(0);
-          text("Mortgage", xPos + 255, itemY + 8);
-          mortgageButtons.add(new float[]{xPos + 250, itemY, buttonW, buttonH});
+          text("Mortgage", xPos + 155, itemY + 8);
+          mortgageButtons.add(new float[]{xPos + 150, itemY, buttonW, buttonH});
           
           fill(255);
-          rect(xPos + 350, itemY, buttonW, buttonH);
+          rect(xPos + 250, itemY, buttonW, buttonH);
           fill(0);
-          text("Sell", xPos + 365, itemY + 8);
-          sellButtons.add(new float[]{xPos + 350, itemY, buttonW, buttonH});
+          text("Sell", xPos + 255, itemY + 8);
+          sellButtons.add(new float[]{xPos + 250, itemY, buttonW, buttonH});
         }
         index++;
      }

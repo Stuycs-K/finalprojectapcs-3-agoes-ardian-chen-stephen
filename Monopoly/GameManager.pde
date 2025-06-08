@@ -68,7 +68,7 @@ class GameManager {
     bankruptcy = new Button("bankruptcy",  propertySide * 3.5, propertySide * 2.5);
     endButton = new Button ("end_turn", propertySide * 4 + boardStartX, (boardSideLength + boardStartY) / 2);
     showDice = new Button ("diceImage", propertySide * 3 + boardStartX, (boardSideLength + boardStartY) / 3);
-    liquidate = new Button ("liquidate", propertySide * 2, propertySide * 2);
+    liquidate = new Button ("liquidate",  propertySide * 3.5, propertySide * 2.5);
     showList = new Button ("showList", propertySide * 4 + boardStartX, (boardSideLength + boardStartY) / 2);
     dice = new Dice();
     diceOverride = 0;
@@ -413,6 +413,10 @@ class GameManager {
   }
 
   public void display() {
+    
+    if (showList == null) println("showList is null");
+else if (!showList.isvisible()) println("showList is hidden");
+
     if (roll.isvisible()) {
       roll.displayButton();
     }
@@ -431,11 +435,14 @@ class GameManager {
     if (endButton.isvisible()) {       
       endButton.displayButton();
     }
-    if (showDice.isvisible()) {       
+    if (showDice.isvisible()) {     
       showDice.displayButton();
     }
     if (liquidate.isvisible()){
       liquidate.displayButton();
+    }
+    if (showList.isvisible()) {     
+      showList.displayButton();
     }
     if (manager.showDice.isvisible()) {
       drawDieFace(diceRoll1, propertySide * 3 + boardStartX + 35, (boardSideLength + boardStartY) / 3 + 80);
@@ -663,8 +670,13 @@ class GameManager {
   
   public void liquidateButtonClick(){
     liquidate.setVisibility(false);
+    System.out.println(1);
     showList = new Button(currentPlayer, propertySide * 2, propertySide * 2);
+        System.out.println(2);
+
     showList.setVisibility(true);
+            System.out.println(3);
+
   }
   
   public void showListClick(){
