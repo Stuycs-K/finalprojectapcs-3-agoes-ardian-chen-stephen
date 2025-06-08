@@ -21,7 +21,7 @@ void draw() {
 
 void keyPressed(){
   if (override){
-    if (key == ENTER){
+    if (key == ENTER && !overrideS.isEmpty()){
       int val = Integer.parseInt(overrideS);
       if (val > 0 && val <= 12){
         manager.overrideDice(val);

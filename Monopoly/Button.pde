@@ -140,15 +140,13 @@ class Button{
      text("Debt: $" + player.getMoney(), xPos + 10, yPos + 85);
      
      for(PropertySpace prop : player.getProperties()){
+        if (!prop.getMortgagedStatus()){
         float itemY = yPos + 110 + index * rowHeight;
         
         fill(255);
         text(prop.getName() + " - $" + prop.getPrice(), xPos + 10, itemY + 10);
         
-        if (prop.getMortgagedStatus()){
-            text("Mortgaged", xPos + 155, itemY + 8);
-        }
-        else{
+        
           fill(255);
           rect(xPos + 150, itemY, buttonW, buttonH);
           fill(0);
@@ -160,8 +158,9 @@ class Button{
           fill(0);
           text("Sell - $" + prop.getPrice(), xPos + 275, itemY + 8);
           sellButtons.add(new Object []{xPos + 250, itemY, buttonW, buttonH, prop});
-        }
+        
         index++;
+        }
      }
  }
    else if (type.equals("not_enough_money")) {
