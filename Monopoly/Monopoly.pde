@@ -128,7 +128,7 @@ void mousePressed() {
     manager.unmortgageClick(false);
   }
   if (manager.unmortgageList.isvisible()){
-    int choice = manager.showList.isClicked();
+    int choice = manager.unmortgageList.isClicked();
     if (choice == 1){
       manager.maintainHistory(manager.currentPlayer.getName() + " bought back a property");
     }

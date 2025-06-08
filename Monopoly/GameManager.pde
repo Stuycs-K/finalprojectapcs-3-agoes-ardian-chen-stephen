@@ -715,8 +715,9 @@ class GameManager {
   }
   
   public void unmortgageListClick(){
-    endButton.setVisibility(true);
     unmortgageList.setVisibility(false);
+    endButton.setVisibility(true);
+    gameState = CAN_END_TURN;
   }
   
   private void maintainHistory(String entry) {

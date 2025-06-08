@@ -149,8 +149,8 @@ class Button{
       sellButtons = new ArrayList<>();
      
      int rowHeight = 30;
-     int buttonW = 110;
-     int buttonH = 30;
+     buttonW = 110;
+     buttonH = 30;
      int index = 0;
 
      fill(139, 0, 0);
@@ -194,18 +194,20 @@ class Button{
      }
    }
    else if (type.equals("unmortgageList")){
+     textAlign(LEFT, TOP);
+
      unmortgageButtons = new ArrayList<>();
      int rowHeight = 30;
-     int buttonW = 110;
-     int buttonH = 30;
+     buttonW = 110;
+     buttonH = 30;
      int index = 0;
      
      fill(139, 0, 0);
-     rect(xPos, yPos, 350, 120 + min(8, player.getProperties().size()) * rowHeight);
+     rect(xPos, yPos, 350, 250 + min(8, player.getProperties().size()) * rowHeight);
      
      fill(255);
      textSize(12);
-     text("Properties that you can afford to unmortgage:", xPos + 10, yPos + 25);
+     text("Properties that you can afford to unmortgage:", xPos + 10, yPos + 10);
      
      int displayed = 0;
      
@@ -219,10 +221,10 @@ class Button{
         text(prop.getName() + " - $" + price, xPos + 10, itemY + 10);
         
         fill(255);
-        rect(xPos + 250, itemY, buttonW, buttonH);
+        rect(xPos + 150, itemY, buttonW, buttonH);
         fill(0);
-        text("Unmortgage - $" + price, xPos + 255, itemY + 8);
-        unmortgageButtons.add(new Object[]{xPos + 250, itemY, buttonW, buttonH, prop, price});
+        text("Unmortgage - $" + price, xPos + 155, itemY + 8);
+        unmortgageButtons.add(new Object[]{xPos + 150, itemY, buttonW, buttonH, prop});
         
         index++;
         displayed++;
@@ -231,9 +233,10 @@ class Button{
     
       fill(255);
       button1X = xPos + 350 / 2 - 40;
-      buttonY = yPos + 320 ;
+      buttonY = yPos + 210 + min(8, player.getProperties().size()) * rowHeight ;
       buttonW = 80;
       buttonH = 30;
+     
       rect(button1X, buttonY, buttonW, buttonH);
       fill(0);
       textAlign(CENTER, CENTER);
@@ -386,8 +389,8 @@ class Button{
     else if (type.equals("showList")){
       for (int i = 0; i < mortgageButtons.size(); i++) {
         Object [] btn = mortgageButtons.get(i);
-        if (mouseX >= (float) btn[0] && mouseX <= (float)btn[0] + (int)btn[2] &&
-          mouseY >= (float)btn[1] && mouseY <=(float) btn[1] + (int)btn[3]) {
+        if (mouseX >= (float) btn[0] && mouseX <= (float)btn[0] + (float)btn[2] &&
+          mouseY >= (float)btn[1] && mouseY <=(float) btn[1] + (float)btn[3]) {
            PropertySpace prop = (PropertySpace) btn[4];
            player.mortgageProperty(prop); 
            return 1;
@@ -396,8 +399,8 @@ class Button{
 
       for (int i = 0; i < sellButtons.size(); i++) {
         Object [] btn = sellButtons.get(i);
-          if (mouseX >= (float) btn[0] && mouseX <= (float)btn[0] + (int)btn[2] &&
-          mouseY >= (float)btn[1] && mouseY <=(float) btn[1] + (int)btn[3]) {
+          if (mouseX >= (float) btn[0] && mouseX <= (float)btn[0] + (float)btn[2] &&
+          mouseY >= (float)btn[1] && mouseY <=(float) btn[1] + (float)btn[3]) {
              PropertySpace prop = (PropertySpace) btn[4];
              player.sellProperty(prop); 
              return 0;             
@@ -408,8 +411,8 @@ class Button{
     else if (type.equals("unmortgageList")){
       for (int i = 0; i < unmortgageButtons.size(); i++) {
         Object [] btn = unmortgageButtons.get(i);
-          if (mouseX >= (float) btn[0] && mouseX <= (float)btn[0] + (int)btn[2] &&
-          mouseY >= (float)btn[1] && mouseY <=(float) btn[1] + (int)btn[3]) {
+          if (mouseX >= (float) btn[0] && mouseX <= (float)btn[0] + (float)btn[2] &&
+          mouseY >= (float)btn[1] && mouseY <=(float) btn[1] + (float)btn[3]) {
              PropertySpace prop = (PropertySpace) btn[4];
              player.unmortgageProperty(prop); 
              return 1;             
