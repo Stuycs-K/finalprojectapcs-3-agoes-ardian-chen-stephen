@@ -104,7 +104,7 @@ class Player{
   
   public boolean hasMortgaged(){
     for (PropertySpace p : ownedProperties) {
-      if (p.getMortgagedStatus()) {
+      if (p.getMortgagedStatus() && p.getMortgagePrice() * 1.1 < money) {
         return true;
       }
     }

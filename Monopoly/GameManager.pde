@@ -171,7 +171,7 @@ class GameManager {
         eventButton.setVisibility(false);
         
         if (currentPlayer.hasMortgaged()){
-          unmortgage = new Button(currentPlayer, "unmortgage", propertySide * 4 + boardStartX, (boardSideLength + boardStartY) / 2);
+          unmortgage = new Button(currentPlayer, "unmortgage", propertySide * 3 + boardStartX, (boardSideLength + boardStartY) / 2);
           unmortgage.setVisibility(true);
         }
         endButton.setVisibility(true); 

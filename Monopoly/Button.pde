@@ -69,6 +69,29 @@ class Button{
       text("Yes", button1X + 5, buttonY + 20);
       text("No", button2X + 5, buttonY + 20);
     }
+    else if (type.equals("unmortgage")){
+      w = 220; 
+      h = 80;
+      
+      fill(240, 10, 0);
+      rect(xPos, yPos, w, h);
+      fill(0);
+      textSize(20);
+      text("Would you like to", xPos + 110, yPos + 30);
+      text("unmortgage any property?", xPos + 110, yPos + 50);
+      fill(255);
+      button1X = xPos;
+      button2X = xPos + 170;
+      buttonY = yPos + 90;
+      buttonW = 50;
+      buttonH = 50;
+      textAlign(LEFT, BASELINE);
+      rect(button1X, buttonY, buttonW, buttonH);
+      rect(button2X, buttonY, buttonW, buttonH);
+      fill(0);
+      text("Yes", button1X + 5, buttonY + 20);
+      text("No", button2X + 5, buttonY + 20);
+    }
     else if (type.equals("diceImage")){
       w = 220; 
       h = 210;
@@ -297,10 +320,6 @@ class Button{
         message = "You went bankrupt. Mortgage or sell to continue";
         eventType = "Broke";
       }
-      else if (type.equals("unmortgage")){ 
-        message = "Buy back any property that you have mortgaged";
-        eventType = "Unmortgage";
-      }
       else{
         return;
       }
@@ -353,7 +372,7 @@ class Button{
     }
   
     public int isClicked() {
-      if (type.equals("purchase") || type.equals("bankruptcy")){
+      if (type.equals("purchase") || type.equals("bankruptcy") || type.equals("unmortgage")){
         if (mouseX > button1X && mouseX < button1X + buttonW && mouseY > buttonY && mouseY < buttonY + buttonH) {
           visible = false;
           return 1;
