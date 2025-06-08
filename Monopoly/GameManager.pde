@@ -413,9 +413,6 @@ class GameManager {
   }
 
   public void display() {
-    
-    if (showList == null) println("showList is null");
-else if (!showList.isvisible()) println("showList is hidden");
 
     if (roll.isvisible()) {
       roll.displayButton();
@@ -601,7 +598,7 @@ else if (!showList.isvisible()) println("showList is hidden");
         }
       } else if (type.equals("tax")){
         eventMessage = "tax";
-        currentPlayer.changeMoney(-100);
+        currentPlayer.changeMoney(-500);
         maintainHistory(currentPlayer.getName() + " lost $100");
       }
       else{
@@ -670,13 +667,8 @@ else if (!showList.isvisible()) println("showList is hidden");
   
   public void liquidateButtonClick(){
     liquidate.setVisibility(false);
-    System.out.println(1);
     showList = new Button(currentPlayer, propertySide * 2, propertySide * 2);
-        System.out.println(2);
-
     showList.setVisibility(true);
-            System.out.println(3);
-
   }
   
   public void showListClick(){

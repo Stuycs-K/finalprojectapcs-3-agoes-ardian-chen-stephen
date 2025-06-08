@@ -12,8 +12,8 @@ class Button{
   int dice2;
   Player player;
   
-  ArrayList<float[]> mortgageButtons;
-  ArrayList<float[]> sellButtons;
+  ArrayList<Object []> mortgageButtons;
+  ArrayList<Object []> sellButtons;
       
   Button(String type, float xPos, float yPos){
     this.type = type;
@@ -31,7 +31,6 @@ class Button{
     
     mortgageButtons = new ArrayList<>();
     sellButtons = new ArrayList<>();
-    System.out.println("creating button");
   }
   
   public void setDice(int dice1, int dice2){
@@ -40,10 +39,8 @@ class Button{
   }
 
   public void displayButton(){
-    System.out.println("bad");
     if (!visible) return; 
-        System.out.println("good");
-
+    
     int w = 0;
     int h = 0;
    
@@ -154,13 +151,13 @@ class Button{
           rect(xPos + 150, itemY, buttonW, buttonH);
           fill(0);
           text("Mortgage", xPos + 155, itemY + 8);
-          mortgageButtons.add(new float[]{xPos + 150, itemY, buttonW, buttonH});
-          
+          mortgageButtons.add(new Object[]{xPos + 150, itemY, buttonW, buttonH, prop});
+                    
           fill(255);
           rect(xPos + 250, itemY, buttonW, buttonH);
           fill(0);
           text("Sell", xPos + 255, itemY + 8);
-          sellButtons.add(new float[]{xPos + 250, itemY, buttonW, buttonH});
+          sellButtons.add(new Object []{xPos + 250, itemY, buttonW, buttonH, prop});
         }
         index++;
      }
@@ -231,9 +228,6 @@ class Button{
       }
       else if (type.length() > 4 && type.substring(0,4).equals("rent")){
         String[] parts = type.split(" ");
-        for(String s: parts){
-          System.out.println(s);
-        }
         message = parts[1] + " " + parts[2] + " payed $" + parts[3] + " to " + parts[4] + " " + parts[5];
         eventType = "Pay Rent";
       }
@@ -313,21 +307,23 @@ class Button{
       return -1;
     }
     else if (type.equals("showList")){
+      System.out.println("mortgage " + mortgageButtons.size());
       for (int i = 0; i < mortgageButtons.size(); i++) {
-        float[] btn = mortgageButtons.get(i);
-        if (mouseX >= btn[0] && mouseX <= btn[0] + btn[2] &&
-          mouseY >= btn[1] && mouseY <= btn[1] + btn[3]) {
-           PropertySpace prop = player.getProperties().get(i);
+        Object [] btn = mortgageButtons.get(i);
+        if (mouseX >= (float) btn[0] && mouseX <= (float)btn[0] + (int)btn[2] &&
+          mouseY >= (float)btn[1] && mouseY <=(float) btn[1] + (int)btn[3]) {
+           PropertySpace prop = (PropertySpace) btn[4];
            player.mortgageProperty(prop); 
            return 1;
         }
       }
-      
+            System.out.println("sell " +sellButtons.size());
+
       for (int i = 0; i < sellButtons.size(); i++) {
-        float[] btn = sellButtons.get(i);
-          if (mouseX >= btn[0] && mouseX <= btn[0] + btn[2] &&
-            mouseY >= btn[1] && mouseY <= btn[1] + btn[3]) {
-             PropertySpace prop = player.getProperties().get(i);
+        Object [] btn = sellButtons.get(i);
+          if (mouseX >= (float) btn[0] && mouseX <= (float)btn[0] + (int)btn[2] &&
+          mouseY >= (float)btn[1] && mouseY <=(float) btn[1] + (int)btn[3]) {
+             PropertySpace prop = (PropertySpace) btn[4];
              player.sellProperty(prop); 
              return 1;             
           }

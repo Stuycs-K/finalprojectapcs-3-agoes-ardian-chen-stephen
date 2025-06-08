@@ -30,7 +30,6 @@ class Player{
   }
   
   public void sentToJail(int jailIndex){
-    System.out.println("sending to jail");
     inJail = true;
     jailTurns = 4;
     setPos(jailIndex);
@@ -107,7 +106,7 @@ class Player{
   if (ownedProperties.contains(p) && !p.getMortgagedStatus()) {
     ownedProperties.remove(p);
     p.setOwner(null);
-    int salePrice = (int)(p.getPrice() * 0.75);
+    int salePrice = (int)(p.getPrice());
     changeMoney(salePrice);
   }
 }
