@@ -91,9 +91,7 @@ class Player{
         sum += p.getPrice();
       }
     }
-    
-    System.out.println(sum);
-    
+        
     return sum > -debt;
   }
   

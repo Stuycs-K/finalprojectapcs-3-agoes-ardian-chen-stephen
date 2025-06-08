@@ -68,7 +68,7 @@ class GameManager {
     bankruptcy = new Button("bankruptcy",  propertySide * 3.5, propertySide * 2.5);
     endButton = new Button ("end_turn", propertySide * 4 + boardStartX, (boardSideLength + boardStartY) / 2);
     showDice = new Button ("diceImage", propertySide * 3 + boardStartX, (boardSideLength + boardStartY) / 3);
-    liquidate = new Button ("liquidate",  propertySide * 3.5, propertySide * 2.5);
+    liquidate = new Button ("liquidate",  propertySide * 2.5 + boardStartX, (boardSideLength + boardStartY) / 3);
     showList = new Button ("showList", propertySide * 4 + boardStartX, (boardSideLength + boardStartY) / 2);
     dice = new Dice();
     diceOverride = 0;
@@ -549,15 +549,21 @@ class GameManager {
         return false;
         } 
         else {
-          prop.getOwner().changeMoney(prop.getCurrentRent(this));
-          currentPlayer.changeMoney(prop.getCurrentRent(this));
-          maintainHistory(currentPlayer.getName() + " paid $" + prop.getCurrentRent(this) + " rent to " + prop.getOwner().getName());
-          gameState = CAN_END_TURN;
-          checkBankruptcy();
-          eventButton = new Button("rent " + currentPlayer.getName() + " " + prop.getCurrentRent(this) + " " + prop.getOwner().getName(), 200, 275);
-          eventButton.setVisibility(true);
-          waitingForEvent = true;
-          return false;
+          if (prop.getMortgagedStatus()){
+            maintainHistory("This property has been mortgaged. " +  prop.getOwner().getName() + " gets no rent");
+            return false;
+          }
+          else{
+            prop.getOwner().changeMoney(prop.getCurrentRent(this));
+            currentPlayer.changeMoney(prop.getCurrentRent(this));
+            maintainHistory(currentPlayer.getName() + " paid $" + prop.getCurrentRent(this) + " rent to " + prop.getOwner().getName());
+            gameState = CAN_END_TURN;
+            checkBankruptcy();
+            eventButton = new Button("rent " + currentPlayer.getName() + " " + prop.getCurrentRent(this) + " " + prop.getOwner().getName(), 200, 275);
+            eventButton.setVisibility(true);
+            waitingForEvent = true;
+            return false;
+          }
         }
       }
       return true;
@@ -602,7 +608,7 @@ class GameManager {
         }
       } else if (type.equals("tax")){
         eventMessage = "tax";
-        currentPlayer.changeMoney(-500);
+        currentPlayer.changeMoney(-100);
         maintainHistory(currentPlayer.getName() + " lost $100");
       }
       else{
@@ -655,10 +661,7 @@ class GameManager {
 
   private void checkBankruptcy() {
     if (currentPlayer.getMoney() < 0) {
-      System.out.println(currentPlayer.getMoney());
-      System.out.println(currentPlayer.canLiquidate(currentPlayer.getMoney()));
       if (currentPlayer.canLiquidate(currentPlayer.getMoney())){
-        liquidate = new Button("liquidate", propertySide * 4 + boardStartX, (boardSideLength + boardStartY) / 2);
         liquidate.setVisibility(true);
         gameState = STATE_LIQUIDATE;
       }
