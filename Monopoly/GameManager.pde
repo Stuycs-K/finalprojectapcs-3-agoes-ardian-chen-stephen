@@ -12,6 +12,7 @@ class GameManager {
   private Button bankruptcy;
   private Button endButton;
   private Button liquidate;
+  private Button unmortgage;
   private Button showList;
   private Dice dice;
   private ArrayList<String> historyLog;
@@ -70,6 +71,7 @@ class GameManager {
     showDice = new Button ("diceImage", propertySide * 3 + boardStartX, (boardSideLength + boardStartY) / 3);
     liquidate = new Button ("liquidate",  propertySide * 2.5 + boardStartX, (boardSideLength + boardStartY) / 3);
     showList = new Button ("showList", propertySide * 4 + boardStartX, (boardSideLength + boardStartY) / 2);
+    unmortgage = new Button ("unmortgage", propertySide * 4 + boardStartX, (boardSideLength + boardStartY) / 2);
     dice = new Dice();
     diceOverride = 0;
 
@@ -165,6 +167,11 @@ class GameManager {
         purchase.setVisibility(false);
         notEnoughMoney.setVisibility(false);
         eventButton.setVisibility(false);
+        
+        if (currentPlayer.hasMortgaged()){
+          unmortgage = new Button("Unmortgage", propertySide * 4 + boardStartX, (boardSideLength + boardStartY) / 2);
+          unmortgage.setVisibility(true);
+        }
         endButton.setVisibility(true); 
     } 
     else if (gameState == STATE_END_TURN) {

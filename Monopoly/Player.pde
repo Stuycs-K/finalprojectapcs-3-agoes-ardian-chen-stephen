@@ -102,6 +102,15 @@ class Player{
     }
   }
   
+  public boolean hasMortgaged(){
+    for (PropertySpace p : ownedProperties) {
+      if (p.getMortgagedStatus()) {
+        return true;
+      }
+    }
+    return false;
+  }
+  
   public void sellProperty(PropertySpace p) {
   if (ownedProperties.contains(p) && !p.getMortgagedStatus()) {
       ownedProperties.remove(p);
