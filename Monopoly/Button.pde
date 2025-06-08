@@ -129,7 +129,7 @@ class Button{
      int index = 0;
 
      fill(139, 0, 0);
-     rect(xPos, yPos, 430, 160 + player.getProperties().size() * rowHeight);
+     rect(xPos, yPos, 430, 160 + min(8, player.getProperties().size()) * rowHeight);
      
      fill(255);
      textSize(12);
@@ -139,8 +139,12 @@ class Button{
      text("exceed debt, you'll get locked and break the game (only happens in rare occassions)", xPos + 10, yPos + 60);
      text("Debt: $" + player.getMoney(), xPos + 10, yPos + 85);
      
+     int displayed = 0;
+     
      for(PropertySpace prop : player.getProperties()){
         if (!prop.getMortgagedStatus()){
+          if (displayed >= 8) break;
+        
         float itemY = yPos + 110 + index * rowHeight;
         
         fill(255);
@@ -160,6 +164,7 @@ class Button{
           sellButtons.add(new Object []{xPos + 250, itemY, buttonW, buttonH, prop});
         
         index++;
+        displayed++;
         }
      }
  }

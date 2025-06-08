@@ -608,7 +608,7 @@ class GameManager {
         }
       } else if (type.equals("tax")){
         eventMessage = "tax";
-        currentPlayer.changeMoney(-100);
+        currentPlayer.changeMoney(-300);
         maintainHistory(currentPlayer.getName() + " lost $100");
       }
       else{
