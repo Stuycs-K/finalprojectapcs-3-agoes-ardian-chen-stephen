@@ -287,6 +287,10 @@ class Button{
         message = "You went bankrupt. Mortgage or sell to continue";
         eventType = "Broke";
       }
+      else if (type.equals("unmortgage")){ 
+        message = "Buy back any property that you have mortgaged";
+        eventType = "Unmortgage";
+      }
       else{
         return;
       }

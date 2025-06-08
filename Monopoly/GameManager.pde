@@ -13,6 +13,7 @@ class GameManager {
   private Button endButton;
   private Button liquidate;
   private Button unmortgage;
+  private Button unmortgageList;
   private Button showList;
   private Dice dice;
   private ArrayList<String> historyLog;
@@ -71,7 +72,8 @@ class GameManager {
     showDice = new Button ("diceImage", propertySide * 3 + boardStartX, (boardSideLength + boardStartY) / 3);
     liquidate = new Button ("liquidate",  propertySide * 2.5 + boardStartX, (boardSideLength + boardStartY) / 3);
     showList = new Button ("showList", propertySide * 4 + boardStartX, (boardSideLength + boardStartY) / 2);
-    unmortgage = new Button ("unmortgage", propertySide * 4 + boardStartX, (boardSideLength + boardStartY) / 2);
+    unmortgage = new Button ("unmortgage", propertySide * 4 + boardStartX, (boardSideLength + boardStartY) / 1.5);
+    unmortgageList = new Button("unmortgageList", propertySide * 4 + boardStartX, (boardSideLength + boardStartY) / 2);
     dice = new Dice();
     diceOverride = 0;
 
@@ -448,6 +450,12 @@ class GameManager {
     if (showList.isvisible()) {     
       showList.displayButton();
     }
+    if (unmortgage.isvisible()){
+      unmortgage.displayButton();
+    }
+    if (unmortgageList.isvisible()) {     
+      unmortgageList.displayButton();
+    }
     if (manager.showDice.isvisible()) {
       drawDieFace(diceRoll1, propertySide * 3 + boardStartX + 35, (boardSideLength + boardStartY) / 3 + 80);
       drawDieFace(diceRoll2, propertySide * 3 + boardStartX + 125, (boardSideLength + boardStartY) / 3 + 80);
@@ -692,6 +700,12 @@ class GameManager {
       showList.setVisibility(false);
       gameState = CAN_END_TURN;
     }
+  }
+  
+  public void unmortgageClick(){
+    unmortgage.setVisibility(false);
+    unmortgageList = new Button(currentPlayer, "unmortgageList", propertySide * 1.5, propertySide * 2);
+    unmortgageList.setVisibility(true);
   }
   
   private void maintainHistory(String entry) {
