@@ -517,7 +517,11 @@ class GameManager {
       textSize(propertyTextSize);
       for (int i = 0; i < numPropsToDisplay; i++) {
         PropertySpace prop = props.get(i);
-        if (prop != null) {
+        if (prop != null && prop.getMortgagedStatus()){
+          text("- " + prop.getName() + " (Mortgaged)", boxX + padding + 10, currentTextY); 
+          currentTextY += propertyLineHeight;
+        }
+        else if (prop != null) {
           text("- " + prop.getName(), boxX + padding + 10, currentTextY); 
           currentTextY += propertyLineHeight;
         }
