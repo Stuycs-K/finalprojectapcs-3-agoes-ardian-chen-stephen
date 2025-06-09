@@ -15,6 +15,7 @@ class GameManager {
   private Button unmortgage;
   private Button unmortgageList;
   private Button showList;
+  private Button manageAssets;
   private Dice dice;
   private ArrayList<String> historyLog;
 
@@ -39,8 +40,8 @@ class GameManager {
 
   private int numPropEachSide = 7;
   private int totalBoardSpaces = (4 * numPropEachSide) + 4;
-  private float cornerSize = 70.0f;
-  private float propertySide = 70.0f;
+  private float cornerSize = 95.0f;
+  private float propertySide = 95.0f;
   private float boardSideLength = (2 * cornerSize) + (numPropEachSide * propertySide);
   private float boardStartX = 10.0f;
   private float boardStartY = 10.0f;
@@ -74,6 +75,7 @@ class GameManager {
     showList = new Button ("showList", propertySide * 4 + boardStartX, (boardSideLength + boardStartY) / 2);
     unmortgage = new Button ("unmortgage", propertySide * 4 + boardStartX, (boardSideLength + boardStartY) / 1.5);
     unmortgageList = new Button("unmortgageList", propertySide * 4 + boardStartX, (boardSideLength + boardStartY) / 2);
+    manageAssets = null;
     dice = new Dice();
     diceOverride = 0;
 
@@ -84,6 +86,9 @@ class GameManager {
   }
 
   private void update() {
+    if (manageAssets != null && manageAssets.isvisible()) {
+        return;
+    }
     if (gameOver || waitingForEvent) {
       return;
     }
@@ -196,6 +201,22 @@ class GameManager {
     }
   }
 
+  public void startAssetManagement() {
+    if (purchase.isvisible() || notEnoughMoney.isvisible() || eventButton.isvisible() || liquidate.isvisible() || showList.isvisible()) {
+      return;
+    }
+    manageAssets = new Button(currentPlayer, "showList", propertySide * 1.5, propertySide * 2);
+    manageAssets.setVisibility(true);
+    roll.setVisibility(false);
+    endButton.setVisibility(false);
+  }
+
+  public void endAssetManagement() {
+    if (manageAssets != null) {
+      manageAssets.setVisibility(false);
+    }
+  }
+  
   public void finalizeTurn() {
     if (gameOver) return;
     endButton.setVisibility(false); 
@@ -346,6 +367,13 @@ class GameManager {
     rollButtonClick();
   }
   
+  public void overrideGoToJail() {
+    maintainHistory("Override: " + currentPlayer.getName() + " was sent to jail.");
+    currentPlayer.sentToJail(jail.getBoardIndex());
+    gameState = STATE_END_TURN; 
+    roll.setVisibility(false); 
+  }
+  
   public void rollButtonClick() {
     if (diceOverride > 0) {
       int totalOverrideSteps = diceOverride;
@@ -457,6 +485,9 @@ class GameManager {
     }
     if (unmortgageList.isvisible()) {     
       unmortgageList.displayButton();
+    }
+    if (manageAssets != null && manageAssets.isvisible()) {
+        manageAssets.displayButton();
     }
     if (manager.showDice.isvisible()) {
       drawDieFace(diceRoll1, propertySide * 3 + boardStartX + 35, (boardSideLength + boardStartY) / 3 + 80);
