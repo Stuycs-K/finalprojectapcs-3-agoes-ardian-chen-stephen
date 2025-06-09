@@ -719,7 +719,7 @@ class GameManager {
     if (gameOver) {
         return;
     }
-    processEndOfMove();
+    gameState = STATE_END_TURN;
   }
 
   private void buyProperty(PropertySpace space) {
