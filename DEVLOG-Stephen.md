@@ -35,4 +35,4 @@ This document must be updated daily every time you finish a work session.
 ### 2025-06-08 - Finished bankruptcy and added system to buy back mortgaged property when a player has enough money and reached the end of their turn.  
 
 
-
+I believe this document accurately reflects the contributions of my teamate. -- Ardian
