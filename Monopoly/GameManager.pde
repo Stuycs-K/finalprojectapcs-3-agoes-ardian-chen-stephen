@@ -165,7 +165,7 @@ class GameManager {
       if (canPurchase) {
         gameState = STATE_WAITING_PURCHASE_DECISION;
         purchase.setVisibility(true);
-      } else {
+      } else if (!waitingForEvent) {
         processEndOfMove();
       }
      } 
@@ -637,10 +637,9 @@ class GameManager {
           }
           else{
             prop.getOwner().changeMoney(prop.getCurrentRent(this));
-            currentPlayer.changeMoney(prop.getCurrentRent(this));
+            currentPlayer.changeMoney(-1 * prop.getCurrentRent(this));
             maintainHistory(currentPlayer.getName() + " paid $" + prop.getCurrentRent(this) + " rent to " + prop.getOwner().getName());
             gameState = STATE_END_TURN;
-            checkBankruptcy();
             eventButton = new Button("rent " + currentPlayer.getName() + " " + prop.getCurrentRent(this) + " " + prop.getOwner().getName(), 200, 275);
             eventButton.setVisibility(true);
             waitingForEvent = true;
@@ -703,15 +702,12 @@ class GameManager {
   
   public void eventButtonClick() {
     eventButton.setVisibility(false);
-    if (currentPlayer.getMoney() < 0) {
-      checkBankruptcy();
-    } 
-    else {
-       if (!gameOver) { 
-        processEndOfMove();
-      }
-    }
     waitingForEvent = false;
+    checkBankruptcy();
+    if (gameOver) {
+        return;
+    }
+    processEndOfMove();
   }
 
   private void buyProperty(PropertySpace space) {
