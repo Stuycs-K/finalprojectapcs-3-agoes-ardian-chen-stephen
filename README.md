@@ -20,6 +20,7 @@ For our MVP, the game will include:
     * Landing on an owned property automatically deducts rent from the lander and pays it to the owner.
     * A player loses if their money drops below $0.
 * The MVP will not include: houses/hotels, property sets, auctions, mortgaging, trading, a complex jail system, or complex animations.
+* For additions after MVP, we were able to accomplish property sets, mortgaging and selling, jail system. We also added overrides for testing and demo purposes. 
 
 # Intended usage:
 
@@ -33,18 +34,26 @@ For our MVP, the game will include:
     * **Dice Roll Area:**
         * A clickable "Roll Dice" Button will be present.
         * After clicking, the results of the two dice and their sum will be communicated through the message log.
-    * **Decision Buttons:** When a player lands on an unowned, purchasable property, a Buy and a Pass button will appear for the player to make a decision. 
-
+    * **Buying Properties:** When a player lands on an unowned, purchasable property, a Buy and a     Pass button will appear for the player to make a decision. 
+    * **Mortgaging & Selling:**    
+        * If a player goes into debt, they will be forced to sell/mortgage any property they have in order to get out of debt. They will be prompted with a list of their properties that they can go on to choose which ones they want to mortgage/sell. **NOTE/WARNING: mortgaging and selling is irreversible in this game. For example, if a player is -100 in debt, and they have a property that they can mortgage for 60, or sell for 120, and they click mortgage in stead of selling, they will still remain in debt with -40 dollars, and therefore lose / get locked out even though they could've sold the property to get out of debt. Players therefore need to be careful on what they chose to do on the mortgaging/selling screen.**
+    * **Un-mortgaging:**    
+        * If a player has enough money to mortgage any of their properties, they will get a pop up at the end of their turn asking if they want to buy back one of their properties. If they click yes, they will get a pop up of all the properties they can afford to buy back.
+    * **Event Pop Up**    
+        * If a player lands on an event (ie, community, chest, tax, jail), they will get a pop up of the event. No further action will be needed. 
+    
 3.  **Gameplay Interaction:**
     * The current player initiates their turn by clicking the "Roll Dice" button.
     * The UI will update the player's token to its new position on the board.
     * Game messages will update to reflect the roll and landing spot.
+    * Events like chance, tax, community, and jail occur automatically. 
     * If a property purchase decision is required, the "Buy" and "Pass" buttons become active. 
     * If rent is due, it will be automatically deducted and paid; the UI will reflect the updated money totals for both players involved and display a message.
-    * The turn indicator will then switch to the next player.
+    * if a player goes into debt through rent or through events, they will be prompted to sell or mortgage properties to get money back. If they do the later, they can buy back the property after collecting enough moeny at the end of their turn. 
+    * If the player rolled a double, then the player gets another turn. Else, the turn indicator will then switch to the next player.
 
 4.  **Game End:**
-    * When a player's money drops below zero, a game message will declare them bankrupt and the game ends.
+    * When a player's money drops below zero and the player can't make up that debt with properties to mortgage and sell, a game message will declare them bankrupt and the game ends.
 
   
 # Controls
