@@ -6,8 +6,6 @@ This document must be updated daily every time you finish a work session.
 
 ### 2025-05-19 - Worked on project proposal, detailing MVP and extra features.
 
-### 2025-05-19 - Worked on project proposal, detailing MVP and extra features.
-
 ### 2025-05-20 - Planned timeline of different tasks and assigned them to each person
 
 ### 2025-05-22 - Started coding Player class
@@ -20,7 +18,7 @@ This document must be updated daily every time you finish a work session.
 
 ### 2025-05-29 - Working on game logic for the entire game
 
-### 2025-05-29 - Fixed error with main not seeing other tabs and merged finished classes into main
+### 2025-05-30 - Fixed error with main not seeing other tabs and merged finished classes into main
 
 ### 2025-05-31 - Completed entire game logic 
 
@@ -29,3 +27,12 @@ This document must be updated daily every time you finish a work session.
 ### 2025-06-03 - Adding jail to the actual board and fixed issues with player escaping jail early
 
 ### 2025-06-04 - Adding dice image after each roll so user can more easily see their dice rolls
+
+### 2025-06-06 - Adding overriding dice for demo purposes
+
+### 2025-06-07 - Working on mortgaging system for bankruptcy
+
+### 2025-06-07 - Finished bankruptcy and added system to buy back mortgaged property. 
+
+
+
