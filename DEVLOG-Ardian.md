@@ -48,3 +48,5 @@ Fixed dice override bug and working on fixing rolling a dice and landing on go n
 
 ### 2025-06-8 - Coding
 Added overrrides to send player to jail, mortgaging on command, and property lending + bunch of bug fixes
+
+I believe this document accurately reflects the contributions of my teamate. - Stephen C
