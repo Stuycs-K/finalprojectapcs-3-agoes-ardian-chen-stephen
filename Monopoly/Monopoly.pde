@@ -2,6 +2,7 @@ private GameManager manager;
 boolean override;
 String overrideS;
 boolean getProperty; 
+boolean changeMoney;
 
 Button button;
 
@@ -11,6 +12,7 @@ void setup(){
   override = false;
   overrideS = "";
   getProperty = false;
+  changeMoney = false;
 }
 
 void draw() {
@@ -19,9 +21,13 @@ void draw() {
   if (override){
     if (getProperty) {
       modeText = "Give Property: ";
-    } else {
+    } else if (changeMoney) {
+      modeText = "Money Change: ";
+    }
+    else {
       modeText = "Dice Override: ";
     }
+    
     text(modeText + overrideS, 1000, 100);
   }
   manager.update();    
@@ -32,15 +38,28 @@ void keyPressed(){
   if (key == 'g' && (manager.roll.isvisible() || manager.endButton.isvisible())) {
       override = true;
       getProperty = true; 
+      changeMoney = false;
       overrideS = "";
       return; 
   }
+  
+  if (key == 'c' && (manager.roll.isvisible() || manager.endButton.isvisible())) {
+      override = true;
+      getProperty = false; 
+      changeMoney = true; 
+      overrideS = "";
+      return; 
+  }
+  
   if (override){
     if (key == ENTER && !overrideS.isEmpty()){
       int val = Integer.parseInt(overrideS);
       if (getProperty) {
         manager.overrideGiveProperty(val);
-      } else { 
+      } else if (changeMoney){
+        manager.overrideSetMoney(val);
+      }
+      else { 
         if (val > 0 && val <= 12){
           manager.overrideDice(val);
         }
@@ -48,6 +67,7 @@ void keyPressed(){
       override = false;
       overrideS = "";
       getProperty = false;
+      changeMoney = false;
     }
     else{
       if (Character.isDigit(key)){
@@ -57,6 +77,8 @@ void keyPressed(){
   }
   if(key == 'o' && manager.roll.isvisible()){
     override = true;
+    changeMoney = false;
+    getProperty = false; 
   }
   
   if(key == 'j' && manager.roll.isvisible()){

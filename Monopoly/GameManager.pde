@@ -387,6 +387,16 @@ class GameManager {
     rollButtonClick();
   }
   
+  public void overrideSetMoney(int money){
+    if (money < 0) {
+      maintainHistory("Override Error: Can't set to negative money");
+      return;
+    }
+    currentPlayer.setMoney(money);
+    maintainHistory("Override: " + currentPlayer.getName() + "'s money set to $" + money);
+
+  }
+  
   public void overrideGoToJail() {
     maintainHistory("Override: " + currentPlayer.getName() + " was sent to jail.");
     currentPlayer.sentToJail(jail.getBoardIndex());
@@ -686,7 +696,7 @@ class GameManager {
         }
       } else if (type.equals("tax")){
         eventMessage = "tax";
-        currentPlayer.changeMoney(-300);
+        currentPlayer.changeMoney(-100);
         maintainHistory(currentPlayer.getName() + " lost $100");
       }
       else{
