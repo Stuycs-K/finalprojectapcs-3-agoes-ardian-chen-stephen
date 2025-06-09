@@ -4,6 +4,7 @@
 
 **Team Members:** Ardian Agoes & Stephen Chen <br>
 **Period:** 3
+**VIDEO LINK:** [Video](https://drive.google.com/file/d/13f0Wje4lkenofAnXdwp5caaSzM6CQU9O/view?usp=sharing) 
 
 # Project Description
 
@@ -23,7 +24,7 @@ For our MVP, the game will include:
 # Intended usage:
 
 1.  **Main Game View:**
-    * **Game Board:** A visual representation of the Monopoly board will be at the center of the screen. Properties will visually indicate their status (red for owned, green for unowned)
+    * **Game Board:** A visual representation of the Monopoly board will be at the center of the screen. Properties will visually indicate which player owns them, or if no one owns them.
     * **Player Tokens:** Simple circles will represent each player on the board, visually updating their position as they move.
 
 2.  **Information & Action Panel:**
@@ -46,3 +47,10 @@ For our MVP, the game will include:
     * When a player's money drops below zero, a game message will declare them bankrupt and the game ends.
 
   
+# Controls
+
+* Mostly involves clicking with the mouse on the different popups on screen (roll, purchase, etc)
+* Dice Roll Override --> To override the dice roll, press the key "o" when the "Roll Dice" popup is on screen. Then input a number between 2 and 12 and press "enter".
+* Jail Override --> To send the current player to jail instantly, press the key "j" when the "Roll Dice" popup is on screen.
+* Mortgage/Selling Override --> To sell/mortgage properties without going into debt, press the "m" key to open the mortgaging popup. Press "m" again to close the popup,
+* Cash Override --> To manually set how much money the player currently has, press "c" when the "Roll Dice" popup is on screen. Then input a number at least $0 and press "enter". 
