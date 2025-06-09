@@ -133,7 +133,9 @@ class GameManager {
         !eventButton.isvisible() &&
         !bankruptcy.isvisible() &&
         !endButton.isvisible()){
-      roll.setVisibility(true);
+      if (!liquidate.isvisible()){
+        roll.setVisibility(true);
+      }
       } else {
       roll.setVisibility(false);
       purchase.setVisibility(false);
