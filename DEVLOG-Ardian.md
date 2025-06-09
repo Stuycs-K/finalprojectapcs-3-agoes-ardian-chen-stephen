@@ -47,4 +47,4 @@ Added property set boosts and working on fixing override bug
 Fixed dice override bug and working on fixing rolling a dice and landing on go not giving an extra turn.
 
 ### 2025-06-8 - Coding
-Added overrrides to send player to jail and mortgaging on command
+Added overrrides to send player to jail, mortgaging on command, and property lending + bunch of bug fixes

@@ -308,7 +308,7 @@ class Button{
       }
       else if (type.length() > 4 && type.substring(0,4).equals("rent")){
         String[] parts = type.split(" ");
-        message = parts[1] + " " + parts[2] + " payed $" + parts[3] + " to " + parts[4] + " " + parts[5];
+        message = parts[1] + " " + parts[2] + " paid $" + parts[3] + " to " + parts[4] + " " + parts[5];
         eventType = "Pay Rent";
       }
       else if (type.equals("gojail")){
