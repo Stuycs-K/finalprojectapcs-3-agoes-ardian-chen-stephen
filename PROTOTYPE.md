@@ -19,6 +19,7 @@ UML Diagrams and descriptions of key algorithms, classes, and how things fit tog
 
 ## UML DIAGRAM VERSION #3 : <br>
 ![UML DIAGRAM 2](MonopolyUML3.png)<br>
+
 We have eight classes: Monopoly, BoardSpace, GameManager, Player, EventSpace, PropertySpace, Dice, and Button <br>
 
 * Our Monopoly class will be our main sketch and will just be initializing our GameManager and setting up the game, handling settings, the main game loop, and user input. <br>
