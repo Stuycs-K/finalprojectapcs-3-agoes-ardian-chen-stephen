@@ -3,7 +3,7 @@
 # The Board Walkers - Monopoly Replica 
 
 **Team Members:** Ardian Agoes & Stephen Chen <br>
-**Period:** 3
+**Period:** 3 <br>
 **VIDEO LINK:** [Video](https://drive.google.com/file/d/13f0Wje4lkenofAnXdwp5caaSzM6CQU9O/view?usp=sharing) 
 
 # Project Description
