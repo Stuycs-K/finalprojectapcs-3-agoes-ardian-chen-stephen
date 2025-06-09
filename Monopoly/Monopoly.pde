@@ -1,6 +1,8 @@
 private GameManager manager;
 boolean override;
 String overrideS;
+boolean getProperty; 
+
 Button button;
 
 void setup(){
@@ -8,26 +10,44 @@ void setup(){
   manager = new GameManager(2);
   override = false;
   overrideS = "";
+  getProperty = false;
 }
 
 void draw() {
   background(255);
+  String modeText;
   if (override){
-    text("Override: " + override, 1200, 100);
+    if (getProperty) {
+      modeText = "Give Property: ";
+    } else {
+      modeText = "Dice Override: ";
+    }
+    text(modeText + overrideS, 1000, 100);
   }
   manager.update();    
   manager.display();   
 }
 
 void keyPressed(){
+  if (key == 'g' && (manager.roll.isvisible() || manager.endButton.isvisible())) {
+      override = true;
+      getProperty = true; 
+      overrideS = "";
+      return; 
+  }
   if (override){
     if (key == ENTER && !overrideS.isEmpty()){
       int val = Integer.parseInt(overrideS);
-      if (val > 0 && val <= 12){
-        manager.overrideDice(val);
+      if (getProperty) {
+        manager.overrideGiveProperty(val);
+      } else { 
+        if (val > 0 && val <= 12){
+          manager.overrideDice(val);
+        }
       }
       override = false;
       overrideS = "";
+      getProperty = false;
     }
     else{
       if (Character.isDigit(key)){

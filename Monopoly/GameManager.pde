@@ -166,7 +166,7 @@ class GameManager {
         gameState = STATE_WAITING_PURCHASE_DECISION;
         purchase.setVisibility(true);
       } else {
-        gameState = CAN_END_TURN;
+        processEndOfMove();
       }
      } 
      else if (gameState == CAN_END_TURN) { 
@@ -201,6 +201,21 @@ class GameManager {
     }
   }
 
+  private void processEndOfMove() {
+    if (rolledDouble && !currentPlayer.isInJail()) {
+      rolledDouble = false;
+      maintainHistory(currentPlayer.getName() + " rolled a double! Gets another turn.");
+      gameState = STATE_WAITING_TO_ROLL;
+    } else {
+      if (currentPlayer.hasMortgaged()){
+        unmortgage = new Button(currentPlayer, "unmortgage", propertySide * 3 + boardStartX, (boardSideLength + boardStartY) / 2);
+        unmortgage.setVisibility(true);
+      } else {
+        gameState = CAN_END_TURN;
+      }
+    }
+  }
+  
   public void startAssetManagement() {
     if (purchase.isvisible() || notEnoughMoney.isvisible() || eventButton.isvisible() || liquidate.isvisible() || showList.isvisible()) {
       return;
@@ -214,6 +229,11 @@ class GameManager {
   public void endAssetManagement() {
     if (manageAssets != null) {
       manageAssets.setVisibility(false);
+    }
+    if (gameState == STATE_WAITING_TO_ROLL) {
+      roll.setVisibility(true);
+    } else {
+      gameState = CAN_END_TURN;
     }
   }
   
@@ -373,6 +393,28 @@ class GameManager {
     gameState = STATE_END_TURN; 
     roll.setVisibility(false); 
   }
+  public void overrideGiveProperty(int propertyIndex) {
+    if (propertyIndex < 0 || propertyIndex >= board.length) {
+      maintainHistory("Override Error: Invalid index " + propertyIndex);
+      return;
+    }
+    if (!(board[propertyIndex] instanceof PropertySpace)) {
+      maintainHistory("Override Error: Space " + propertyIndex + " is not a property.");
+      return;
+    }
+    PropertySpace prop = (PropertySpace) board[propertyIndex];
+    if (prop.getOwner() != null) {
+      if (prop.getOwner() == currentPlayer) {
+        maintainHistory("Override: You already own " + prop.getName());
+        return;
+      }
+      prop.getOwner().ownedProperties.remove(prop);
+    }
+    prop.setOwner(currentPlayer);
+    currentPlayer.addProperty(prop);
+    availableProp.remove(prop);
+    maintainHistory("Override: " + prop.getName() + " given to " + currentPlayer.getName());
+  }
   
   public void rollButtonClick() {
     if (diceOverride > 0) {
@@ -439,14 +481,7 @@ class GameManager {
         maintainHistory(currentPlayer.getName() + " did not buy " + board[currentPlayer.getIndex()].getName());
       }
       if (!waitingForEvent) { 
-        if (rolledDouble && !currentPlayer.isInJail()) {
-          rolledDouble = false; 
-          maintainHistory(currentPlayer.getName() + " rolled a double! Gets another turn.");
-          gameState = STATE_WAITING_TO_ROLL;
-        } 
-        else {
-          gameState = STATE_END_TURN;
-        }
+        processEndOfMove();
       }    
     }
   }
@@ -593,7 +628,6 @@ class GameManager {
       if (prop.getOwned()) {
         if (prop.getOwner() == currentPlayer) {
         maintainHistory(currentPlayer.getName() + " landed on their own property: " + prop.getName() + ".");
-        gameState = STATE_END_TURN;
         return false;
         } 
         else {
@@ -617,13 +651,10 @@ class GameManager {
       return true;
     } else {
       EventSpace event = (EventSpace) space;
-
       int choice = (int) (Math.random() * 2);
       String type = event.getType();
       String eventMessage = "";
       if (type.equals("GO")) {
-          maintainHistory(currentPlayer.getName() + " went to go and collected $100");
-          gameState = STATE_END_TURN;
           return false; 
       }
       else if (type.equals("gojail")){
@@ -677,14 +708,7 @@ class GameManager {
     } 
     else {
        if (!gameOver) { 
-        if (rolledDouble && !currentPlayer.isInJail()) {
-          rolledDouble = false; 
-          maintainHistory(currentPlayer.getName() + " rolled a double! Gets another turn.");
-          gameState = STATE_WAITING_TO_ROLL;
-        } 
-        else {
-          gameState = STATE_END_TURN;
-        }
+        processEndOfMove();
       }
     }
     waitingForEvent = false;
