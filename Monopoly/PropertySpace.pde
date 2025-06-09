@@ -3,13 +3,17 @@
   private int baseRent;
   private Player owner;
   private String propertyType;
+  private boolean isMortgaged;
+  private int mortgageValue;
   
   public PropertySpace(String name, int index, String propertyType, int x, int y, float w, float h, int price, int rent, color c) {
     super(name, index, x, y, w, h, c);
     this.propertyType = propertyType;
     this.price = price;
+    this.mortgageValue = price/2;
     this.baseRent = rent;
     this.owner = null;
+    isMortgaged = false;
   }
   
    public PropertySpace(String name, int index, String propertyType, int x, int y, float w, float h, int price, int rent) {
@@ -53,6 +57,18 @@
   
   public String getType(){
     return this.propertyType;
+  }
+  
+  public void setMortgaged(boolean status){
+    isMortgaged = status;
+  }
+  
+  public boolean getMortgagedStatus(){
+    return isMortgaged;
+  }
+  
+  public int getMortgagePrice(){
+    return mortgageValue;
   }
   
   @Override

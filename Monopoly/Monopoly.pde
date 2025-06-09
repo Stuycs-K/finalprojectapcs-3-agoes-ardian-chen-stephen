@@ -1,6 +1,7 @@
 private GameManager manager;
 boolean override;
 String overrideS;
+Button button;
 
 void setup(){
   size(1600, 900);
@@ -20,9 +21,9 @@ void draw() {
 
 void keyPressed(){
   if (override){
-    if (key == ENTER){
+    if (key == ENTER && !overrideS.isEmpty()){
       int val = Integer.parseInt(overrideS);
-      if (val > 0){
+      if (val > 0 && val <= 12){
         manager.overrideDice(val);
       }
       override = false;
@@ -37,9 +38,31 @@ void keyPressed(){
   if(key == 'o' && manager.roll.isvisible()){
     override = true;
   }
+  
+  if(key == 'j' && manager.roll.isvisible()){
+    manager.overrideGoToJail();
+  }
+  
+  if (key == 'm') {
+    if (manager.manageAssets != null && manager.manageAssets.isvisible()) {
+      manager.endAssetManagement();
+    } 
+    else if (manager.roll.isvisible() || manager.endButton.isvisible()) {
+      manager.startAssetManagement();
+    }
+  }
 }
 
 void mousePressed() {
+  if (manager.manageAssets != null && manager.manageAssets.isvisible()) {
+    int choice = manager.manageAssets.isClicked();
+    if (choice == 1) {
+      manager.maintainHistory(manager.currentPlayer.getName() + " mortgaged a property.");
+    } else if (choice == 0) { 
+      manager.maintainHistory(manager.currentPlayer.getName() + " sold a property.");
+    }
+    return; 
+  }
   if (manager.waitingForEvent) {
   if (manager.notEnoughMoney.isvisible()) {
     int choice = manager.notEnoughMoney.isClicked();
@@ -97,6 +120,14 @@ void mousePressed() {
   if (manager.gameState == manager.STATE_WAITING_PURCHASE_DECISION && manager.purchase.isClicked() == 0){
     manager.purchaseButtonClick(false);
   }
+  if (manager.gameState == manager.STATE_WAITING_PURCHASE_DECISION && manager.purchase.isvisible()) {
+    int choice = manager.purchase.isClicked();
+    if (choice == 1) { 
+      manager.purchaseButtonClick(true);
+    } else if (choice == 0) { 
+      manager.purchaseButtonClick(false);
+    }
+  }
   if (manager.notEnoughMoney.isvisible()) {
     manager.notEnoughMoney.isClicked();
   }
@@ -105,5 +136,42 @@ void mousePressed() {
   }
   if (manager.showDice.isvisible() && manager.showDice.isClicked() != -1){
     manager.diceRollClick();
+  }
+  if (manager.liquidate.isvisible() && manager.liquidate.isClicked() != -1){
+    manager.liquidateButtonClick();
+  }
+  if (manager.showList.isvisible()){
+    int choice = manager.showList.isClicked();
+    if (choice == 1){
+      manager.maintainHistory(manager.currentPlayer.getName() + " mortgaged a property");
+      manager.showListClick();
+    }
+    else if (choice == 0){
+      manager.maintainHistory(manager.currentPlayer.getName() + " sold a property");
+      manager.showListClick();
+    }
+  }
+  if (manager.unmortgage.isvisible()){
+    int choice = manager.unmortgage.isClicked();
+    if (choice == 1) {
+      manager.unmortgageClick(true);
+    } else if (choice == 0) { 
+      manager.unmortgageClick(false);
+    }
+  }
+  if (manager.unmortgage.isvisible() && manager.unmortgage.isClicked() == 1){
+    manager.unmortgageClick(true);
+  }
+  if (manager.unmortgage.isvisible() && manager.unmortgage.isClicked() == 0){
+    manager.unmortgageClick(false);
+  }
+  if (manager.unmortgageList.isvisible()){
+    int choice = manager.unmortgageList.isClicked();
+    if (choice == 1){
+      manager.maintainHistory(manager.currentPlayer.getName() + " bought back a property");
+    }
+    else if (choice == 0){
+      manager.unmortgageListClick();
+    }
   }
 }
